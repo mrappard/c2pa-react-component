@@ -1,0 +1,55 @@
+{
+  "name": "c2pa-react-component",
+  "version": "0.1.0",
+  "description": "A React library for displaying C2PA manifest information.",
+  "type": "module",
+  "main": "./dist/c2pa-react-component.umd.cjs",
+  "module": "./dist/c2pa-react-component.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/c2pa-react-component.js",
+      "require": "./dist/c2pa-react-component.umd.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewrappard/c2pa-react-component.git"
+  },
+  "keywords": [
+    "c2pa",
+    "react",
+    "component",
+    "manifest"
+  ],
+  "author": "Matthew Rappard",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "typescript": "^5.2.2",
+    "vite": "^8.0.1",
+    "vite-plugin-dts": "^3.7.3"
+  }
+}
