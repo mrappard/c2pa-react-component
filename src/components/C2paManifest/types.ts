@@ -4,5 +4,6 @@ export interface LevelProps {
   manifest: ManifestStore
   activeManifest: ManifestEntry
   className?: string
+  officalList?: boolean
   onViewMore?: () => void
 }

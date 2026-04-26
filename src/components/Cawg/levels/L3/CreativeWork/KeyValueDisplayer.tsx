@@ -1,33 +1,39 @@
-import { Manifest } from "../../../../../types";
+import React from 'react';
 
-  export interface CreativeWorkProps {
-  manifest: Manifest;
-  key: string;
-  }
+export interface KeyValueDisplayerProps {
+  label: string;
+  value: React.ReactNode;
+}
+
+const styles: { [key: string]: React.CSSProperties } = {
+  container: {
+    marginTop: "16px",
+  },
+  label: {
+    fontSize: "14px",
+    fontWeight: 600,
+    color: "#64748b", // slate-500
+    textTransform: "uppercase",
+    letterSpacing: "0.025em",
+    marginBottom: "4px",
+  },
+  value: {
+    fontSize: "16px",
+    color: "#1e293b", // slate-800
+    lineHeight: "1.5",
+  },
+};
+
+export default function KeyValueDisplayer({ label, value }: KeyValueDisplayerProps) {
+  if (!value) return null;
+
+  // If value is an array, we might want to join it or map it, 
+  // but for now let's handle basic string/node display.
   
-
-
-    const styles: { [key: string]: React.CSSProperties } = {
-      sectionTitle: {
-      fontSize: "16px",
-      fontWeight: 600,
-      color: "#333",
-      marginBottom: "6px",
-    },
-  };
-
-  
-
-export default function CreativeWork({ manifest, key }: CreativeWorkProps) {
-
-    const creativeWorkObject = manifest["assertions"]?.["stds.schema-org.CreativeWork"]
-
-    const valueToDisplay = creativeWorkObject[key]
-
-
-
-     return <>{valueToDisplay && <div style={{ marginTop: "16px" }}>
-        <div style={styles.sectionTitle}>key</div>
-        <div>{valueToDisplay}</div>
-      </div>}</>
+  return (
+    <div style={styles.container}>
+      <div style={styles.label}>{label}</div>
+      <div style={styles.value}>{value}</div>
+    </div>
+  );
 }

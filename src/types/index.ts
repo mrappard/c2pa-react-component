@@ -8,13 +8,8 @@ export interface C2paAction {
   parameters?: Record<string, unknown>
 }
 
-export interface Assertion {
-  label: string
-  data: unknown
-  kind?: string
-  instance?: number
-  created?: boolean
-}
+
+export type Assertion = object;
 
 export interface ClaimGeneratorInfo {
   name: string
@@ -67,11 +62,12 @@ export interface ManifestEntry {
   claim_version?: number
   title?: string
   instance_id?: string
-  assertions: Assertion[]
+  id?: string
+  assertions: Record<string, Assertion| Assertion[]> 
   signature?: string
   signature_info?: SignatureInfo
   credentials?: unknown[]
-  thumbnail?: Thumbnail
+  thumbnail?: Thumbnail | null
   ingredients?: Ingredient[]
 }
 
@@ -81,14 +77,21 @@ export interface IngredientDelta {
 }
 
 export interface ManifestStore {
-  active_manifest: string
-  manifests: Record<string, ManifestEntry>
-  validation_status?: ValidationResult[]
+  "state": boolean
+  manifests: ManifestEntry[]
+  manifestStore: {
+    activeManifest: string
+    manifests: Record<string, ManifestEntry>
+  }
+  //active_manifest: string
+  //manifests: Record<string, ManifestEntry>
+  /*validation_status?: ValidationResult[]
   validation_results?: {
     activeManifest: ValidationResults
     ingredientDeltas?: IngredientDelta[]
   }
   validation_state?: 'Valid' | 'Invalid' | 'Unknown'
+  */
 }
 
 export type DisclosureLevel = 1 | 2 | 3 | 4 | 5

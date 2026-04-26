@@ -2,269 +2,512 @@ import React from 'react'
 import { CRIcon } from '../../../../icons/CRIcon'
 import { ManifestEntry, ManifestStore } from '../../../../types'
 import { LevelProps } from '../../types'
-import { card, pill, labelStyle, row } from '../../shared/styles'
-import { getIssuer, getGenerator, getDate, formatDate, validationColor, buildManifestChain } from '../../shared/utils'
-
-// ── sub-components ────────────────────────────────────────────────────────────
+import {
+  getIssuer,
+  getGenerator,
+  getDate,
+  formatDate,
+  buildManifestChain,
+} from '../../shared/utils'
+import CAWGManifest from '../../../Cawg/Cawg'
 
 const COLLAPSE_THRESHOLD = 4
 
-interface ManifestCardProps {
-  id: string
-  entry: ManifestEntry
-  manifest: ManifestStore
-  isActive: boolean
-  role: 'active' | 'ingredient' | 'origin'
+const styles = {
+  card: {
+    width: 420,
+    background: '#fff',
+    border: '1px solid #e5e5e5',
+    borderRadius: 10,
+    boxShadow: '0 14px 35px rgba(0,0,0,0.16)',
+    padding: 24,
+    fontFamily:
+      'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    color: '#242424',
+  } satisfies React.CSSProperties,
+
+  divider: {
+    height: 1,
+    background: '#d4d4d4',
+    margin: '20px 0',
+  } satisfies React.CSSProperties,
+
+  button: {
+    width: '100%',
+    height: 42,
+    borderRadius: 999,
+    border: '2px solid #666',
+    background: '#fff',
+    fontWeight: 700,
+    fontSize: 16,
+    color: '#666',
+    cursor: 'pointer',
+  } satisfies React.CSSProperties,
 }
 
-function ManifestCard({ id, entry, manifest, isActive, role }: ManifestCardProps) {
-  const issuer = getIssuer(entry)
-  const generator = getGenerator(entry)
-  const date = getDate(entry)
-  const valState = id === manifest.active_manifest ? manifest.validation_state : undefined
-  const valColors = validationColor(valState)
+function getTitle(entry: ManifestEntry) {
+  return getGenerator(entry) || getIssuer(entry) || entry.title || entry.label || 'Unknown source'
+}
 
+function getThumb(entry: ManifestEntry) {
+  // Adjust these field names if your ManifestEntry type stores thumbnails elsewhere.
   return (
-    <div style={{
-      padding: '10px 12px',
-      borderRadius: 8,
-      border: isActive ? '2px solid #3b82f6' : '1px solid #e2e8f0',
-      background: '#fff',
-    }}>
-      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', color: '#94a3b8', marginBottom: 4, textTransform: 'uppercase' }}>
-        {role}
-      </div>
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
-        <div style={{ minWidth: 0 }}>
-          <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            {entry.title ?? entry.label}
-          </div>
-          {issuer && (
-            <div style={{ fontSize: 12, color: '#475569', marginBottom: 2 }}>
-              <span style={{ color: '#94a3b8' }}>Signed by </span>{issuer}
-            </div>
-          )}
-          {(generator || date) && (
-            <div style={{ fontSize: 11, color: '#94a3b8' }}>
-              {generator}{generator && date ? ' · ' : ''}{date ? formatDate(date) : ''}
-            </div>
-          )}
-        </div>
-        {valState && (
-          <span style={{ ...pill(valColors.bg, valColors.text), flexShrink: 0, marginTop: 2 }}>
-            {valState}
-          </span>
-        )}
-      </div>
-    </div>
+    (entry as any).thumbnail?.url ||
+    (entry as any).thumbnail ||
+    (entry as any).image ||
+    undefined
   )
 }
 
-function ChainConnector() {
-  return (
-    <div style={{ display: 'flex', justifyContent: 'center', padding: '2px 0' }}>
-      <div style={{ width: 1, height: 16, background: '#cbd5e1' }} />
-    </div>
-  )
-}
+function SourceBadge({ label }: { label: string }) {
+  const initials = label
+    .split(/\s+/)
+    .map((x) => x[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase()
 
-function CollapsedConnector({ count }: { count: number }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '2px 0' }}>
-      <div style={{ width: 1, height: 8, background: '#cbd5e1' }} />
-      <div style={{
-        fontSize: 11, color: '#64748b', background: '#f1f5f9',
-        border: '1px solid #e2e8f0', borderRadius: 10, padding: '2px 10px', margin: '2px 0',
-      }}>
-        +{count} more
-      </div>
-      <div style={{ width: 1, height: 8, background: '#cbd5e1' }} />
-    </div>
-  )
-}
-
-function ViewMoreButton({ onClick }: { onClick: () => void }) {
-  return (
-    <button
-      onClick={onClick}
+    <span
       style={{
-        marginTop: 10, background: 'none', border: 'none', padding: 0,
-        color: '#3b82f6', fontSize: 12, cursor: 'pointer',
-        fontFamily: 'inherit', textDecoration: 'underline', display: 'block',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 22,
+        height: 22,
+        borderRadius: 999,
+        background: '#111',
+        color: '#fff',
+        fontSize: 10,
+        fontWeight: 800,
+        flexShrink: 0,
       }}
     >
-      View full provenance →
+      {initials}
+    </span>
+  )
+}
+
+function Thumbnail({
+  entry,
+  showCrBadge = false,
+}: {
+  entry: ManifestEntry
+  showCrBadge?: boolean
+}) {
+  const thumb = getThumb(entry)
+
+  return (
+    <div
+      style={{
+        position: 'relative',
+        width: 68,
+        height: 68,
+        borderRadius: 5,
+        border: '2px solid #eee',
+        background: '#f3f3f3',
+        overflow: 'hidden',
+        flexShrink: 0,
+      }}
+    >
+      {thumb ? (
+        <img
+          src={thumb}
+          alt=""
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+      ) : null}
+
+      {showCrBadge && (
+        <div style={{ position: 'absolute', right: -2, top: -2 }}>
+          <CRIcon size={22} />
+        </div>
+      )}
+    </div>
+  )
+}
+
+function ManifestRow({
+  manifest,
+  entry,
+  active,
+  invalid,
+}: {
+  manifest: ManifestStore
+  entry: ManifestEntry
+  active?: boolean
+  invalid?: boolean
+}) {
+
+  const title = getTitle(entry)
+  const date = getDate(entry)
+
+  console.log(manifest);
+
+  const seeIfMoreInfo = manifest.manifests.find(m => m.id === manifest.manifestStore.activeManifest);
+
+ 
+  const cawg = seeIfMoreInfo?.assertions["stds.schema-org.CreativeWork"];
+  
+
+
+
+
+  
+
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+      <Thumbnail entry={entry} />
+      <div style={{ minWidth: 0, flex: 1 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <SourceBadge label={title} />
+          <div
+            style={{
+              fontSize: 17,
+              fontWeight: 700,
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {invalid ? 'Invalid' : title}
+          </div>
+
+          {active && (
+            <span
+              style={{
+                marginLeft: 4,
+                padding: '3px 10px',
+                borderRadius: 999,
+                background: '#e8f5e9',
+                color: '#147a2e',
+                fontSize: 12,
+                fontWeight: 700,
+              }}
+            >
+              Active
+            </span>
+          )}
+        </div>
+
+        {date && !invalid && (
+          <div style={{ color: '#666', fontSize: 15, marginTop: 3 }}>
+            {formatDate(date)}
+          </div>
+        )}
+
+        {invalid && (
+          <div style={{ color: '#b91c1c', fontSize: 14, marginTop: 3 }}>
+            C2PA data could not be verified.
+          </div>
+        )}
+
+      </div>
+     
+    </div>
+    <div style={{  width: '100%'}}>
+     {seeIfMoreInfo &&  <CAWGManifest manifest={seeIfMoreInfo}  />}
+</div>
+    </div>
+  )
+}
+
+function Timeline({
+  middleCount,
+  hasOrigin,
+}: {
+  middleCount: number
+  hasOrigin: boolean
+}) {
+  return (
+    <div
+      style={{
+        width: 34,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        paddingTop: 8,
+      }}
+    >
+      <span
+        style={{
+          width: 12,
+          height: 12,
+          border: '4px solid #222',
+          borderRadius: 999,
+          background: '#fff',
+        }}
+      />
+
+      <div style={{ width: 4, height: 70, background: '#222' }} />
+
+      {middleCount > 0 && (
+        <>
+          <div
+            style={{
+              borderLeft: '4px dotted #222',
+              height: 42,
+            }}
+          />
+          <div
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: 999,
+              background: '#222',
+              color: '#fff',
+              fontWeight: 800,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            {middleCount}
+          </div>
+          <div
+            style={{
+              borderLeft: '4px dotted #222',
+              height: 42,
+            }}
+          />
+        </>
+      )}
+
+      {hasOrigin && (
+        <>
+          <div style={{ width: 4, height: 70, background: '#222' }} />
+          <span
+            style={{
+              width: 12,
+              height: 12,
+              border: '4px solid #222',
+              borderRadius: 999,
+              background: '#fff',
+            }}
+          />
+        </>
+      )}
+    </div>
+  )
+}
+
+function ViewMoreButton({ onClick }: { onClick?: () => void }) {
+  return (
+    <button onClick={onClick} style={styles.button}>
+      View more
     </button>
   )
 }
 
-// ── invalid state ─────────────────────────────────────────────────────────────
-
-function InvalidState({ entry, className }: { entry: ManifestEntry; className?: string }) {
-  const issuer = getIssuer(entry)
-  const failures = entry.assertions.flatMap(() => []) // visual only, no raw data per spec
+function OriginStrip({ origins }: { origins: ManifestEntry[] }) {
+  if (!origins.length) return null
 
   return (
-    <div className={className} style={{ ...card, display: 'block', minWidth: 280, maxWidth: 400 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-        <CRIcon size={20} />
-        <span style={{ fontWeight: 600, fontSize: 13, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {entry.title ?? entry.label}
-        </span>
-        <span style={pill('#fee2e2', '#b91c1c')}>Invalid</span>
+    <>
+      <div style={styles.divider} />
+      <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 12 }}>
+        Origins ({origins.length})
       </div>
-      <div style={{
-        fontSize: 12, color: '#b91c1c', background: '#fff1f2',
-        border: '1px solid #fecdd3', borderRadius: 6, padding: '6px 10px', marginBottom: 8,
-      }}>
-        Content credentials could not be verified. No prior provenance data can be displayed.
+      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+        {origins.map((entry, i) => (
+          <Thumbnail key={i} entry={entry} showCrBadge={i === 0} />
+        ))}
       </div>
-      {issuer && (
-        <div style={{ ...row, fontSize: 12, color: '#475569' }}>
-          <span style={labelStyle}>Signed by:</span>{issuer}
-        </div>
-      )}
-      {void failures}
+    </>
+  )
+}
+
+function InvalidState({
+  entry,
+  className,
+  onViewMore,
+}: {
+  entry: ManifestEntry
+  className?: string
+  onViewMore?: () => void
+}) {
+  return (
+    <div className={className} style={styles.card}>
+      <ManifestRow entry={entry} invalid />
+
+      <div style={styles.divider} />
+
+      <div
+        style={{
+          color: '#b91c1c',
+          background: '#fff1f2',
+          border: '1px solid #fecdd3',
+          borderRadius: 8,
+          padding: 12,
+          fontSize: 14,
+          lineHeight: 1.45,
+        }}
+      >
+        Invalid C2PA data. No prior provenance can be displayed because the
+        manifest chain could not be trusted.
+      </div>
+
+      <div style={styles.divider} />
+      <ViewMoreButton onClick={onViewMore} />
     </div>
   )
 }
 
-// ── single manifest summary (depth) ──────────────────────────────────────────
-
-function ManifestSummary({ manifest, activeManifest, className, onViewMore }: LevelProps) {
-  const issuer = getIssuer(activeManifest)
-  const generator = getGenerator(activeManifest)
-  const date = getDate(activeManifest)
-  const valState = manifest.validation_state
-  const valColors = validationColor(valState)
+function ManifestSummary({
+  manifest,
+  activeManifest,
+  className,
+  onViewMore,
+}: LevelProps) {
 
   return (
-    <div className={className} style={{ ...card, display: 'block', minWidth: 280, maxWidth: 400 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-        <CRIcon size={20} />
-        <span style={{ fontWeight: 700, fontSize: 14, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {activeManifest.title ?? activeManifest.label}
-        </span>
-        {valState && <span style={pill(valColors.bg, valColors.text)}>{valState}</span>}
-      </div>
-      {issuer && (
-        <div style={{ ...row, fontSize: 13 }}>
-          <span style={labelStyle}>Signed by:</span><strong>{issuer}</strong>
-        </div>
-      )}
-      {generator && (
-        <div style={{ ...row, fontSize: 13 }}>
-          <span style={labelStyle}>Generator:</span>{generator}
-        </div>
-      )}
-      {date && (
-        <div style={{ ...row, fontSize: 13 }}>
-          <span style={labelStyle}>Date:</span>{formatDate(date)}
-        </div>
-      )}
-      {onViewMore && <ViewMoreButton onClick={onViewMore} />}
+    <div className={className} style={styles.card}>
+      <ManifestRow manifest={manifest} entry={activeManifest} active />
+
+      <div style={styles.divider} />
+
+      <ViewMoreButton onClick={onViewMore} />
     </div>
   )
 }
 
-// ── provenance summary (breadth) ─────────────────────────────────────────────
-
-function ProvenanceSummary({ manifest, className, onViewMore }: { manifest: ManifestStore; className?: string; onViewMore?: () => void }) {
+function ProvenanceSummary({
+  manifest,
+  className,
+  onViewMore,
+}: {
+  manifest: ManifestStore
+  className?: string
+  onViewMore?: () => void
+}) {
   const chain = buildManifestChain(manifest)
-  const totalManifests = chain.reduce((sum, lvl) => sum + lvl.length, 0)
-  const shouldCollapse = totalManifests > COLLAPSE_THRESHOLD
 
-  const firstLevel = chain[0]
-  const lastLevel = chain[chain.length - 1]
-  const middleLevels = chain.slice(1, chain.length - 1)
-  const middleCount = middleLevels.reduce((sum, lvl) => sum + lvl.length, 0)
+  const activeIds = chain[0] ?? []
+  const originIds = chain[chain.length - 1] ?? []
+  const middleLevels = chain.slice(1, -1)
 
-  const valState = manifest.validation_state
-  const valColors = validationColor(valState)
+  const middleCount = middleLevels.reduce((sum, level) => sum + level.length, 0)
+  const totalCount = chain.reduce((sum, level) => sum + level.length, 0)
+  const shouldCollapse = totalCount > COLLAPSE_THRESHOLD
 
-  const getRole = (levelIndex: number): 'active' | 'ingredient' | 'origin' => {
-    if (levelIndex === 0) return 'active'
-    if (levelIndex === chain.length - 1) return 'origin'
-    return 'ingredient'
-  }
+  const activeEntry = manifest.manifests[activeIds[0]]
+  const originEntries = originIds
+    .map((id) => manifest.manifests[id])
+    .filter(Boolean)
+
+  const visibleMiddleEntries = shouldCollapse
+    ? []
+    : middleLevels.flat().map((id) => manifest.manifests[id]).filter(Boolean)
 
   return (
-    <div className={className} style={{ ...card, display: 'block', minWidth: 280, maxWidth: 400 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-        <CRIcon size={18} />
-        <span style={{ fontWeight: 600, fontSize: 13, flex: 1, color: '#475569' }}>Content Credentials</span>
-        {valState && <span style={pill(valColors.bg, valColors.text)}>{valState}</span>}
+    <div className={className} style={styles.card}>
+      <div style={{ display: 'grid', gridTemplateColumns: '42px 1fr', gap: 18 }}>
+        <Timeline
+          middleCount={shouldCollapse ? middleCount : 0}
+          hasOrigin={originEntries.length > 0}
+        />
+
+        <div>
+          {activeEntry && <ManifestRow entry={activeEntry} active />}
+
+          {shouldCollapse && middleCount > 0 && (
+            <>
+              <div style={styles.divider} />
+              <div
+                style={{
+                  fontSize: 18,
+                  fontWeight: 700,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <span>Additional steps</span>
+                <span style={{ color: '#666' }}>⌄</span>
+              </div>
+            </>
+          )}
+
+          {!shouldCollapse &&
+            visibleMiddleEntries.map((entry, i) => (
+              <React.Fragment key={i}>
+                <div style={styles.divider} />
+                <ManifestRow entry={entry} />
+              </React.Fragment>
+            ))}
+
+          {originEntries[0] && (
+            <>
+              <div style={styles.divider} />
+              <ManifestRow entry={originEntries[0]} />
+            </>
+          )}
+        </div>
       </div>
 
-      {/* Active manifest(s) */}
-      {firstLevel.map((id) => (
-        <ManifestCard
-          key={id} id={id}
-          entry={manifest.manifests[id]}
-          manifest={manifest}
-          isActive={true}
-          role={getRole(0)}
-        />
-      ))}
+      {originEntries.length > 1 && <OriginStrip origins={originEntries} />}
 
-      {/* Middle levels or collapse indicator */}
-      {chain.length > 2 && (
-        shouldCollapse ? (
-          <CollapsedConnector count={middleCount} />
-        ) : (
-          middleLevels.map((level, i) => (
-            <React.Fragment key={i}>
-              <ChainConnector />
-              {level.map((id) => (
-                <ManifestCard
-                  key={id} id={id}
-                  entry={manifest.manifests[id]}
-                  manifest={manifest}
-                  isActive={false}
-                  role={getRole(i + 1)}
-                />
-              ))}
-            </React.Fragment>
-          ))
-        )
-      )}
+      <div style={styles.divider} />
 
-      {/* Origin manifest(s) */}
-      {chain.length > 1 && (
-        <>
-          <ChainConnector />
-          {lastLevel.map((id) => (
-            <ManifestCard
-              key={id} id={id}
-              entry={manifest.manifests[id]}
-              manifest={manifest}
-              isActive={false}
-              role={getRole(chain.length - 1)}
-            />
-          ))}
-        </>
-      )}
+      <ViewMoreButton onClick={onViewMore} />
 
-      {onViewMore && <ViewMoreButton onClick={onViewMore} />}
+      <div style={{ marginTop: 18, fontSize: 13, color: '#666' }}>
+        Provenance data is embedded in this asset.
+      </div>
     </div>
   )
 }
 
-// ── main L2 component ─────────────────────────────────────────────────────────
-
-export function C2paManifestL2({ manifest, activeManifest, className, onViewMore }: LevelProps) {
-  const isInvalid = manifest.validation_state === 'Invalid'
-
-  if (isInvalid) {
-    return <InvalidState entry={activeManifest} className={className} />
-  }
+export function C2paManifestL2({
+  manifest,
+  activeManifest,
+  className,
+  onViewMore,
+  officalList = false,
+}: LevelProps) {
+  const isInvalid =
+    officalList ?
+      !manifest.state :
+      false;
 
   const chain = buildManifestChain(manifest)
   const hasProvenance = chain.length > 1
 
-  if (hasProvenance) {
-    return <ProvenanceSummary manifest={manifest} className={className} onViewMore={onViewMore} />
+
+
+
+  if (isInvalid) {
+    return (
+      <InvalidState
+        entry={activeManifest}
+        className={className}
+        onViewMore={onViewMore}
+      />
+    )
   }
 
-  return <ManifestSummary manifest={manifest} activeManifest={activeManifest} className={className} onViewMore={onViewMore} />
+
+  if (hasProvenance) {
+    return (
+      <ProvenanceSummary
+        manifest={manifest}
+        className={className}
+        onViewMore={onViewMore}
+      />
+    )
+  }
+
+
+  return (
+    <ManifestSummary
+      manifest={manifest}
+      activeManifest={activeManifest}
+      className={className}
+      onViewMore={onViewMore}
+    />
+  )
+
+
 }
