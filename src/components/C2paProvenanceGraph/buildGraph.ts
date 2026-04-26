@@ -2,10 +2,10 @@ import { Node, Edge } from '@xyflow/react'
 import { ManifestStore } from '../../types'
 import { ManifestNodeData } from './ManifestNode'
 
-const NODE_WIDTH = 240
-const NODE_HEIGHT = 140
+const NODE_WIDTH = 420
+const NODE_HEIGHT = 180
 const ROW_GAP = 80  // vertical gap between depth levels
-const COL_GAP = 40  // horizontal gap between siblings
+const COL_GAP = 48  // horizontal gap between siblings
 
 export function buildGraph(manifest: ManifestStore): { nodes: Node[]; edges: Edge[] } {
   const { manifests, active_manifest, validation_state } = manifest

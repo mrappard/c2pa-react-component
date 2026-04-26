@@ -1,14 +1,11 @@
-import React from "react";
 import { Manifest } from "../../../../types";
 import CreativeWork from "./CreativeWork/CreativeWork";
 import { CAWG_Header } from "../../CAWG_Header";
-import { cawgStyles } from "../styles/cawgStyles";
-
-const styles = cawgStyles;
+import "../styles/cawg.css";
 
 export interface CAWGL3Props {
     manifest: Manifest;
-      moreInfo?: () => void;
+    moreInfo?: () => void;
 }
 
 export default function CAWGL3({ manifest, moreInfo }: CAWGL3Props) {
@@ -17,32 +14,33 @@ export default function CAWGL3({ manifest, moreInfo }: CAWGL3Props) {
     const claimGeneratorInitials = claimGenerator ? claimGenerator.split(" ").map((n) => n[0].toUpperCase()).join("") : "UCG";
 
     return (
-        <div style={styles.card}>
+        <div className="cawg-card">
             <CAWG_Header />
-            <div style={styles.container}>
+            <div className="cawg-container">
                 {
                     manifest.thumbnail ? (
-                        <img src={manifest.thumbnail} alt="Thumbnail" style={styles.thumbnail} />
+                        <img src={manifest.thumbnail} alt="Thumbnail" className="cawg-thumbnail" />
                     ) : (
-                        <div style={styles.square}>
-                            <span style={styles.logoText}>{claimGeneratorInitials}</span>
+                        <div className="cawg-square">
+                            <span className="cawg-logo-text">{claimGeneratorInitials}</span>
                         </div>
                     )
                 }
 
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <div>
-                        <span style={styles.mediaTitle}>{title}</span>
+                        <span className="cawg-media-title">{title}</span>
                     </div>
                     <div>
-                        <span style={styles.claimGenerator}>{claimGenerator}</span>
+                        <span className="cawg-claim-generator">{claimGenerator}</span>
                     </div>
                 </div>
             </div>
             
             <CreativeWork manifest={manifest} />
+            
             {moreInfo && <div style={{ marginTop: 16 }}>
-                <button onClick={moreInfo} style={styles.button}>
+                <button onClick={moreInfo} className="cawg-button">
                     Small View
                 </button>
             </div>}

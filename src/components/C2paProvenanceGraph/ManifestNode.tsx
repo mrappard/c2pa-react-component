@@ -1,5 +1,8 @@
 import { Handle, Position, NodeProps } from '@xyflow/react'
 import { ManifestEntry } from '../../types'
+import { CRIcon } from '../../icons/CRIcon'
+import { formatDate, getDate, getGenerator, getIssuer } from '../C2paManifest/shared/utils'
+import '../C2paManifest/styles/c2paManifest.css'
 
 export interface ManifestNodeData {
   entry: ManifestEntry
@@ -8,105 +11,113 @@ export interface ManifestNodeData {
   [key: string]: unknown
 }
 
-const stateColors: Record<string, string> = {
-  Valid: '#16a34a',
-  Invalid: '#dc2626',
-  Unknown: '#ca8a04',
+const validationColors: Record<string, { bg: string; text: string }> = {
+  Valid: { bg: '#dcfce7', text: '#15803d' },
+  Invalid: { bg: '#fee2e2', text: '#b91c1c' },
+  Unknown: { bg: '#fef9c3', text: '#854d0e' },
 }
 
-const styles: Record<string, React.CSSProperties> = {
-  node: {
-    background: '#fff',
-    border: '2px solid #e2e8f0',
-    borderRadius: 10,
-    padding: '12px 16px',
-    minWidth: 200,
-    fontFamily: 'sans-serif',
-    fontSize: 13,
-    boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-  },
-  activeNode: {
-    borderColor: '#3b82f6',
-    boxShadow: '0 0 0 3px rgba(59,130,246,0.2)',
-  },
-  badge: {
-    display: 'inline-block',
-    borderRadius: 4,
-    padding: '1px 6px',
-    fontSize: 11,
-    fontWeight: 600,
-    marginBottom: 6,
-  },
-  title: {
-    fontWeight: 700,
-    marginBottom: 4,
-    color: '#0f172a',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    maxWidth: 200,
-  },
-  row: {
-    color: '#475569',
-    marginBottom: 2,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    maxWidth: 200,
-  },
-  actions: {
-    marginTop: 6,
-    paddingTop: 6,
-    borderTop: '1px solid #f1f5f9',
-    color: '#64748b',
-    fontSize: 11,
-  },
+function cx(...classes: Array<string | undefined | false>) {
+  return classes.filter(Boolean).join(' ')
+}
+
+function getTitle(entry: ManifestEntry) {
+  return getGenerator(entry) || getIssuer(entry) || entry.title || entry.label || 'Unknown source'
+}
+
+function getThumb(entry: ManifestEntry) {
+  return (
+    (entry as any).thumbnail?.url ||
+    (entry as any).thumbnail ||
+    (entry as any).image ||
+    undefined
+  )
+}
+
+function SourceBadge({ label }: { label: string }) {
+  const initials = label
+    .split(/\s+/)
+    .map((x) => x[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase()
+
+  return <span className="c2pa-source-badge">{initials}</span>
+}
+
+function Thumbnail({ entry, showCrBadge }: { entry: ManifestEntry; showCrBadge: boolean }) {
+  const thumb = getThumb(entry)
+
+  return (
+    <div className="c2pa-thumb">
+      {thumb ? <img src={thumb} alt="" /> : null}
+      {showCrBadge && (
+        <div className="c2pa-thumb-badge">
+          <CRIcon size={22} />
+        </div>
+      )}
+    </div>
+  )
 }
 
 export function ManifestNode({ data }: NodeProps) {
   const { entry, isActive, validationState } = data as ManifestNodeData
 
-  const generator = entry.claim_generator_info?.[0]?.name ?? entry.claim_generator
-  const issuer = entry.signature_info?.issuer
+  const title = getTitle(entry)
+  const issuer = getIssuer(entry)
+  const generator = getGenerator(entry)
+  const date = getDate(entry)
 
-  const actions = entry.assertions
-    .flatMap((a) => {
-      const d = a.data as { actions?: { action: string }[] } | null
-      return d?.actions?.map((act) => act.action) ?? []
+  const actions = Object.values(entry.assertions)
+    .flatMap((assertion) => {
+      const data =
+        typeof assertion === 'object' && assertion !== null && 'data' in assertion
+          ? assertion.data
+          : assertion
+      const actionData = data as { actions?: { action: string }[] } | null
+      return actionData?.actions?.map((act) => act.action) ?? []
     })
     .slice(0, 3)
 
-  const stateColor = validationState ? stateColors[validationState] : '#94a3b8'
-  const nodeStyle = isActive
-    ? { ...styles.node, ...styles.activeNode }
-    : styles.node
+  const validationColor = validationState ? validationColors[validationState] : undefined
 
   return (
-    <div style={nodeStyle}>
+    <div className={cx('c2pa-card', 'c2pa-graph-node', isActive && 'c2pa-graph-node--active')}>
       <Handle type="target" position={Position.Top} />
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
-        {isActive && (
-          <span style={{ ...styles.badge, background: '#dbeafe', color: '#1d4ed8' }}>
-            Active
-          </span>
-        )}
-        {validationState && (
-          <span style={{ ...styles.badge, background: `${stateColor}20`, color: stateColor }}>
-            {validationState}
-          </span>
-        )}
+      <div className="c2pa-manifest-row-main">
+        <Thumbnail entry={entry} showCrBadge={isActive} />
+        <div className="c2pa-manifest-row-content">
+          <div className="c2pa-manifest-row-heading">
+            <SourceBadge label={title} />
+            <div className="c2pa-title">{title}</div>
+            {isActive && <span className="c2pa-active-badge">Active</span>}
+          </div>
+
+          {date && <div className="c2pa-date">{formatDate(date)}</div>}
+
+          {validationState && validationColor && (
+            <div className="c2pa-graph-validation">
+              <span
+                className="c2pa-pill"
+                style={{ backgroundColor: validationColor.bg, color: validationColor.text }}
+              >
+                {validationState}
+              </span>
+            </div>
+          )}
+        </div>
       </div>
 
-      <div style={styles.title}>{entry.title ?? entry.label}</div>
-
-      {generator && <div style={styles.row}>Generator: {generator}</div>}
-      {issuer && <div style={styles.row}>Issuer: {issuer}</div>}
+      {issuer && <div className="c2pa-row c2pa-graph-row"><span className="c2pa-label">Signed by:</span>{issuer}</div>}
+      {generator && <div className="c2pa-row c2pa-graph-row"><span className="c2pa-label">Generator:</span>{generator}</div>}
 
       {actions.length > 0 && (
-        <div style={styles.actions}>
+        <div className="c2pa-section c2pa-pill-list">
           {actions.map((a) => (
-            <div key={a}>{a.replace('c2pa.', '')}</div>
+            <span key={a} className="c2pa-pill c2pa-graph-action">
+              {a.replace('c2pa.', '')}
+            </span>
           ))}
         </div>
       )}

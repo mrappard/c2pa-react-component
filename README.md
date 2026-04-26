@@ -18,6 +18,7 @@ npm install c2pa-react-component
 
 ```tsx
 import { C2paManifest, Manifest } from 'c2pa-react-component';
+import 'c2pa-react-component/style.css';
 
 const myManifest: Manifest = {
   active_manifest: "manifest_1",
@@ -51,6 +52,8 @@ function App() {
 
 export default App;
 ```
+
+The stylesheet is exported separately so consuming apps can decide where global library CSS is loaded. The legacy path `c2pa-react-component/dist/c2pa-react-component.css` is also available, but `c2pa-react-component/style.css` is the recommended import.
 
 ## License
 

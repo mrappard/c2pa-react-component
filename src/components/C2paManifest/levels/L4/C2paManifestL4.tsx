@@ -1,10 +1,13 @@
 import { CRIcon } from '../../../../icons/CRIcon'
 import { LevelProps } from '../../types'
-import { card, pill, labelStyle, row } from '../../shared/styles'
 import { getIssuer, getGenerator, getActions, validationColor } from '../../shared/utils'
 import { AssertionList } from '../../shared/AssertionList'
 import { SignatureDetail } from '../../shared/SignatureDetail'
 import { IngredientList } from '../../shared/IngredientList'
+
+function cx(...classes: Array<string | undefined>) {
+  return classes.filter(Boolean).join(' ')
+}
 
 export function C2paManifestL4({ manifest, activeManifest, className }: LevelProps) {
   const issuer = getIssuer(activeManifest)
@@ -14,18 +17,22 @@ export function C2paManifestL4({ manifest, activeManifest, className }: LevelPro
   const valColors = validationColor(valState)
 
   return (
-    <div className={className} style={{ ...card, display: 'block', minWidth: 340 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+    <div className={cx('c2pa-card', 'c2pa-card--detail', className)}>
+      <div className="c2pa-header">
         <CRIcon size={20} />
-        <strong>{activeManifest.title ?? activeManifest.label}</strong>
-        {valState && <span style={pill(valColors.bg, valColors.text)}>{valState}</span>}
+        <strong className="c2pa-title">{activeManifest.title ?? activeManifest.label}</strong>
+        {valState && (
+          <span className="c2pa-pill" style={{ backgroundColor: valColors.bg, color: valColors.text }}>
+            {valState}
+          </span>
+        )}
       </div>
-      {issuer && <div style={row}><span style={labelStyle}>Signed by:</span>{issuer}</div>}
-      {generator && <div style={row}><span style={labelStyle}>Generator:</span>{generator}</div>}
+      {issuer && <div className="c2pa-row"><span className="c2pa-label">Signed by:</span>{issuer}</div>}
+      {generator && <div className="c2pa-row"><span className="c2pa-label">Generator:</span>{generator}</div>}
       {actions.length > 0 && (
-        <div style={{ marginTop: 6, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+        <div className="c2pa-pill-list">
           {actions.map((a) => (
-            <span key={a} style={pill('#f1f5f9', '#334155')}>{a.replace('c2pa.', '')}</span>
+            <span key={a} className="c2pa-pill" style={{ backgroundColor: '#f1f5f9', color: '#334155' }}>{a.replace('c2pa.', '')}</span>
           ))}
         </div>
       )}

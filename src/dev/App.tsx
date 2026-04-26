@@ -1,23 +1,22 @@
 import { C2paManifest } from '../components/C2paManifest/C2paManifest'
-import { C2paProvenanceGraph } from '../components/C2paProvenanceGraph/C2paProvenanceGraph'
 import { CAWGManifest } from '../components/Cawg/Cawg'
 import { Manifest, ManifestStore } from '../types'
 
 const sampleManifest: ManifestStore = {
-"state": false,
-  "manifests": [
-    {
-      "id": "urn:c2pa:6bba031d-ea50-49ae-be1f-7ff004487269",
+  "active_manifest": "urn:c2pa:6bba031d-ea50-49ae-be1f-7ff004487269",
+  "manifests": {
+    "urn:c2pa:6bba031d-ea50-49ae-be1f-7ff004487269": {
+      "label": "urn:c2pa:6bba031d-ea50-49ae-be1f-7ff004487269",
       "title": "New document",
-      "claimGenerator": null,
-      "claimGeneratorInfo": [
+      "claim_generator": undefined,
+      "claim_generator_info": [
         {
           "name": "test_generator",
           "org.contentauth.c2pa_rs": "0.80.0"
         }
       ],
-      "instanceId": "xmp:iid:96aad1b4-e1a3-48a3-82b7-1bd6e2184d7b",
-      "signatureInfo": {
+      "instance_id": "xmp:iid:96aad1b4-e1a3-48a3-82b7-1bd6e2184d7b",
+      "signature_info": {
         "alg": "Es256",
         "issuer": "C2PA Test Signing Cert",
         "common_name": "C2PA Signer",
@@ -45,28 +44,6 @@ const sampleManifest: ManifestStore = {
       "credentials": [],
       "thumbnail": null,
       "ingredients": []
-    }
-  ],
-  "manifestStore": {
-    "activeManifest": "urn:c2pa:6bba031d-ea50-49ae-be1f-7ff004487269",
-    "manifests": {
-      "urn:c2pa:6bba031d-ea50-49ae-be1f-7ff004487269": {
-        "claimGenerator": null,
-        "claimGeneratorInfo": [
-          {
-            "name": "test_generator",
-            "org.contentauth.c2pa_rs": "0.80.0"
-          }
-        ],
-        "title": "New document",
-        "instanceId": "xmp:iid:96aad1b4-e1a3-48a3-82b7-1bd6e2184d7b",
-        "signatureInfo": {
-          "alg": "Es256",
-          "issuer": "C2PA Test Signing Cert",
-          "common_name": "C2PA Signer",
-          "cert_serial_number": "640229841392226413189608867977836244731148734950"
-        }
-      }
     }
   }
 }
@@ -126,7 +103,8 @@ export default function App() {
             <C2paManifest
               manifest={sampleManifest}
               level={l}
-              onViewMore={l === 2 ? () => alert('Navigate to L3') : undefined}
+              onViewMore={undefined}
+              defaultViewMore={l === 1}
             />
           </div>
         ))}

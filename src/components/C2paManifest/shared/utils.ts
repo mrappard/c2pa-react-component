@@ -3,17 +3,11 @@ import { ManifestEntry, ManifestStore } from '../../../types'
 export function getDate(entry: ManifestEntry): string | undefined {
   if (entry.signature_info?.time) return entry.signature_info.time
   
-  if (entry.assertions instanceof Array) {
-    for (const assertion of entry.assertions) {
-      const d = assertion.data as { actions?: { when?: string }[] } | null
-      const when = d?.actions?.find((a) => a.when)?.when
-      if (when) return when
+  const actions = entry.assertions['c2pa.actions.v2'] as { actions?: { when?: string }[] } | undefined
+  if (actions?.actions) {
+    for (const act of actions.actions) {
+      if (act.when) return act.when
     }
-  } else {
-
-    const d = entry?.assertions?.data as { actions?: { when?: string }[] } | null
-    const when = d?.actions?.find((a) => a.when)?.when
-    if (when) return when
   }
 
   return undefined
@@ -64,21 +58,8 @@ export function getGenerator(entry: ManifestEntry) {
 }
 
 export function getActions(entry: ManifestEntry): string[] {
-
-
-//FIXME: this is a bit hacky, we should standardize the data structure for actions in the manifest to avoid this kind of branching logic.
-return [];
-  if (entry.assertions instanceof Array) {
-    return entry.assertions.flatMap((a) => {
-      const d = a.data as { actions?: { action: string }[] } | null
-      return d?.actions?.map((act) => act.action) ?? []
-    })
-  } else {
-    const d = entry.assertions.data as { actions?: { action: string }[] } | null
-    return d?.actions?.map((act) => act.action) ?? []
-  }
-
- 
+  const actions = entry.assertions['c2pa.actions.v2'] as { actions?: { action: string }[] } | undefined
+  return actions?.actions?.map((act) => act.action) ?? []
 }
 
 export function validationColor(state: ManifestStore['validation_state']) {

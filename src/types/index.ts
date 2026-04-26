@@ -8,8 +8,13 @@ export interface C2paAction {
   parameters?: Record<string, unknown>
 }
 
-
-export type Assertion = object;
+export interface Assertion {
+  label: string
+  data: unknown
+  kind?: string
+  instance?: number
+  created?: boolean
+}
 
 export interface ClaimGeneratorInfo {
   name: string
@@ -63,7 +68,7 @@ export interface ManifestEntry {
   title?: string
   instance_id?: string
   id?: string
-  assertions: Record<string, Assertion| Assertion[]> 
+  assertions: Record<string, any>
   signature?: string
   signature_info?: SignatureInfo
   credentials?: unknown[]
@@ -77,21 +82,14 @@ export interface IngredientDelta {
 }
 
 export interface ManifestStore {
-  "state": boolean
-  manifests: ManifestEntry[]
-  manifestStore: {
-    activeManifest: string
-    manifests: Record<string, ManifestEntry>
-  }
-  //active_manifest: string
-  //manifests: Record<string, ManifestEntry>
-  /*validation_status?: ValidationResult[]
+  active_manifest: string
+  manifests: Record<string, ManifestEntry>
+  validation_status?: ValidationResult[]
   validation_results?: {
     activeManifest: ValidationResults
     ingredientDeltas?: IngredientDelta[]
   }
   validation_state?: 'Valid' | 'Invalid' | 'Unknown'
-  */
 }
 
 export type DisclosureLevel = 1 | 2 | 3 | 4 | 5
@@ -101,14 +99,15 @@ export interface C2paManifestProps {
   level?: DisclosureLevel
   className?: string
   onViewMore?: () => void
+  defaultViewMore?: boolean
 }
-
 
 export interface CAWGManifestProps {
   manifest: Manifest
   level?: DisclosureLevel
   className?: string
   onViewMore?: () => void
+    defaultViewMore?: boolean
 }
 
 export interface C2paProvenanceGraphProps {
@@ -117,54 +116,23 @@ export interface C2paProvenanceGraphProps {
   height?: number
 }
 
-
 export interface Manifest {
-  
-      "id": string,
-      "title": string,
-      "claimGenerator": string | null,
-         "claimGeneratorInfo":   {
-          "name":string,
-          "org.contentauth.c2pa_rs": string
-        }[
-      
-      ],
-      "instanceId": string,
-      "signatureInfo": {
-        "alg": string,
-        "issuer": string,
-        "common_name": string,
-        "cert_serial_number": string
-      },
-      "assertions": {
-        "stds.schema-org.CreativeWork": {
-          "@context": string,
-          "@type": "CreativeWork",
-          "author": {
-              "@type": "Person",
-              "name": string
-            }|{
-              "@type": "Person",
-              "name": string
-            }[],
-            "publisher": {
-            "@type": "Organization",
-            "name": string
-          }|{
-            "@type": "Organization",
-            "name": string
-          }[],
-          "name": string|null|undefined
-        },
-        "c2pa.actions.v2": {
-          "actions":  {
-              "action": "c2pa.created"
-            }[
-          ]
-        }
-      },
-      "credentials": [],
-      "thumbnail": null,
-      "ingredients": []
-    
+  id: string
+  title: string
+  claimGenerator: string | null
+  claimGeneratorInfo: {
+    name: string
+    "org.contentauth.c2pa_rs": string
+  }[]
+  instanceId: string
+  signatureInfo: {
+    alg: string
+    issuer: string
+    common_name: string
+    cert_serial_number: string
+  }
+  assertions: Record<string, any>
+  credentials: []
+  thumbnail: string | null
+  ingredients: []
 }

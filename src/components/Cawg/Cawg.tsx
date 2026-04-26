@@ -4,7 +4,7 @@ import { CAWGL1 } from './levels/L1/CAWGL1'
 import CAWGL2 from './levels/L2/CAWGL2';
 import CAWGL3 from './levels/L3/CAWGL3';
 
-export const CAWGManifest: React.FC<CAWGManifestProps> = ({ manifest, level, className, onViewMore }) => {
+export const CAWGManifest: React.FC<CAWGManifestProps> = ({ manifest, level, className }) => {
   const activeManifest = manifest;
 
   if (!activeManifest) {
@@ -12,9 +12,6 @@ export const CAWGManifest: React.FC<CAWGManifestProps> = ({ manifest, level, cla
   }
 
   const [levelOfDetail, setLevelOfDetail] = React.useState(level || 1)
-
-  const props = { manifest, activeManifest, className, onViewMore }
-
 
   {/*return <div>{JSON.stringify(activeManifest, null, 2)}</div>*/}
 

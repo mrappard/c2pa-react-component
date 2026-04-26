@@ -1,5 +1,4 @@
 import { ManifestEntry } from '../../../types'
-import { section, row, labelStyle } from './styles'
 
 interface AssertionListProps {
   entry: ManifestEntry
@@ -8,15 +7,14 @@ interface AssertionListProps {
 
 export function AssertionList({ entry, raw }: AssertionListProps) {
   return (
-    <div style={section}>
-      <div style={{ fontWeight: 600, marginBottom: 6 }}>Assertions</div>
-      {entry.assertions.map((a, i) => (
-        <div key={`${a.label}-${i}`} style={{ ...row, paddingBottom: 6, borderBottom: '1px solid #f8fafc' }}>
-          <div style={{ fontWeight: 500 }}>{a.label}</div>
-          {a.kind && <div><span style={labelStyle}>Kind:</span>{a.kind}</div>}
+    <div className="c2pa-section">
+      <div className="c2pa-section-title">Assertions</div>
+      {Object.entries(entry.assertions).map(([key, data], i) => (
+        <div key={`${key}-${i}`} className="c2pa-row c2pa-list-item">
+          <div className="c2pa-list-item-title">{key}</div>
           {raw && (
-            <pre style={{ background: '#f8fafc', padding: '6px 8px', borderRadius: 4, fontSize: 11, margin: '4px 0 0', overflowX: 'auto' }}>
-              {JSON.stringify(a.data, null, 2)}
+            <pre className="c2pa-raw">
+              {JSON.stringify(data, null, 2)}
             </pre>
           )}
         </div>

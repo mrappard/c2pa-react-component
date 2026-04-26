@@ -1,15 +1,11 @@
 import { CAWG_Header } from "../../CAWG_Header";
 import { Manifest } from "../../../../types";
-import { cawgStyles } from "../styles/cawgStyles";
+import "../styles/cawg.css";
 
-const styles = cawgStyles;
-
-
-  export interface CAWGL2Props {
+export interface CAWGL2Props {
   manifest: Manifest;
   moreInfo?: () => void;
 }
-  
 
 export default function CAWGL2({
   manifest,
@@ -24,43 +20,43 @@ export default function CAWGL2({
   
   const author = manifest.assertions["stds.schema-org.CreativeWork"]?.author;
   const authorName = Array.isArray(author) ? author.map((a) => a.name).join(", ") : author?.name;
+  
   return (
-     <div style={styles.card}>
+     <div className="cawg-card">
       <CAWG_Header />
-      <div style={styles.container}>
+      <div className="cawg-container">
         {
           manifest.thumbnail ? (
-            <img src={manifest.thumbnail} alt="Thumbnail" style={styles.thumbnail} />
+            <img src={manifest.thumbnail} alt="Thumbnail" className="cawg-thumbnail" />
           ) : (
-            <div style={styles.square}>
-              <span style={styles.logoText}>{claimGeneratorInitials}</span>
+            <div className="cawg-square">
+              <span className="cawg-logo-text">{claimGeneratorInitials}</span>
             </div>
           )
         }
 
         <div className="flex flex-col">
           <div>
-            <span style={styles.mediaTitle}>{title}</span>
+            <span className="cawg-media-title">{title}</span>
           </div>
           <div>
-            <span style={styles.claimGenerator}>{claimGenerator}</span>
+            <span className="cawg-claim-generator">{claimGenerator}</span>
           </div>
         </div>
       </div>
-      {
-
-      }
-      {publisherName && <div style={{ marginTop: "16px" }}>
-        <div style={styles.sectionTitle}>Verified Document</div>
+      
+      {publisherName && <div className="cawg-key-value">
+        <div className="cawg-key-value-label">Publisher</div>
         <div>{publisherName}</div>
       </div>}
-      {authorName && <div style={{ marginTop: "16px" }}>
-        <div style={styles.sectionTitle}>Author</div>
+      
+      {authorName && <div className="cawg-key-value">
+        <div className="cawg-key-value-label">Author</div>
         <div>{authorName}</div>
       </div>}
 
-         {moreInfo && <div style={{ marginTop: 16 }}>
-        <button onClick={moreInfo} style={styles.button}>
+      {moreInfo && <div style={{ marginTop: 16 }}>
+        <button onClick={moreInfo} className="cawg-button">
           More Info
         </button>
       </div>}

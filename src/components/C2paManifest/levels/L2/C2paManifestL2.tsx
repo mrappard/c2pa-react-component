@@ -13,36 +13,8 @@ import CAWGManifest from '../../../Cawg/Cawg'
 
 const COLLAPSE_THRESHOLD = 4
 
-const styles = {
-  card: {
-    width: 420,
-    background: '#fff',
-    border: '1px solid #e5e5e5',
-    borderRadius: 10,
-    boxShadow: '0 14px 35px rgba(0,0,0,0.16)',
-    padding: 24,
-    fontFamily:
-      'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-    color: '#242424',
-  } satisfies React.CSSProperties,
-
-  divider: {
-    height: 1,
-    background: '#d4d4d4',
-    margin: '20px 0',
-  } satisfies React.CSSProperties,
-
-  button: {
-    width: '100%',
-    height: 42,
-    borderRadius: 999,
-    border: '2px solid #666',
-    background: '#fff',
-    fontWeight: 700,
-    fontSize: 16,
-    color: '#666',
-    cursor: 'pointer',
-  } satisfies React.CSSProperties,
+function cx(...classes: Array<string | undefined>) {
+  return classes.filter(Boolean).join(' ')
 }
 
 function getTitle(entry: ManifestEntry) {
@@ -50,7 +22,6 @@ function getTitle(entry: ManifestEntry) {
 }
 
 function getThumb(entry: ManifestEntry) {
-  // Adjust these field names if your ManifestEntry type stores thumbnails elsewhere.
   return (
     (entry as any).thumbnail?.url ||
     (entry as any).thumbnail ||
@@ -68,21 +39,7 @@ function SourceBadge({ label }: { label: string }) {
     .toUpperCase()
 
   return (
-    <span
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 22,
-        height: 22,
-        borderRadius: 999,
-        background: '#111',
-        color: '#fff',
-        fontSize: 10,
-        fontWeight: 800,
-        flexShrink: 0,
-      }}
-    >
+    <span className="c2pa-source-badge">
       {initials}
     </span>
   )
@@ -98,28 +55,13 @@ function Thumbnail({
   const thumb = getThumb(entry)
 
   return (
-    <div
-      style={{
-        position: 'relative',
-        width: 68,
-        height: 68,
-        borderRadius: 5,
-        border: '2px solid #eee',
-        background: '#f3f3f3',
-        overflow: 'hidden',
-        flexShrink: 0,
-      }}
-    >
+    <div className="c2pa-thumb">
       {thumb ? (
-        <img
-          src={thumb}
-          alt=""
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-        />
+        <img src={thumb} alt="" />
       ) : null}
 
       {showCrBadge && (
-        <div style={{ position: 'absolute', right: -2, top: -2 }}>
+        <div className="c2pa-thumb-badge">
           <CRIcon size={22} />
         </div>
       )}
@@ -142,64 +84,34 @@ function ManifestRow({
   const title = getTitle(entry)
   const date = getDate(entry)
 
-  console.log(manifest);
-
-  const seeIfMoreInfo = manifest.manifests.find(m => m.id === manifest.manifestStore.activeManifest);
-
- 
-  const cawg = seeIfMoreInfo?.assertions["stds.schema-org.CreativeWork"];
+  const seeIfMoreInfo = Object.values(manifest.manifests).find(m => m.id === entry.id);
   
-
-
-
-
-  
-
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+    <div className="c2pa-manifest-row">
+    <div className="c2pa-manifest-row-main">
       <Thumbnail entry={entry} />
-      <div style={{ minWidth: 0, flex: 1 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div className="c2pa-manifest-row-content">
+        <div className="c2pa-manifest-row-heading">
           <SourceBadge label={title} />
-          <div
-            style={{
-              fontSize: 17,
-              fontWeight: 700,
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          >
+          <div className="c2pa-title">
             {invalid ? 'Invalid' : title}
           </div>
 
           {active && (
-            <span
-              style={{
-                marginLeft: 4,
-                padding: '3px 10px',
-                borderRadius: 999,
-                background: '#e8f5e9',
-                color: '#147a2e',
-                fontSize: 12,
-                fontWeight: 700,
-              }}
-            >
+            <span className="c2pa-active-badge">
               Active
             </span>
           )}
         </div>
 
         {date && !invalid && (
-          <div style={{ color: '#666', fontSize: 15, marginTop: 3 }}>
+          <div className="c2pa-date">
             {formatDate(date)}
           </div>
         )}
 
         {invalid && (
-          <div style={{ color: '#b91c1c', fontSize: 14, marginTop: 3 }}>
+          <div className="c2pa-invalid-text">
             C2PA data could not be verified.
           </div>
         )}
@@ -207,8 +119,8 @@ function ManifestRow({
       </div>
      
     </div>
-    <div style={{  width: '100%'}}>
-     {seeIfMoreInfo &&  <CAWGManifest manifest={seeIfMoreInfo}  />}
+    <div className="c2pa-more-info">
+     {seeIfMoreInfo &&  <CAWGManifest manifest={seeIfMoreInfo as any}  />}
 </div>
     </div>
   )
@@ -222,71 +134,25 @@ function Timeline({
   hasOrigin: boolean
 }) {
   return (
-    <div
-      style={{
-        width: 34,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        paddingTop: 8,
-      }}
-    >
-      <span
-        style={{
-          width: 12,
-          height: 12,
-          border: '4px solid #222',
-          borderRadius: 999,
-          background: '#fff',
-        }}
-      />
+    <div className="c2pa-timeline">
+      <span className="c2pa-timeline-dot" />
 
-      <div style={{ width: 4, height: 70, background: '#222' }} />
+      <div className="c2pa-timeline-line" />
 
       {middleCount > 0 && (
         <>
-          <div
-            style={{
-              borderLeft: '4px dotted #222',
-              height: 42,
-            }}
-          />
-          <div
-            style={{
-              width: 30,
-              height: 30,
-              borderRadius: 999,
-              background: '#222',
-              color: '#fff',
-              fontWeight: 800,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+          <div className="c2pa-timeline-dotted" />
+          <div className="c2pa-timeline-count">
             {middleCount}
           </div>
-          <div
-            style={{
-              borderLeft: '4px dotted #222',
-              height: 42,
-            }}
-          />
+          <div className="c2pa-timeline-dotted" />
         </>
       )}
 
       {hasOrigin && (
         <>
-          <div style={{ width: 4, height: 70, background: '#222' }} />
-          <span
-            style={{
-              width: 12,
-              height: 12,
-              border: '4px solid #222',
-              borderRadius: 999,
-              background: '#fff',
-            }}
-          />
+          <div className="c2pa-timeline-line" />
+          <span className="c2pa-timeline-dot" />
         </>
       )}
     </div>
@@ -295,7 +161,7 @@ function Timeline({
 
 function ViewMoreButton({ onClick }: { onClick?: () => void }) {
   return (
-    <button onClick={onClick} style={styles.button}>
+    <button onClick={onClick} className="c2pa-button">
       View more
     </button>
   )
@@ -306,11 +172,11 @@ function OriginStrip({ origins }: { origins: ManifestEntry[] }) {
 
   return (
     <>
-      <div style={styles.divider} />
-      <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 12 }}>
+      <div className="c2pa-divider" />
+      <div className="c2pa-section-title">
         Origins ({origins.length})
       </div>
-      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+      <div className="c2pa-origin-list">
         {origins.map((entry, i) => (
           <Thumbnail key={i} entry={entry} showCrBadge={i === 0} />
         ))}
@@ -323,33 +189,25 @@ function InvalidState({
   entry,
   className,
   onViewMore,
+  manifest
 }: {
   entry: ManifestEntry
   className?: string
   onViewMore?: () => void
+  manifest: ManifestStore
 }) {
   return (
-    <div className={className} style={styles.card}>
-      <ManifestRow entry={entry} invalid />
+    <div className={cx('c2pa-card', className)}>
+      <ManifestRow manifest={manifest} entry={entry} invalid />
 
-      <div style={styles.divider} />
+      <div className="c2pa-divider" />
 
-      <div
-        style={{
-          color: '#b91c1c',
-          background: '#fff1f2',
-          border: '1px solid #fecdd3',
-          borderRadius: 8,
-          padding: 12,
-          fontSize: 14,
-          lineHeight: 1.45,
-        }}
-      >
+      <div className="c2pa-alert">
         Invalid C2PA data. No prior provenance can be displayed because the
         manifest chain could not be trusted.
       </div>
 
-      <div style={styles.divider} />
+      <div className="c2pa-divider" />
       <ViewMoreButton onClick={onViewMore} />
     </div>
   )
@@ -363,12 +221,15 @@ function ManifestSummary({
 }: LevelProps) {
 
   return (
-    <div className={className} style={styles.card}>
+    <div className={cx('c2pa-card', className)}>
       <ManifestRow manifest={manifest} entry={activeManifest} active />
 
-      <div style={styles.divider} />
+      
+      {onViewMore && <>
+      <div className="c2pa-divider" />
 
       <ViewMoreButton onClick={onViewMore} />
+      </>}
     </div>
   )
 }
@@ -402,30 +263,22 @@ function ProvenanceSummary({
     : middleLevels.flat().map((id) => manifest.manifests[id]).filter(Boolean)
 
   return (
-    <div className={className} style={styles.card}>
-      <div style={{ display: 'grid', gridTemplateColumns: '42px 1fr', gap: 18 }}>
+    <div className={cx('c2pa-card', className)}>
+      <div className="c2pa-timeline-layout">
         <Timeline
           middleCount={shouldCollapse ? middleCount : 0}
           hasOrigin={originEntries.length > 0}
         />
 
         <div>
-          {activeEntry && <ManifestRow entry={activeEntry} active />}
+          {activeEntry && <ManifestRow manifest={manifest} entry={activeEntry} active />}
 
           {shouldCollapse && middleCount > 0 && (
             <>
-              <div style={styles.divider} />
-              <div
-                style={{
-                  fontSize: 18,
-                  fontWeight: 700,
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
+              <div className="c2pa-divider" />
+              <div className="c2pa-additional-steps">
                 <span>Additional steps</span>
-                <span style={{ color: '#666' }}>⌄</span>
+                <span className="c2pa-muted">⌄</span>
               </div>
             </>
           )}
@@ -433,15 +286,15 @@ function ProvenanceSummary({
           {!shouldCollapse &&
             visibleMiddleEntries.map((entry, i) => (
               <React.Fragment key={i}>
-                <div style={styles.divider} />
-                <ManifestRow entry={entry} />
+                <div className="c2pa-divider" />
+                <ManifestRow manifest={manifest} entry={entry} />
               </React.Fragment>
             ))}
 
           {originEntries[0] && (
             <>
-              <div style={styles.divider} />
-              <ManifestRow entry={originEntries[0]} />
+              <div className="c2pa-divider" />
+              <ManifestRow manifest={manifest} entry={originEntries[0]} />
             </>
           )}
         </div>
@@ -449,11 +302,11 @@ function ProvenanceSummary({
 
       {originEntries.length > 1 && <OriginStrip origins={originEntries} />}
 
-      <div style={styles.divider} />
+      <div className="c2pa-divider" />
 
       <ViewMoreButton onClick={onViewMore} />
 
-      <div style={{ marginTop: 18, fontSize: 13, color: '#666' }}>
+      <div className="c2pa-footnote">
         Provenance data is embedded in this asset.
       </div>
     </div>
@@ -469,7 +322,7 @@ export function C2paManifestL2({
 }: LevelProps) {
   const isInvalid =
     officalList ?
-      !manifest.state :
+      !manifest.validation_state :
       false;
 
   const chain = buildManifestChain(manifest)
@@ -481,6 +334,7 @@ export function C2paManifestL2({
   if (isInvalid) {
     return (
       <InvalidState
+        manifest={manifest}
         entry={activeManifest}
         className={className}
         onViewMore={onViewMore}

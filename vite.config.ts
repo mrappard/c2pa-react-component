@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     dts({
       include: ['src'],
-      exclude: ['src/dev', '**/*.test.*', '**/*.spec.*'],
+      exclude: ['src/dev', 'src/test', '**/*.test.*', '**/*.spec.*'],
       insertTypesEntry: true,
     }),
   ],
