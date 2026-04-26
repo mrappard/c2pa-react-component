@@ -1,139 +1,112 @@
-const styles = {
+import { Manifest } from "../../../../types";
+
+const styles: { [key: string]: React.CSSProperties } = {
     card: {
-        background: "#f7f7f7",
-        padding: "24px 26px",
-        width: "330px",
-        boxShadow: "0 4px 18px rgba(0,0,0,0.18)",
-        fontFamily: "Arial, sans-serif",
-        color: "#111",
-        lineHeight: 1.45,
+        background: "white",
+        borderRadius: "12px",
+        padding: "24px 32px",
+        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
+        display: "inline-block",
+        maxWidth: "fit-content",
     },
-    headerRow: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "flex-start",
-        gap: "12px",
-    },
-    title: {
-        fontSize: "22px",
-        fontWeight: 700,
-        margin: 0,
-    },
-    chevron: {
-        fontSize: "22px",
-        lineHeight: "24px",
-    },
-    intro: {
-        fontSize: "16px",
-        color: "#666",
-        marginTop: "4px",
-        marginBottom: "22px",
-    },
-    publisherRow: {
+    container: {
         display: "flex",
         alignItems: "center",
-        gap: "14px",
-        marginBottom: "20px",
+        gap: "16px",
     },
-    logo: {
-        width: "60px",
-        height: "60px",
+    square: {
+        width: "48px",
+        height: "48px",
         backgroundColor: "#FFD700",
+        borderRadius: "4px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontSize: "26px",
-        fontWeight: 800,
-        color: "#000",
-        letterSpacing: "-1px",
         flexShrink: 0,
     },
-    companyName: {
-        fontSize: "22px",
+    logoText: {
+        fontSize: "18px",
         fontWeight: 700,
-        marginBottom: "2px",
+        color: "#000",
+        letterSpacing: "-0.5px",
     },
-    link: {
-        color: "#0068a8",
-        textDecoration: "underline",
-        fontSize: "16px",
-        cursor: "pointer",
+    mediaTitle: {
+        fontSize: "20px",
+        fontWeight: 600,
+        color: "#333",
+        letterSpacing: "-0.3px",
     },
-    section: {
-        marginTop: "18px",
+    claimGenerator: {
+        fontSize: "14px",
+        color: "#666",
+    },
+    thumbnail: {
+        width: "48px",
+        height: "48px",
+        borderRadius: "4px",
+        objectFit: "cover",
     },
     sectionTitle: {
-        fontSize: "17px",
-        fontWeight: 700,
-        marginBottom: "2px",
-    },
-    muted: {
         fontSize: "16px",
-        color: "#666",
-        marginBottom: "14px",
-    },
-    list: {
-        margin: "12px 0 0 18px",
-        padding: 0,
-        fontSize: "16px",
-    },
-    listItem: {
-        marginBottom: "18px",
-        paddingLeft: "8px",
+        fontWeight: 600,
+        color: "#333",
+        marginBottom: "6px",
     },
 };
 
+
 export interface CAWGL3Props {
-name: string;
+    manifest: Manifest;
 }
 
 
 
-export default function CAWGL3({ name }: CAWGL3Props) {
+export default function CAWGL3({ manifest }: CAWGL3Props) {
+
+    const title = manifest.title;
+    const claimGenerator = manifest.claimGenerator ? manifest.claimGenerator : manifest.claimGeneratorInfo?.[0]?.name ?? "Unknown Claim Generator";
+    const claimGeneratorInitials = claimGenerator ? claimGenerator.split(" ").map((n) => n[0].toUpperCase()).join("") : "UCG";
+    const publisher = manifest.assertions["stds.schema-org.CreativeWork"]?.publisher;
+    const publisherName = Array.isArray(publisher) ? publisher.map((p) => p.name).join(", ") : publisher?.name;
+
+    const author = manifest.assertions["stds.schema-org.CreativeWork"]?.author;
+    const authorName = Array.isArray(author) ? author.map((a) => a.name).join(", ") : author?.name;
 
 
     return (
         <div style={styles.card}>
-            <div style={styles.headerRow}>
-                <h2 style={styles.title}>Publisher details</h2>
-                <span style={styles.chevron}>⌄</span>
-            </div>
+            <div style={styles.container}>
+                {
+                    manifest.thumbnail ? (
+                        <img src={manifest.thumbnail} alt="Thumbnail" style={styles.thumbnail} />
+                    ) : (
+                        <div style={styles.square}>
+                            <span style={styles.logoText}>{claimGeneratorInitials}</span>
+                        </div>
+                    )
+                }
 
-            <p style={styles.intro}>
-                Information shared by company or organization that published this content.
-            </p>
-
-            <div style={styles.publisherRow}>
-                <div style={styles.logo}>WK</div>
-
-                <div>
-                    <div style={styles.companyName}>{name}</div>
-                    <a style={styles.link}>Verified Publisher List</a>
+                <div className="flex flex-col">
+                    <div>
+                        <span style={styles.mediaTitle}>{title}</span>
+                    </div>
+                    <div>
+                        <span style={styles.claimGenerator}>{claimGenerator}</span>
+                    </div>
                 </div>
             </div>
+            {
 
-            <div style={styles.section}>
-                <div style={styles.sectionTitle}>Verified Website</div>
-                <div style={styles.muted}>Verification provided by [Publisher]</div>
-                <a style={styles.link}>example.com</a>
-            </div>
-
-            <div style={styles.section}>
-                <div style={styles.sectionTitle}>Additional information</div>
-                <div style={styles.muted}>Entered by the contributor</div>
-
-                <ul style={styles.list}>
-                    <li style={styles.listItem}>
-                        Title: Cattle Grazing Beneath Stormy Skies in County Sligo
-                    </li>
-                    <li style={styles.listItem}>
-                        Description: A group of cows graze in a green pasture surrounded by
-                        rolling hills and cloudy skies in a rural landscape, likely in a
-                        temperate region.
-                    </li>
-                    <li style={styles.listItem}>Published on: September 15, 2012</li>
-                </ul>
-            </div>
+            }
+            {publisherName && <div style={{ marginTop: "16px" }}>
+                <div style={styles.sectionTitle}>Verified Document</div>
+                <div>{publisherName}</div>
+            </div>}
+            {authorName && <div style={{ marginTop: "16px" }}>
+                <div style={styles.sectionTitle}>Author</div>
+                <div>{authorName}</div>
+            </div>}
         </div>
     );
+
 }
