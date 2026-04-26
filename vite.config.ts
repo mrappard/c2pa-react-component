@@ -3,12 +3,12 @@ import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts'
 import { resolve } from 'path'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
     dts({
       include: ['src'],
+      exclude: ['src/dev', '**/*.test.*', '**/*.spec.*'],
       insertTypesEntry: true,
     }),
   ],
@@ -27,5 +27,11 @@ export default defineConfig({
         },
       },
     },
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
+    exclude: ['node_modules', 'dist', 'src/dev'],
   },
 })

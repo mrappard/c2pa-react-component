@@ -1,45 +1,27 @@
-import React from 'react';
-import { C2paManifestProps } from '../../types';
+import React from 'react'
+import { C2paManifestProps } from '../../types'
+import { C2paManifestL1 } from './levels/L1/C2paManifestL1'
+import { C2paManifestL2 } from './levels/L2/C2paManifestL2'
+import { C2paManifestL3 } from './levels/L3/C2paManifestL3'
+import { C2paManifestL4 } from './levels/L4/C2paManifestL4'
+import { C2paManifestL5 } from './levels/L5/C2paManifestL5'
 
-/**
- * C2paManifest component displays C2PA manifest information.
- * 
- * @param {C2paManifestProps} props - The component props.
- * @returns {JSX.Element} The rendered component.
- */
-export const C2paManifest: React.FC<C2paManifestProps> = ({ manifest, className }) => {
-  const activeManifestLabel = manifest.active_manifest;
-  const activeManifest = manifest.manifests[activeManifestLabel];
+export const C2paManifest: React.FC<C2paManifestProps> = ({ manifest, level = 3, className, onViewMore }) => {
+  const activeManifest = manifest.manifests[manifest.active_manifest]
 
   if (!activeManifest) {
-    return <div className={className}>No active manifest found.</div>;
+    return <div className={className}>No active manifest found.</div>
   }
 
-  return (
-    <div className={`c2pa-manifest-container ${className || ''}`} style={{ border: '1px solid #ccc', padding: '1rem', borderRadius: '8px' }}>
-      <h3>C2PA Manifest: {activeManifest.label}</h3>
-      <div>
-        <strong>Claim:</strong> {activeManifest.claim}
-      </div>
-      <div style={{ marginTop: '1rem' }}>
-        <strong>Assertions:</strong>
-        <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-          {activeManifest.assertions.map((assertion, index) => (
-            <li key={`${assertion.label}-${index}`} style={{ marginBottom: '0.5rem', borderBottom: '1px solid #eee' }}>
-              <div><strong>Label:</strong> {assertion.label}</div>
-              {assertion.kind && <div><strong>Kind:</strong> {assertion.kind}</div>}
-              <div>
-                <strong>Data:</strong>
-                <pre style={{ backgroundColor: '#f9f9f9', padding: '0.5rem', fontSize: '0.85rem' }}>
-                  {JSON.stringify(assertion.data, null, 2)}
-                </pre>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-};
+  const props = { manifest, activeManifest, className, onViewMore }
 
-export default C2paManifest;
+  switch (level) {
+    case 1: return <C2paManifestL1 {...props} />
+    case 2: return <C2paManifestL2 {...props} />
+    case 3: return <C2paManifestL3 {...props} />
+    case 4: return <C2paManifestL4 {...props} />
+    case 5: return <C2paManifestL5 {...props} />
+  }
+}
+
+export default C2paManifest
