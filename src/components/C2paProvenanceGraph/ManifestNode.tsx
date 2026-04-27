@@ -51,11 +51,6 @@ function Thumbnail({ entry, showCrBadge }: { entry: ManifestEntry; showCrBadge: 
   return (
     <div className="c2pa-thumb">
       {thumb ? <img src={thumb} alt="" /> : null}
-      {showCrBadge && (
-        <div className="c2pa-thumb-badge">
-          <CRIcon size={22} />
-        </div>
-      )}
     </div>
   )
 }
