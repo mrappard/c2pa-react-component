@@ -19,11 +19,13 @@ export default defineConfig({
       fileName: 'c2pa-react-component',
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: ['react', 'react-dom', 'react/jsx-runtime', '@xyflow/react'],
       output: {
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
+          'react/jsx-runtime': 'ReactJSXRuntime',
+          '@xyflow/react': 'XYFlow',
         },
       },
     },

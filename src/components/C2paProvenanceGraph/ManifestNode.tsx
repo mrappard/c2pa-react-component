@@ -1,6 +1,5 @@
 import { Handle, Position, NodeProps } from '@xyflow/react'
 import { ManifestEntry } from '../../types'
-import { CRIcon } from '../../icons/CRIcon'
 import { formatDate, getDate, getGenerator, getIssuer } from '../C2paManifest/shared/utils'
 import '../C2paManifest/styles/c2paManifest.css'
 
@@ -45,7 +44,7 @@ function SourceBadge({ label }: { label: string }) {
   return <span className="c2pa-source-badge">{initials}</span>
 }
 
-function Thumbnail({ entry, showCrBadge }: { entry: ManifestEntry; showCrBadge: boolean }) {
+function Thumbnail({ entry }: { entry: ManifestEntry }) {
   const thumb = getThumb(entry)
 
   return (
@@ -81,7 +80,7 @@ export function ManifestNode({ data }: NodeProps) {
       <Handle type="target" position={Position.Top} />
 
       <div className="c2pa-manifest-row-main">
-        <Thumbnail entry={entry} showCrBadge={isActive} />
+        <Thumbnail entry={entry} />
         <div className="c2pa-manifest-row-content">
           <div className="c2pa-manifest-row-heading">
             <SourceBadge label={title} />

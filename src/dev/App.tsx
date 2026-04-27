@@ -2,51 +2,29 @@ import { C2paManifest } from '../components/C2paManifest/C2paManifest'
 import { CAWGManifest } from '../components/Cawg/Cawg'
 import { Manifest, ManifestStore } from '../types'
 
-const sampleManifest: ManifestStore = {
-  "active_manifest": "urn:c2pa:6bba031d-ea50-49ae-be1f-7ff004487269",
-  "manifests": {
-    "urn:c2pa:6bba031d-ea50-49ae-be1f-7ff004487269": {
-      "label": "urn:c2pa:6bba031d-ea50-49ae-be1f-7ff004487269",
-      "title": "New document",
-      "claim_generator": undefined,
-      "claim_generator_info": [
-        {
-          "name": "test_generator",
-          "org.contentauth.c2pa_rs": "0.80.0"
-        }
-      ],
-      "instance_id": "xmp:iid:96aad1b4-e1a3-48a3-82b7-1bd6e2184d7b",
-      "signature_info": {
-        "alg": "Es256",
-        "issuer": "C2PA Test Signing Cert",
-        "common_name": "C2PA Signer",
-        "cert_serial_number": "640229841392226413189608867977836244731148734950"
-      },
-      "assertions": {
-        "stds.schema-org.CreativeWork": {
-          "@context": "https://schema.org",
-          "@type": "CreativeWork",
-          "author": [],
-          "name": "New document",
-          "publisher": {
-            "@type": "Organization",
-            "name": "Example Publisher"
+const sampleManifest: ManifestStore ={
+    "activeManifest": "urn:c2pa:0d166542-7288-4833-9662-9487f3dbd048",
+    "manifests": {
+      "urn:c2pa:0d166542-7288-4833-9662-9487f3dbd048": {
+        //"claimGenerator": null,
+        "claimGeneratorInfo": [
+          {
+            "name": "test_generator",
+            "org.contentauth.c2pa_rs": "0.80.0"
           }
-        },
-        "c2pa.actions.v2": {
-          "actions": [
-            {
-              "action": "c2pa.created"
-            }
-          ]
+        ],
+        "title": "Test Document",
+        "instanceId": "xmp:iid:888e39d4-945c-4dbc-9c20-799265e8123b",
+        "signatureInfo": {
+          "alg": "Es256",
+          "issuer": "C2PA Test Signing Cert",
+          "common_name": "C2PA Signer",
+          "cert_serial_number": "640229841392226413189608867977836244731148734950"
         }
-      },
-      "credentials": [],
-      "thumbnail": null,
-      "ingredients": []
+      }
     }
   }
-}
+
 
 const targetManifest =   {
       "id": "urn:c2pa:2d6a7480-a075-4f05-be5e-ca656c6180ba",
