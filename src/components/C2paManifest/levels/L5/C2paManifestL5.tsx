@@ -1,20 +1,15 @@
-import { CRIcon } from '../../../../icons/CRIcon'
 import { LevelProps } from '../../types'
-import { getIssuer, getGenerator, getActions, validationColor } from '../../shared/utils'
-import { AssertionList } from '../../shared/AssertionList'
-import { SignatureDetail } from '../../shared/SignatureDetail'
-import { IngredientList } from '../../shared/IngredientList'
-import { ValidationBadges } from '../../shared/ValidationBadges'
 
+/*
 function cx(...classes: Array<string | undefined>) {
   return classes.filter(Boolean).join(' ')
 }
-
-export function C2paManifestL5({ manifest, activeManifest, className }: LevelProps) {
-  const issuer = getIssuer(activeManifest)
+*/
+export function C2paManifestL5({ }: LevelProps) {
+ /* const issuer = getIssuer(activeManifest)
   const generator = getGenerator(activeManifest)
   const actions = getActions(activeManifest)
-  const valState = manifest.validation_state
+  const valState = manifest .validation_state
   const valColors = validationColor(valState)
 
   return (
@@ -52,5 +47,8 @@ export function C2paManifestL5({ manifest, activeManifest, className }: LevelPro
         </div>
       )}
     </div>
+    
   )
+    */
+   return <div>WIP</div>
 }

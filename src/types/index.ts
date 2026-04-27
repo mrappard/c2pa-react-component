@@ -60,17 +60,17 @@ export interface Ingredient {
 }
 
 export interface ManifestEntry {
-  label: string
+  label?: string
   claim?: string
-  claim_generator?: string
-  claim_generator_info?: ClaimGeneratorInfo[]
+  claimGenerator?: string | null
+  claimGeneratorInfo?: ClaimGeneratorInfo[]
   claim_version?: number
   title?: string
-  instance_id?: string
+  instanceId?: string
   id?: string
-  assertions: Record<string, any>
+  assertions?: Record<string, any>
   signature?: string
-  signature_info?: SignatureInfo
+  signatureInfo?: SignatureInfo
   credentials?: unknown[]
   thumbnail?: Thumbnail | null
   ingredients?: Ingredient[]
@@ -82,7 +82,7 @@ export interface IngredientDelta {
 }
 
 export interface ManifestStore {
-  active_manifest: string
+  activeManifest: string
   manifests: Record<string, ManifestEntry>
   validation_status?: ValidationResult[]
   validation_results?: {
@@ -95,7 +95,7 @@ export interface ManifestStore {
 export type DisclosureLevel = 1 | 2 | 3 | 4 | 5
 
 export interface C2paManifestProps {
-  manifest: ManifestStore
+  manifest: VerificationOutcome
   level?: DisclosureLevel
   className?: string
   onViewMore?: () => void
@@ -103,7 +103,7 @@ export interface C2paManifestProps {
 }
 
 export interface CAWGManifestProps {
-  manifest: Manifest
+  manifest: VerificationOutcome
   level?: DisclosureLevel
   className?: string
   onViewMore?: () => void
@@ -135,4 +135,11 @@ export interface Manifest {
   credentials: []
   thumbnail: string | null
   ingredients: []
+}
+
+
+export interface VerificationOutcome {
+    state: boolean;
+    manifests: Manifest[];
+    manifestStore:  ManifestStore| undefined;
 }

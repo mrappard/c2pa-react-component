@@ -1,15 +1,11 @@
-import { CRIcon } from '../../../../icons/CRIcon'
 import { LevelProps } from '../../types'
-import { getIssuer, getGenerator, getActions, validationColor } from '../../shared/utils'
-import { AssertionList } from '../../shared/AssertionList'
-import { SignatureDetail } from '../../shared/SignatureDetail'
-import { IngredientList } from '../../shared/IngredientList'
 
-function cx(...classes: Array<string | undefined>) {
-  return classes.filter(Boolean).join(' ')
-}
 
-export function C2paManifestL4({ manifest, activeManifest, className }: LevelProps) {
+
+
+export function C2paManifestL4({ }: LevelProps) {
+  return <div>WIP</div>
+  /* 
   const issuer = getIssuer(activeManifest)
   const generator = getGenerator(activeManifest)
   const actions = getActions(activeManifest)
@@ -41,4 +37,5 @@ export function C2paManifestL4({ manifest, activeManifest, className }: LevelPro
       <IngredientList entry={activeManifest} />
     </div>
   )
+*/
 }

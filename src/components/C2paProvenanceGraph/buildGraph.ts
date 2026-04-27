@@ -8,7 +8,7 @@ const ROW_GAP = 80  // vertical gap between depth levels
 const COL_GAP = 48  // horizontal gap between siblings
 
 export function buildGraph(manifest: ManifestStore): { nodes: Node[]; edges: Edge[] } {
-  const { manifests, active_manifest, validation_state } = manifest
+  const { manifests, activeManifest, validation_state } = manifest
 
   // Build adjacency: which manifests are ingredients of which
   // ingredient.active_manifest → current manifest id
@@ -27,7 +27,7 @@ export function buildGraph(manifest: ManifestStore): { nodes: Node[]; edges: Edg
         source: srcId,
         target: id,
         label: ingredient.relationship ?? '',
-        animated: id === active_manifest,
+        animated: id === activeManifest,
         style: { stroke: '#94a3b8' },
         labelStyle: { fontSize: 11, fill: '#64748b' },
       })
@@ -76,8 +76,8 @@ export function buildGraph(manifest: ManifestStore): { nodes: Node[]; edges: Edg
 
     const nodeData: ManifestNodeData = {
       entry: manifests[id],
-      isActive: id === active_manifest,
-      validationState: id === active_manifest ? validation_state : undefined,
+      isActive: id === activeManifest,
+      validationState: id === activeManifest ? validation_state : undefined,
     }
 
     return {

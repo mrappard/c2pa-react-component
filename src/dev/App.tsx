@@ -1,34 +1,13 @@
 import { C2paManifest } from '../components/C2paManifest/C2paManifest'
 import { CAWGManifest } from '../components/Cawg/Cawg'
-import { Manifest, ManifestStore } from '../types'
+import { VerificationOutcome } from '../types'
 
-const sampleManifest: ManifestStore ={
-    "activeManifest": "urn:c2pa:0d166542-7288-4833-9662-9487f3dbd048",
-    "manifests": {
-      "urn:c2pa:0d166542-7288-4833-9662-9487f3dbd048": {
-        //"claimGenerator": null,
-        "claimGeneratorInfo": [
-          {
-            "name": "test_generator",
-            "org.contentauth.c2pa_rs": "0.80.0"
-          }
-        ],
-        "title": "Test Document",
-        "instanceId": "xmp:iid:888e39d4-945c-4dbc-9c20-799265e8123b",
-        "signatureInfo": {
-          "alg": "Es256",
-          "issuer": "C2PA Test Signing Cert",
-          "common_name": "C2PA Signer",
-          "cert_serial_number": "640229841392226413189608867977836244731148734950"
-        }
-      }
-    }
-  }
-
-
-const targetManifest =   {
-      "id": "urn:c2pa:2d6a7480-a075-4f05-be5e-ca656c6180ba",
-      "title": "New document",
+const sampleManifest:VerificationOutcome ={
+  "state": false,
+  "manifests": [
+    {
+      "id": "urn:c2pa:0d166542-7288-4833-9662-9487f3dbd048",
+      "title": "Test Document",
       "claimGenerator": null,
       "claimGeneratorInfo": [
         {
@@ -36,7 +15,7 @@ const targetManifest =   {
           "org.contentauth.c2pa_rs": "0.80.0"
         }
       ],
-      "instanceId": "xmp:iid:93a8bba7-b45d-4e6b-8727-b6671084bb76",
+      "instanceId": "xmp:iid:888e39d4-945c-4dbc-9c20-799265e8123b",
       "signatureInfo": {
         "alg": "Es256",
         "issuer": "C2PA Test Signing Cert",
@@ -54,18 +33,50 @@ const targetManifest =   {
         "stds.schema-org.CreativeWork": {
           "@context": "https://schema.org",
           "@type": "CreativeWork",
-          "author": [],
+          "author": [
+            {
+              "@type": "Person",
+              "name": "Matthew Rappard"
+            }
+          ],
           "publisher": {
             "@type": "Organization",
             "name": "Example Publisher"
           },
-          "name": "New document"
+          "name": "Test Document"
         }
       },
       "credentials": [],
       "thumbnail": null,
       "ingredients": []
-    } as const satisfies Manifest;
+    }
+  ],
+  "manifestStore": {
+    "activeManifest": "urn:c2pa:0d166542-7288-4833-9662-9487f3dbd048",
+    "manifests": {
+      "urn:c2pa:0d166542-7288-4833-9662-9487f3dbd048": {
+        "claimGenerator": null,
+        "claimGeneratorInfo": [
+          {
+            "name": "test_generator",
+            "org.contentauth.c2pa_rs": "0.80.0"
+          }
+        ],
+        "title": "Test Document",
+        "instanceId": "xmp:iid:888e39d4-945c-4dbc-9c20-799265e8123b",
+        "signatureInfo": {
+          "alg": "Es256",
+          "issuer": "C2PA Test Signing Cert",
+          "common_name": "C2PA Signer",
+          "cert_serial_number": "640229841392226413189608867977836244731148734950"
+        }
+      }
+    }
+  }
+}
+
+
+
 
 export default function App() {
   return (
@@ -93,7 +104,7 @@ export default function App() {
           <div key={l}>
             <p style={{ margin: '0 0 6px', fontWeight: 600, color: '#475569' }}>Level {l}</p>
             <CAWGManifest
-              manifest={targetManifest}
+              manifest={sampleManifest}
               level={l}
               onViewMore={l === 2 ? () => alert('Navigate to L3') : undefined}
             />

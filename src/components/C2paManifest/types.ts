@@ -1,7 +1,7 @@
-import { ManifestStore, ManifestEntry } from '../../types'
+import {  ManifestEntry, VerificationOutcome } from '../../types'
 
 export interface LevelProps {
-  manifest: ManifestStore
+  manifest: VerificationOutcome
   activeManifest: ManifestEntry
   className?: string
   officalList?: boolean

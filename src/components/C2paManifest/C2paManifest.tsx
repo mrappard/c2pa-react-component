@@ -11,7 +11,8 @@ export const C2paManifest: React.FC<C2paManifestProps> = ({ manifest, level = 3,
   
   
  
-  const activeManifest = manifest.manifests[manifest.active_manifest]
+  const activeManifest = manifest.manifestStore?.manifests[manifest.manifestStore.activeManifest];
+
 
   const [levelOfDetail, setLevelOfDetail] = React.useState(level || 1)
 
@@ -25,7 +26,7 @@ export const C2paManifest: React.FC<C2paManifestProps> = ({ manifest, level = 3,
   }
 
 
-  if (!activeManifest) {
+  if (!activeManifest || !manifest.manifestStore) {
     return <div className={className}>No active manifest found.</div>
   }
 

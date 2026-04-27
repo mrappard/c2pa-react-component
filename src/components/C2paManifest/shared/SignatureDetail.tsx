@@ -5,7 +5,7 @@ interface SignatureDetailProps {
 }
 
 export function SignatureDetail({ entry }: SignatureDetailProps) {
-  const si = entry.signature_info
+  const si = entry.signatureInfo;
   if (!si) return null
   return (
     <div className="c2pa-section">

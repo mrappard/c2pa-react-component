@@ -1,6 +1,6 @@
 import React from 'react'
 import { CRIcon } from '../../../../icons/CRIcon'
-import { ManifestEntry, ManifestStore } from '../../../../types'
+import { ManifestEntry, VerificationOutcome } from '../../../../types'
 import { LevelProps } from '../../types'
 import {
   getIssuer,
@@ -75,7 +75,7 @@ function ManifestRow({
   active,
   invalid,
 }: {
-  manifest: ManifestStore
+  manifest: VerificationOutcome
   entry: ManifestEntry
   active?: boolean
   invalid?: boolean
@@ -84,44 +84,44 @@ function ManifestRow({
   const title = getTitle(entry)
   const date = getDate(entry)
 
-  const seeIfMoreInfo = Object.values(manifest.manifests).find(m => m.id === entry.id);
-  
+
+
   return (
     <div className="c2pa-manifest-row">
-    <div className="c2pa-manifest-row-main">
-      <Thumbnail entry={entry} />
-      <div className="c2pa-manifest-row-content">
-        <div className="c2pa-manifest-row-heading">
-          <SourceBadge label={title} />
-          <div className="c2pa-title">
-            {invalid ? 'Invalid' : title}
+      <div className="c2pa-manifest-row-main">
+        <Thumbnail entry={entry} />
+        <div className="c2pa-manifest-row-content">
+          <div className="c2pa-manifest-row-heading">
+            <SourceBadge label={title} />
+            <div className="c2pa-title">
+              {invalid ? 'Invalid' : title}
+            </div>
+
+            {active && (
+              <span className="c2pa-active-badge">
+                Active
+              </span>
+            )}
           </div>
 
-          {active && (
-            <span className="c2pa-active-badge">
-              Active
-            </span>
+          {date && !invalid && (
+            <div className="c2pa-date">
+              {formatDate(date)}
+            </div>
           )}
+
+          {invalid && (
+            <div className="c2pa-invalid-text">
+              C2PA data could not be verified.
+            </div>
+          )}
+
         </div>
 
-        {date && !invalid && (
-          <div className="c2pa-date">
-            {formatDate(date)}
-          </div>
-        )}
-
-        {invalid && (
-          <div className="c2pa-invalid-text">
-            C2PA data could not be verified.
-          </div>
-        )}
-
       </div>
-     
-    </div>
-    <div className="c2pa-more-info">
-     {seeIfMoreInfo &&  <CAWGManifest manifest={seeIfMoreInfo as any}  />}
-</div>
+      <div className="c2pa-more-info">
+        {<CAWGManifest manifest={manifest} level={1} />}
+      </div>
     </div>
   )
 }
@@ -194,7 +194,7 @@ function InvalidState({
   entry: ManifestEntry
   className?: string
   onViewMore?: () => void
-  manifest: ManifestStore
+  manifest: VerificationOutcome
 }) {
   return (
     <div className={cx('c2pa-card', className)}>
@@ -224,11 +224,11 @@ function ManifestSummary({
     <div className={cx('c2pa-card', className)}>
       <ManifestRow manifest={manifest} entry={activeManifest} active />
 
-      
-      {onViewMore && <>
-      <div className="c2pa-divider" />
 
-      <ViewMoreButton onClick={onViewMore} />
+      {onViewMore && <>
+        <div className="c2pa-divider" />
+
+        <ViewMoreButton onClick={onViewMore} />
       </>}
     </div>
   )
@@ -239,11 +239,21 @@ function ProvenanceSummary({
   className,
   onViewMore,
 }: {
-  manifest: ManifestStore
+  manifest: VerificationOutcome
   className?: string
   onViewMore?: () => void
 }) {
-  const chain = buildManifestChain(manifest)
+
+  if (!manifest.manifestStore) {
+    return (
+      <div className={cx('c2pa-card', className)}>
+        <div className="c2pa-alert">
+          No provenance information available.
+        </div>
+      </div>
+    )
+  }
+  const chain = buildManifestChain(manifest.manifestStore)
 
   const activeIds = chain[0] ?? []
   const originIds = chain[chain.length - 1] ?? []
@@ -253,14 +263,14 @@ function ProvenanceSummary({
   const totalCount = chain.reduce((sum, level) => sum + level.length, 0)
   const shouldCollapse = totalCount > COLLAPSE_THRESHOLD
 
-  const activeEntry = manifest.manifests[activeIds[0]]
+  const activeEntry = manifest.manifestStore.manifests[activeIds[0]]
   const originEntries = originIds
-    .map((id) => manifest.manifests[id])
+    .map((id) => manifest.manifestStore!.manifests[id])
     .filter(Boolean)
 
   const visibleMiddleEntries = shouldCollapse
     ? []
-    : middleLevels.flat().map((id) => manifest.manifests[id]).filter(Boolean)
+    : middleLevels.flat().map((id) => manifest.manifestStore!.manifests[id]).filter(Boolean)
 
   return (
     <div className={cx('c2pa-card', className)}>
@@ -322,10 +332,14 @@ export function C2paManifestL2({
 }: LevelProps) {
   const isInvalid =
     officalList ?
-      !manifest.validation_state :
+      !manifest.manifestStore?.validation_state :
       false;
 
-  const chain = buildManifestChain(manifest)
+  if (!manifest.manifestStore) {
+    return <div className={className}>No manifest store found.</div>
+  }
+
+  const chain = buildManifestChain(manifest.manifestStore!)
   const hasProvenance = chain.length > 1
 
 

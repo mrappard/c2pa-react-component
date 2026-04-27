@@ -1,9 +1,9 @@
 import { ManifestEntry, ManifestStore } from '../../../types'
 
 export function getDate(entry: ManifestEntry): string | undefined {
-  if (entry.signature_info?.time) return entry.signature_info.time
+  if (entry.signatureInfo?.time) return entry.signatureInfo.time
   
-  const actions = entry.assertions['c2pa.actions.v2'] as { actions?: { when?: string }[] } | undefined
+  const actions = entry?.assertions?.['c2pa.actions.v2'] as { actions?: { when?: string }[] } | undefined
   if (actions?.actions) {
     for (const act of actions.actions) {
       if (act.when) return act.when
@@ -28,9 +28,9 @@ export function formatDate(dateStr: string): string {
  * Each level is an array of manifest IDs (multiple when parallel origins exist).
  */
 export function buildManifestChain(manifest: ManifestStore): string[][] {
-  const levels: string[][] = [[manifest.active_manifest]]
-  const visited = new Set([manifest.active_manifest])
-  let current = [manifest.active_manifest]
+  const levels: string[][] = [[manifest.activeManifest]]
+  const visited = new Set([manifest.activeManifest])
+  let current = [manifest.activeManifest]
 
   while (current.length > 0) {
     const next: string[] = []
@@ -50,15 +50,15 @@ export function buildManifestChain(manifest: ManifestStore): string[][] {
 }
 
 export function getIssuer(entry: ManifestEntry) {
-  return entry.signature_info?.issuer ?? entry.signature_info?.common_name
+  return entry.signatureInfo?.issuer ?? entry.signatureInfo?.common_name
 }
 
 export function getGenerator(entry: ManifestEntry) {
-  return entry.claim_generator_info?.[0]?.name ?? entry.claim_generator
+  return entry.claimGeneratorInfo?.[0]?.name ?? entry.claimGenerator
 }
 
 export function getActions(entry: ManifestEntry): string[] {
-  const actions = entry.assertions['c2pa.actions.v2'] as { actions?: { action: string }[] } | undefined
+  const actions = entry.assertions?.['c2pa.actions.v2'] as { actions?: { action: string }[] } | undefined
   return actions?.actions?.map((act) => act.action) ?? []
 }
 

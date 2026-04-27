@@ -62,7 +62,7 @@ export function ManifestNode({ data }: NodeProps) {
   const generator = getGenerator(entry)
   const date = getDate(entry)
 
-  const actions = Object.values(entry.assertions)
+  const actions = Object.values(entry.assertions || {})
     .flatMap((assertion) => {
       const data =
         typeof assertion === 'object' && assertion !== null && 'data' in assertion

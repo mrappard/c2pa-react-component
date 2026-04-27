@@ -9,7 +9,7 @@ export function AssertionList({ entry, raw }: AssertionListProps) {
   return (
     <div className="c2pa-section">
       <div className="c2pa-section-title">Assertions</div>
-      {Object.entries(entry.assertions).map(([key, data], i) => (
+      {Object.entries(entry.assertions ?? {}).map(([key, data], i) => (
         <div key={`${key}-${i}`} className="c2pa-row c2pa-list-item">
           <div className="c2pa-list-item-title">{key}</div>
           {raw && (
