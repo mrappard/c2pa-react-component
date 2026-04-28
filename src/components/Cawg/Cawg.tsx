@@ -1,11 +1,19 @@
 import React from 'react'
-import {  CAWGManifestProps } from '../../types'
+import { CAWGManifestProps, Manifest } from '../../types'
 import { CAWGL1 } from './levels/L1/CAWGL1'
 import CAWGL2 from './levels/L2/CAWGL2';
 import CAWGL3 from './levels/L3/CAWGL3';
 
 export const CAWGManifest: React.FC<CAWGManifestProps> = ({ manifest, level, className }) => {
-  const activeManifest = manifest.manifests.find(m => m.id === manifest?.manifestStore?.activeManifest);
+  const activeManifestKey = manifest.manifestStore?.activeManifest;
+  const activeManifest =
+    manifest.manifests.find(
+      m => m.id === activeManifestKey || m.instanceId === activeManifestKey
+    ) ??
+    (activeManifestKey
+      ? manifest.manifestStore!.manifests[activeManifestKey] as unknown as Manifest
+      : undefined) ??
+    manifest.manifests[0];
 
   if (!activeManifest) {
     return <div className={className}>No active manifest found.</div>

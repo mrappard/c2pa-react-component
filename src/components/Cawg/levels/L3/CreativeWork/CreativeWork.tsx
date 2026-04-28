@@ -28,7 +28,7 @@ const formatValue = (value: any): React.ReactNode => {
 };
 
 export default function CreativeWork({ manifest }: CreativeWorkProps) {
-  const creativeWork = manifest.assertions["stds.schema-org.CreativeWork"];
+  const creativeWork = manifest.assertions?.["stds.schema-org.CreativeWork"];
 
   if (!creativeWork) return null;
 

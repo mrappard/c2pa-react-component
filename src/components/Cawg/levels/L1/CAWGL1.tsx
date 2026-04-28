@@ -1,5 +1,5 @@
 import { CAWG_Header } from "../../CAWG_Header";
-import { Manifest } from "../../../..";
+import { Manifest } from "../../../../types";
 import "../styles/cawg.css";
 
 export interface CAWGL1Props {

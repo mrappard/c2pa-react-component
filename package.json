@@ -1,6 +1,6 @@
 {
   "name": "c2pa-react-component",
-  "version": "0.1.5",
+  "version": "0.1.8",
   "description": "A React library for displaying C2PA manifest information.",
   "type": "module",
   "main": "./dist/c2pa-react-component.umd.cjs",

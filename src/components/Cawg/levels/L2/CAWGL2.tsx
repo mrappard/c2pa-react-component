@@ -15,10 +15,10 @@ export default function CAWGL2({
   const title = manifest.title;
   const claimGenerator = manifest.claimGenerator?manifest.claimGenerator:manifest.claimGeneratorInfo?.[0]?.name??"Unknown Claim Generator";
   const claimGeneratorInitials = claimGenerator ? claimGenerator.split(" ").map((n) => n[0].toUpperCase()).join("") : "UCG";
-  const publisher = manifest.assertions["stds.schema-org.CreativeWork"]?.publisher;
+  const publisher = manifest.assertions?.["stds.schema-org.CreativeWork"]?.publisher;
   const publisherName = Array.isArray(publisher) ? publisher.map((p) => p.name).join(", ") : publisher?.name;
-  
-  const author = manifest.assertions["stds.schema-org.CreativeWork"]?.author;
+
+  const author = manifest.assertions?.["stds.schema-org.CreativeWork"]?.author;
   const authorName = Array.isArray(author) ? author.map((a) => a.name).join(", ") : author?.name;
   
   return (
