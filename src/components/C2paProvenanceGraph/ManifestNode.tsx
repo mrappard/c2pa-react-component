@@ -7,6 +7,9 @@ export interface ManifestNodeData {
   entry: ManifestEntry
   isActive: boolean
   validationState: 'Valid' | 'Invalid' | 'Unknown' | undefined
+  isSelected?: boolean
+  isCompared?: boolean
+  isComparingMode?: boolean
   [key: string]: unknown
 }
 
@@ -55,7 +58,9 @@ function Thumbnail({ entry }: { entry: ManifestEntry }) {
 }
 
 export function ManifestNode({ data }: NodeProps) {
-  const { entry, isActive, validationState } = data as ManifestNodeData
+  const { entry, isActive, validationState, isSelected, isCompared, isComparingMode } = data as ManifestNodeData
+  const selectionLabel = isSelected ? 'A' : isCompared ? 'B' : undefined
+  const isDimmed = isComparingMode && !isSelected && !isCompared
 
   const title = getTitle(entry)
   const issuer = getIssuer(entry)
@@ -76,7 +81,19 @@ export function ManifestNode({ data }: NodeProps) {
   const validationColor = validationState ? validationColors[validationState] : undefined
 
   return (
-    <div className={cx('c2pa-card', 'c2pa-graph-node', isActive && 'c2pa-graph-node--active')}>
+    <div className={cx(
+      'c2pa-card',
+      'c2pa-graph-node',
+      isActive && 'c2pa-graph-node--active',
+      isSelected && 'c2pa-graph-node--selected',
+      isCompared && 'c2pa-graph-node--compared',
+      isDimmed && 'c2pa-graph-node--dimmed',
+    )} style={{ cursor: 'pointer' }}>
+      {selectionLabel && (
+        <div className={`c2pa-graph-selection-badge c2pa-graph-selection-badge--${selectionLabel.toLowerCase()}`}>
+          {selectionLabel}
+        </div>
+      )}
       <Handle type="target" position={Position.Top} />
 
       <div className="c2pa-manifest-row-main">

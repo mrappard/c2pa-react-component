@@ -1,0 +1,20 @@
+{
+  "version": "v1",
+  "packages": {
+    "c2pa-react-cawg-component": {
+      "signature": "49b04f6f0cd76cac86cc38878c724e15",
+      "file": true,
+      "replaced": "^0.1.8"
+    },
+    "c2pa-react-diacc-component": {
+      "signature": "1a2d3be587e3fd140a1dd4a852db9c2c",
+      "file": true,
+      "replaced": "0.1.8"
+    },
+    "c2pa-react-component-types": {
+      "signature": "bd2c83062aa82aff7068579b03f7c76d",
+      "file": true,
+      "replaced": "^0.1.0"
+    }
+  }
+}

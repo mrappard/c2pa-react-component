@@ -19,8 +19,54 @@
 }
 
 .c2pa-icon-only {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+}
+
+.c2pa-content-label {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #444;
+  background: #f0f0f0;
+  border-radius: 999px;
+  padding: 2px 8px;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.c2pa-content-label--row {
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.c2pa-icon-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.c2pa-invalid-badge {
+  position: absolute;
+  top: -4px;
+  right: -5px;
+  width: 14px;
+  height: 14px;
+  background: #dc2626;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
 }
 
 .c2pa-icon-only:focus-visible {
@@ -175,10 +221,42 @@
   margin-left: 4px;
   padding: 3px 10px;
   border-radius: 999px;
-  background: #e8f5e9;
-  color: #147a2e;
+  background: #f1f5f9;
+  color: #334155;
   font-size: 12px;
   font-weight: 700;
+}
+
+.c2pa-generator {
+  font-size: 13px;
+  color: #555;
+  margin-top: 2px;
+}
+
+.c2pa-signed-by-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 3px;
+}
+
+.c2pa-signer-logo {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.c2pa-thumb-video {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
 }
 
 .c2pa-more-info {
@@ -310,14 +388,277 @@
   overflow-x: auto;
 }
 
+/* ── L3 split layout ───────────────────────────────────────── */
+
+.c2pa-l3 {
+  display: flex;
+  width: 100%;
+  min-height: 500px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.c2pa-l3-graph {
+  flex: 3;
+  min-width: 0;
+}
+
+.c2pa-l3-panel {
+  flex: 2;
+  min-width: 260px;
+  border-left: 1px solid #e5e5e5;
+  overflow-y: auto;
+  padding: 20px 16px;
+  background: #fafafa;
+  font-size: 13px;
+  color: #242424;
+}
+
+/* ── Assertion panel ─────────────────────────────────────── */
+
+.c2pa-panel-empty {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.c2pa-panel-empty-hint {
+  color: #888;
+  font-size: 13px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.c2pa-panel-heading {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 12px;
+}
+
+.c2pa-panel-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+
+.c2pa-panel-divider {
+  height: 1px;
+  background: #e5e5e5;
+  margin: 14px 0;
+}
+
+.c2pa-panel-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.c2pa-panel-field {
+  display: flex;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.c2pa-panel-field-label {
+  color: #888;
+  flex-shrink: 0;
+  min-width: 80px;
+}
+
+.c2pa-panel-muted {
+  color: #999;
+  font-size: 13px;
+}
+
+.c2pa-panel-assertion-row {
+  padding: 8px 0;
+  border-bottom: 1px solid #efefef;
+}
+
+.c2pa-panel-assertion-row:last-child {
+  border-bottom: none;
+}
+
+.c2pa-panel-assertion-label {
+  font-weight: 600;
+  font-size: 12px;
+  color: #444;
+  margin-bottom: 2px;
+}
+
+.c2pa-panel-assertion-summary {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.c2pa-panel-explore-btn {
+  margin-top: 4px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #444;
+  background: #f0f0f0;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.c2pa-panel-explore-btn:hover {
+  background: #e0e0e0;
+}
+
+.c2pa-panel-json {
+  margin-top: 6px;
+  padding: 8px 10px;
+  background: #f8f8f8;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: pre;
+  color: #333;
+}
+
+/* ── Compare mode ────────────────────────────────────────── */
+
+.c2pa-panel-compare-legends {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.c2pa-panel-compare-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.c2pa-panel-compare-name {
+  color: #444;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.c2pa-panel-compare-row {
+  padding: 8px 0;
+  border-bottom: 1px solid #efefef;
+}
+
+.c2pa-panel-compare-row:last-child {
+  border-bottom: none;
+}
+
+.c2pa-panel-same {
+  font-size: 12px;
+  color: #888;
+}
+
+.c2pa-panel-diff {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 2px;
+}
+
+.c2pa-panel-diff-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.c2pa-panel-diff-value {
+  color: #444;
+  line-height: 1.4;
+}
+
+.c2pa-panel-legend {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.c2pa-panel-legend-a {
+  background: #2563eb;
+  color: #fff;
+}
+
+.c2pa-panel-legend-b {
+  background: #7c3aed;
+  color: #fff;
+}
+
+/* ── Graph node selection states ─────────────────────────── */
+
 .c2pa-graph-node {
   width: 420px;
   border-width: 2px;
+  position: relative;
 }
 
 .c2pa-graph-node--active {
   border-color: #111;
   box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.12), 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.c2pa-graph-node--selected {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18), 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.c2pa-graph-node--compared {
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.18), 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.c2pa-graph-node--dimmed {
+  opacity: 0.4;
+}
+
+.c2pa-graph-selection-badge {
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  border: 2px solid #fff;
+  z-index: 1;
+}
+
+.c2pa-graph-selection-badge--a {
+  background: #2563eb;
+}
+
+.c2pa-graph-selection-badge--b {
+  background: #7c3aed;
 }
 
 .c2pa-graph-validation {
@@ -336,3 +677,284 @@
   background: #f1f5f9;
   color: #334155;
 }
+
+/* ── L4 forensic view ────────────────────────────────────── */
+
+.c2pa-l4 {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 13px;
+  color: #242424;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.c2pa-l4-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e5e5e5;
+}
+
+.c2pa-l4-title {
+  font-size: 16px;
+  font-weight: 700;
+  flex: 1;
+}
+
+.c2pa-l4-manifest-block {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.c2pa-l4-manifest-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px 4px;
+}
+
+.c2pa-l4-manifest-title {
+  font-weight: 700;
+  font-size: 14px;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c2pa-l4-manifest-id {
+  padding: 0 14px 10px;
+  font-size: 11px;
+  color: #999;
+  font-family: ui-monospace, monospace;
+  word-break: break-all;
+}
+
+.c2pa-l4-accordion {
+  border-top: 1px solid #f0f0f0;
+}
+
+.c2pa-l4-accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  text-align: left;
+}
+
+.c2pa-l4-accordion-trigger:hover {
+  background: #fafafa;
+}
+
+.c2pa-l4-accordion-trigger:focus-visible {
+  outline: 2px solid rgba(17,17,17,0.2);
+  outline-offset: -2px;
+}
+
+.c2pa-l4-chevron {
+  font-size: 11px;
+  color: #888;
+  flex-shrink: 0;
+}
+
+.c2pa-l4-accordion-content {
+  padding: 2px 14px 14px;
+}
+
+.c2pa-l4-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.c2pa-l4-field {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.c2pa-l4-field-label {
+  color: #888;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  word-break: break-all;
+}
+
+.c2pa-l4-field-value {
+  color: #222;
+  word-break: break-all;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+}
+
+.c2pa-l4-assertions-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.c2pa-l4-assertion {
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.c2pa-l4-assertion:last-child {
+  border-bottom: none;
+}
+
+.c2pa-l4-assertion-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.c2pa-l4-assertion-labels {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.c2pa-l4-assertion-label {
+  font-weight: 600;
+  font-size: 12px;
+  color: #333;
+}
+
+.c2pa-l4-assertion-key {
+  font-size: 10px;
+  color: #aaa;
+  font-family: ui-monospace, monospace;
+}
+
+.c2pa-l4-assertion-summary {
+  font-size: 12px;
+  color: #555;
+  line-height: 1.4;
+}
+
+.c2pa-l4-toggle-btn {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #555;
+  background: #f0f0f0;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.c2pa-l4-toggle-btn:hover {
+  background: #e0e0e0;
+}
+
+.c2pa-l4-json {
+  margin-top: 6px;
+  padding: 8px 10px;
+  background: #f8f8f8;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: ui-monospace, monospace;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: pre;
+  color: #333;
+}
+
+.c2pa-l4-muted {
+  color: #999;
+  font-size: 12px;
+}
+
+.c2pa-l4-mono {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+}
+
+.c2pa-l4-ingredients-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.c2pa-l4-ingredient {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.c2pa-l4-ingredient-title {
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.c2pa-l4-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+
+.c2pa-l4-validation {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.c2pa-l4-val-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 12px;
+}
+
+.c2pa-l4-val-item:last-child {
+  border-bottom: none;
+}
+
+.c2pa-l4-val-icon {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  width: 16px;
+  text-align: center;
+  padding-top: 1px;
+}
+
+.c2pa-l4-val-code {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.c2pa-l4-val-failure .c2pa-l4-val-icon { color: #b91c1c; }
+.c2pa-l4-val-info    .c2pa-l4-val-icon { color: #1d4ed8; }
+.c2pa-l4-val-success .c2pa-l4-val-icon { color: #15803d; }
+
+.c2pa-l4-val-failure .c2pa-l4-val-code { color: #b91c1c; }
+.c2pa-l4-val-info    .c2pa-l4-val-code { color: #1d4ed8; }
+.c2pa-l4-val-success .c2pa-l4-val-code { color: #15803d; }

@@ -1,50 +1,12 @@
 
-import { Manifest, ManifestEntry, ManifestStore, VerificationOutcome } from 'c2pa-react-component-types'
 import { CAWGManifest } from 'c2pa-react-cawg-component'
 import { DIACCManifest } from 'c2pa-react-diacc-component'
-import carEsExample from '../../examples/car-es-Ps-Cr.json'
-import chatGptImage from '../../examples/ChatGPT_Image.json'
-import cloudscapeAca from '../../examples/cloudscape-ACA-Cr.json'
-import craterLake from '../../examples/crater-lake-cr.json'
-import createdExample from '../../examples/createdExample.json'
-import diaccExample from '../../examples/diacc-pctf-example.json'
-import fireflyTabby from '../../examples/Firefly_tabby_cat.json'
-import { useState } from 'react';
-import C2paManifest from '../components/C2paManifest/C2paManifest';
+import { useState } from 'react'
+import C2paManifest from '../components/C2paManifest/C2paManifest'
+import { examples } from './examples'
 
-import "c2pa-react-cawg-component/style.css";
-import "c2pa-react-diacc-component/style.css";
-
-function normalize(raw: unknown): VerificationOutcome {
-  const data = raw as Record<string, unknown>
-  if (Array.isArray(data.manifests)) {
-    return data as unknown as VerificationOutcome
-  }
-  const store = data as unknown as ManifestStore
-  const manifests = Object.entries(store.manifests).map(([id, entry]: [string, ManifestEntry]) => ({
-    id,
-    title: entry.title ?? id,
-    claimGenerator: entry.claimGenerator ?? null,
-    claimGeneratorInfo: entry.claimGeneratorInfo ?? [],
-    instanceId: entry.instanceId ?? '',
-    signatureInfo: entry.signatureInfo ?? {},
-    assertions: entry.assertions ?? {},
-    credentials: entry.credentials ?? [],
-    thumbnail: entry.thumbnail ?? null,
-    ingredients: entry.ingredients ?? [],
-  }))
-  return { state: true, manifests: manifests as unknown as Manifest[], manifestStore: store }
-}
-
-const examples: { label: string; data: VerificationOutcome }[] = [
-  { label: 'Car (Edited + Signed)', data: normalize(carEsExample) },
-  { label: 'ChatGPT Image', data: normalize(chatGptImage) },
-  { label: 'Cloudscape ACA', data: normalize(cloudscapeAca) },
-  { label: 'Crater Lake', data: normalize(craterLake) },
-  { label: 'Created Example', data: normalize(createdExample) },
-  { label: 'DIACC PCTF Conformance', data: normalize(diaccExample) },
-  { label: 'Firefly Tabby Cat', data: normalize(fireflyTabby) },
-]
+import "c2pa-react-cawg-component/style.css"
+import "c2pa-react-diacc-component/style.css"
 
 
 
@@ -75,11 +37,9 @@ export default function App() {
       </div>
 
 
-      <h2>Provenance Graph</h2>
-      {/*<C2paProvenanceGraph manifest={sampleManifest} height={400} />*/}
-      <h2 style={{ marginTop: '2rem' }}>Disclosure Levels</h2>
+      <h2>Disclosure Levels</h2>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        {([1, 2, 3, 4, 5] as const).map((l) => (
+        {([1, 2, 3, 4] as const).map((l) => (
           <div key={l}>
             <p style={{ margin: '0 0 6px', fontWeight: 600, color: '#475569' }}>Level {l}</p>
             <C2paManifest
