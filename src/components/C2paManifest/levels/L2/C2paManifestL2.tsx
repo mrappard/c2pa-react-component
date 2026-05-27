@@ -8,6 +8,7 @@ import {
   getDate,
   formatDate,
   buildManifestChain,
+  getContentLabel,
 } from '../../shared/utils'
 
 
@@ -17,8 +18,8 @@ function cx(...classes: Array<string | undefined>) {
   return classes.filter(Boolean).join(' ')
 }
 
-function getTitle(entry: ManifestEntry) {
-  return getGenerator(entry) || getIssuer(entry) || entry.title || entry.label || 'Unknown source'
+function getSigner(entry: ManifestEntry) {
+  return getIssuer(entry) || entry.title || entry.label || 'Unknown signer'
 }
 
 function getThumb(entry: ManifestEntry) {
@@ -83,10 +84,10 @@ function ManifestRow({
     plugin?:PluginC2PA[]
 }) {
 
-  const title = getTitle(entry)
+  const signer = getSigner(entry)
+  const generator = getGenerator(entry)
   const date = getDate(entry)
-
-
+  const label = !invalid ? getContentLabel(entry) : undefined
 
   return (
     <div className="c2pa-manifest-row">
@@ -94,9 +95,9 @@ function ManifestRow({
         <Thumbnail entry={entry} />
         <div className="c2pa-manifest-row-content">
           <div className="c2pa-manifest-row-heading">
-            <SourceBadge label={title} />
+            <SourceBadge label={signer} />
             <div className="c2pa-title">
-              {invalid ? 'Invalid' : title}
+              {invalid ? 'Invalid' : signer}
             </div>
 
             {active && (
@@ -106,6 +107,18 @@ function ManifestRow({
             )}
           </div>
 
+          {generator && !invalid && (
+            <div className="c2pa-generator">
+              {generator}
+            </div>
+          )}
+
+          {label && (
+            <div className="c2pa-content-label c2pa-content-label--row">
+              {label}
+            </div>
+          )}
+
           {date && !invalid && (
             <div className="c2pa-date">
               {formatDate(date)}
@@ -114,7 +127,7 @@ function ManifestRow({
 
           {invalid && (
             <div className="c2pa-invalid-text">
-              C2PA data could not be verified.
+              Content credentials are invalid or tampered.
             </div>
           )}
 
@@ -126,7 +139,7 @@ function ManifestRow({
           plugin?.map((PluginComponent) => (
             <PluginComponent manifest={manifest} level={1} />
           ))
-            
+
         }
       </div>
     </div>
@@ -211,8 +224,7 @@ function InvalidState({
       <div className="c2pa-divider" />
 
       <div className="c2pa-alert">
-        Invalid C2PA data. No prior provenance can be displayed because the
-        manifest chain could not be trusted.
+        Someone has changed or tampered with the content credentials, so the available data should be disregarded.
       </div>
 
       <div className="c2pa-divider" />

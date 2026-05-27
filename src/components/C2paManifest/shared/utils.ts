@@ -1,4 +1,4 @@
-import { ManifestEntry, ManifestStore } from 'c2pa-react-component-types'
+import { C2paAction, ManifestEntry, ManifestStore } from 'c2pa-react-component-types'
 
 export function getDate(entry: ManifestEntry): string | undefined {
   if (entry.signatureInfo?.time) return entry.signatureInfo.time
@@ -60,6 +60,39 @@ export function getGenerator(entry: ManifestEntry) {
 export function getActions(entry: ManifestEntry): string[] {
   const actions = entry.assertions?.['c2pa.actions.v2'] as { actions?: { action: string }[] } | undefined
   return actions?.actions?.map((act) => act.action) ?? []
+}
+
+function getActionsList(entry: ManifestEntry): C2paAction[] {
+  const v2 = entry.assertions?.['c2pa.actions.v2'] as { actions?: C2paAction[] } | undefined
+  if (v2?.actions) return v2.actions
+  const v1 = entry.assertions?.['c2pa.actions'] as { actions?: C2paAction[] } | undefined
+  return v1?.actions ?? []
+}
+
+export type ContentLabel = 'AI-generated' | 'AI-edited' | 'Camera-captured'
+
+export function getContentLabel(entry: ManifestEntry): ContentLabel | undefined {
+  const actions = getActionsList(entry)
+
+  for (const act of actions) {
+    const dst = act.digitalSourceType ?? ''
+    if (dst.includes('trainedAlgorithmicMedia') && !dst.includes('composite') && act.action === 'c2pa.created') {
+      return 'AI-generated'
+    }
+    if (dst.includes('compositeWithTrainedAlgorithmicMedia')) {
+      return 'AI-edited'
+    }
+  }
+
+  // Check for camera capture only if no AI involvement found above
+  for (const act of actions) {
+    const dst = act.digitalSourceType ?? ''
+    if (dst.includes('digitalCapture') && act.action === 'c2pa.created') {
+      return 'Camera-captured'
+    }
+  }
+
+  return undefined
 }
 
 export function validationColor(state: ManifestStore['validation_state']) {

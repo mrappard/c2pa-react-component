@@ -1,0 +1,33 @@
+{
+  "activeManifest": "urn:c2pa:example-ai-edited",
+  "manifests": {
+    "urn:c2pa:example-ai-edited": {
+      "claimGenerator": "Adobe Photoshop/25.0",
+      "claimGeneratorInfo": [{ "name": "Adobe Photoshop" }],
+      "title": "Portrait with AI background replacement",
+      "instanceId": "xmp:iid:example-ai-edited",
+      "signatureInfo": {
+        "alg": "Es256",
+        "issuer": "Adobe Inc.",
+        "common_name": "Adobe Content Authenticity",
+        "cert_serial_number": "640229841392226413189608867977836244731148734951",
+        "time": "2024-11-20T14:15:00Z"
+      },
+      "assertions": {
+        "c2pa.actions.v2": {
+          "actions": [
+            {
+              "action": "c2pa.placed",
+              "digitalSourceType": "https://cv.iptc.org/newscodes/digitalsourcetype/compositeWithTrainedAlgorithmicMedia",
+              "softwareAgent": { "name": "Adobe Photoshop Generative Fill" }
+            }
+          ]
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": []
+    }
+  },
+  "validation_state": "Valid"
+}

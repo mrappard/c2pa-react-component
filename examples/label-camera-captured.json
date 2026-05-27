@@ -1,0 +1,33 @@
+{
+  "activeManifest": "urn:c2pa:example-camera-captured",
+  "manifests": {
+    "urn:c2pa:example-camera-captured": {
+      "claimGenerator": "Leica Camera AG/1.0",
+      "claimGeneratorInfo": [{ "name": "Leica M11" }],
+      "title": "Mountain trail at sunrise",
+      "instanceId": "xmp:iid:example-camera-captured",
+      "signatureInfo": {
+        "alg": "Es256",
+        "issuer": "Leica Camera AG",
+        "common_name": "Leica Content Authenticity",
+        "cert_serial_number": "640229841392226413189608867977836244731148734952",
+        "time": "2024-09-08T06:42:00Z"
+      },
+      "assertions": {
+        "c2pa.actions.v2": {
+          "actions": [
+            {
+              "action": "c2pa.created",
+              "digitalSourceType": "https://cv.iptc.org/newscodes/digitalsourcetype/digitalCapture",
+              "softwareAgent": { "name": "Leica M11" }
+            }
+          ]
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": []
+    }
+  },
+  "validation_state": "Valid"
+}
