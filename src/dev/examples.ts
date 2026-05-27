@@ -9,6 +9,7 @@ import fireflyTabby from '../../examples/Firefly_tabby_cat.json'
 import labelAiGenerated from '../../examples/label-ai-generated.json'
 import labelAiEdited from '../../examples/label-ai-edited.json'
 import labelCameraCaptured from '../../examples/label-camera-captured.json'
+import cawgIdentity from '../../examples/cawg-identity-example.json'
 
 function normalize(raw: unknown): VerificationOutcome {
   const data = raw as Record<string, unknown>
@@ -37,6 +38,7 @@ export const examples: { label: string; data: VerificationOutcome }[] = [
   { label: 'Cloudscape ACA', data: normalize(cloudscapeAca) },
   { label: 'Crater Lake', data: normalize(craterLake) },
   { label: 'Created Example', data: normalize(createdExample) },
+  { label: 'CAWG Identity', data: normalize(cawgIdentity) },
   { label: 'DIACC PCTF Conformance', data: normalize(diaccExample) },
   { label: 'Firefly Tabby Cat', data: normalize(fireflyTabby) },
   { label: 'Label — AI-generated', data: normalize(labelAiGenerated) },

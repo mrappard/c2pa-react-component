@@ -1,13 +1,32 @@
 import { useState } from 'react'
-import { ManifestEntry, PluginC2PA } from 'c2pa-react-component-types'
+import { ManifestEntry, PluginC2PA, VerificationOutcome } from 'c2pa-react-component-types'
 import { formatAssertion } from './formatAssertion'
-import { getIssuer, getGenerator, getDate, formatDate, getKnownAssertions } from '../../shared/utils'
-
+import { getIssuer, getGenerator, getDate, formatDate } from '../../shared/utils'
 
 interface Props {
   selectedIds: string[]
   manifests: Record<string, ManifestEntry>
+  manifest: VerificationOutcome
   plugins?: PluginC2PA[]
+}
+
+function buildPluginMap(plugins: PluginC2PA[] | undefined): Map<string, PluginC2PA> {
+  const map = new Map<string, PluginC2PA>()
+  for (const plugin of plugins ?? []) {
+    for (const key of plugin.knownAssertions ?? []) {
+      map.set(key, plugin)
+    }
+  }
+  return map
+}
+
+function getRelevantPlugins(assertionKeys: string[], pluginMap: Map<string, PluginC2PA>): PluginC2PA[] {
+  const seen = new Set<PluginC2PA>()
+  for (const key of assertionKeys) {
+    const p = pluginMap.get(key)
+    if (p) seen.add(p)
+  }
+  return Array.from(seen)
 }
 
 function getDisplayName(entry: ManifestEntry, id: string): string {
@@ -36,22 +55,14 @@ function ManifestMeta({ entry }: { entry: ManifestEntry }) {
   )
 }
 
-function AssertionRow({
-  assertionKey,
-  raw,
-  handledByPlugin,
-}: {
-  assertionKey: string
-  raw: unknown
-  handledByPlugin: boolean
-}) {
+function AssertionRow({ assertionKey, raw }: { assertionKey: string; raw: unknown }) {
   const [expanded, setExpanded] = useState(false)
   const { label, summary, isUnknown } = formatAssertion(assertionKey, raw)
 
   return (
     <div className="c2pa-panel-assertion-row">
       <div className="c2pa-panel-assertion-label">{label}</div>
-      {isUnknown && !handledByPlugin ? (
+      {isUnknown ? (
         expanded ? (
           <div>
             <pre className="c2pa-panel-json">{JSON.stringify(raw, null, 2)}</pre>
@@ -64,8 +75,6 @@ function AssertionRow({
             Explore
           </button>
         )
-      ) : isUnknown && handledByPlugin ? (
-        <div className="c2pa-panel-assertion-summary c2pa-panel-plugin-handled">Handled by plugin</div>
       ) : (
         <div className="c2pa-panel-assertion-summary">{summary}</div>
       )}
@@ -73,22 +82,35 @@ function AssertionRow({
   )
 }
 
-function SingleView({ entry, knownAssertions }: { entry: ManifestEntry; knownAssertions: Set<string> }) {
+function SingleView({
+  entry,
+  manifest,
+  pluginMap,
+}: {
+  entry: ManifestEntry
+  manifest: VerificationOutcome
+  pluginMap: Map<string, PluginC2PA>
+}) {
   const assertions = entry.assertions ?? {}
   const keys = Object.keys(assertions)
+  const standardKeys = keys.filter((k) => !pluginMap.has(k))
+  const relevantPlugins = getRelevantPlugins(keys, pluginMap)
+
   return (
     <div>
       <div className="c2pa-panel-heading">Manifest details</div>
       <ManifestMeta entry={entry} />
       <div className="c2pa-panel-divider" />
       <div className="c2pa-panel-section-label">Information</div>
-      {keys.length === 0 ? (
+      {standardKeys.length === 0 && relevantPlugins.length === 0 && (
         <p className="c2pa-panel-muted">No assertions found</p>
-      ) : (
-        keys.map((key) => (
-          <AssertionRow key={key} assertionKey={key} raw={assertions[key]} handledByPlugin={knownAssertions.has(key)} />
-        ))
       )}
+      {standardKeys.map((key) => (
+        <AssertionRow key={key} assertionKey={key} raw={assertions[key]} />
+      ))}
+      {relevantPlugins.map((Plugin, i) => (
+        <Plugin key={i} manifest={manifest} />
+      ))}
     </div>
   )
 }
@@ -102,17 +124,21 @@ function CompareView({
   entryB,
   labelA,
   labelB,
-  knownAssertions,
+  manifest,
+  pluginMap,
 }: {
   entryA: ManifestEntry
   entryB: ManifestEntry
   labelA: string
   labelB: string
-  knownAssertions: Set<string>
+  manifest: VerificationOutcome
+  pluginMap: Map<string, PluginC2PA>
 }) {
   const assertionsA = entryA.assertions ?? {}
   const assertionsB = entryB.assertions ?? {}
   const allKeys = Array.from(new Set([...Object.keys(assertionsA), ...Object.keys(assertionsB)]))
+  const standardKeys = allKeys.filter((k) => !pluginMap.has(k))
+  const relevantPlugins = getRelevantPlugins(allKeys, pluginMap)
 
   return (
     <div>
@@ -130,19 +156,12 @@ function CompareView({
       <div className="c2pa-panel-divider" />
       <div className="c2pa-panel-section-label">Information</div>
 
-      {allKeys.map((key) => {
+      {standardKeys.map((key) => {
         const inA = key in assertionsA
         const inB = key in assertionsB
         const same =
           inA && inB && JSON.stringify(assertionsA[key]) === JSON.stringify(assertionsB[key])
-        const { label, isUnknown } = formatAssertion(key, assertionsA[key] ?? assertionsB[key])
-        const handledByPlugin = isUnknown && knownAssertions.has(key)
-
-        function valueFor(present: boolean, raw: unknown) {
-          if (!present) return 'Not present'
-          if (handledByPlugin) return 'Handled by plugin'
-          return formatAssertion(key, raw).summary
-        }
+        const { label } = formatAssertion(key, assertionsA[key] ?? assertionsB[key])
 
         return (
           <div key={key} className="c2pa-panel-compare-row">
@@ -153,17 +172,31 @@ function CompareView({
               <div className="c2pa-panel-diff">
                 <div className="c2pa-panel-diff-row">
                   <SelectionBadge letter="A" />
-                  <span className="c2pa-panel-diff-value">{valueFor(inA, assertionsA[key])}</span>
+                  <span className="c2pa-panel-diff-value">
+                    {inA ? formatAssertion(key, assertionsA[key]).summary : 'Not present'}
+                  </span>
                 </div>
                 <div className="c2pa-panel-diff-row">
                   <SelectionBadge letter="B" />
-                  <span className="c2pa-panel-diff-value">{valueFor(inB, assertionsB[key])}</span>
+                  <span className="c2pa-panel-diff-value">
+                    {inB ? formatAssertion(key, assertionsB[key]).summary : 'Not present'}
+                  </span>
                 </div>
               </div>
             )}
           </div>
         )
       })}
+
+      {relevantPlugins.length > 0 && (
+        <>
+          <div className="c2pa-panel-divider" />
+          <div className="c2pa-panel-section-label">Plugin data</div>
+          {relevantPlugins.map((Plugin, i) => (
+            <Plugin key={i} manifest={manifest} />
+          ))}
+        </>
+      )}
     </div>
   )
 }
@@ -178,18 +211,18 @@ function EmptyState() {
   )
 }
 
-export function AssertionPanel({ selectedIds, manifests, plugins }: Props) {
-  const knownAssertions = getKnownAssertions(plugins)
+export function AssertionPanel({ selectedIds, manifests, manifest, plugins }: Props) {
+  const pluginMap = buildPluginMap(plugins)
 
   if (selectedIds.length === 0) return <EmptyState />
 
   const entryA = manifests[selectedIds[0]]
   if (!entryA) return <EmptyState />
 
-  if (selectedIds.length === 1) return <SingleView entry={entryA} knownAssertions={knownAssertions} />
+  if (selectedIds.length === 1) return <SingleView entry={entryA} manifest={manifest} pluginMap={pluginMap} />
 
   const entryB = manifests[selectedIds[1]]
-  if (!entryB) return <SingleView entry={entryA} knownAssertions={knownAssertions} />
+  if (!entryB) return <SingleView entry={entryA} manifest={manifest} pluginMap={pluginMap} />
 
   return (
     <CompareView
@@ -197,7 +230,8 @@ export function AssertionPanel({ selectedIds, manifests, plugins }: Props) {
       entryB={entryB}
       labelA={getDisplayName(entryA, selectedIds[0])}
       labelB={getDisplayName(entryB, selectedIds[1])}
-      knownAssertions={knownAssertions}
+      manifest={manifest}
+      pluginMap={pluginMap}
     />
   )
 }

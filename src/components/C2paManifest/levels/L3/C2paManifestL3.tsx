@@ -33,6 +33,7 @@ export function C2paManifestL3({ manifest, className, plugin }: LevelProps) {
         <AssertionPanel
           selectedIds={selectedIds}
           manifests={manifest.manifestStore.manifests}
+          manifest={manifest}
           plugins={plugin}
         />
       </div>
