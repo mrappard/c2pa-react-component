@@ -1,4 +1,4 @@
-import { C2paAction, ManifestEntry, ManifestStore } from 'c2pa-react-component-types'
+import { C2paAction, ManifestEntry, ManifestStore, PluginC2PA } from 'c2pa-react-component-types'
 
 export function getDate(entry: ManifestEntry): string | undefined {
   if (entry.signatureInfo?.time) return entry.signatureInfo.time
@@ -100,6 +100,16 @@ export function getContentLabel(entry: ManifestEntry): ContentLabel | undefined 
   }
 
   return undefined
+}
+
+export function getKnownAssertions(plugins: PluginC2PA[] | undefined): Set<string> {
+  const known = new Set<string>()
+  for (const plugin of plugins ?? []) {
+    for (const key of plugin.knownAssertions ?? []) {
+      known.add(key)
+    }
+  }
+  return known
 }
 
 export function getSignerLogo(entry: ManifestEntry): string | undefined {
