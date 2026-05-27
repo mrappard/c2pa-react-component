@@ -16,7 +16,14 @@ export function getDate(entry: ManifestEntry): string | undefined {
 
 export function formatDate(dateStr: string): string {
   try {
-    return new Date(dateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+    return new Intl.DateTimeFormat(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZoneName: 'short',
+    }).format(new Date(dateStr))
   } catch {
     return dateStr
   }
@@ -93,6 +100,16 @@ export function getContentLabel(entry: ManifestEntry): ContentLabel | undefined 
   }
 
   return undefined
+}
+
+export function getSignerLogo(entry: ManifestEntry): string | undefined {
+  const info = entry.claimGeneratorInfo?.[0] as Record<string, string> | undefined
+  return info?.icon ?? info?.logo ?? (entry as any).signerLogo ?? undefined
+}
+
+export function isVideo(entry: ManifestEntry): boolean {
+  const format = (entry as any).format as string | undefined
+  return typeof format === 'string' && format.startsWith('video/')
 }
 
 export function validationColor(state: ManifestStore['validation_state']) {

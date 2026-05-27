@@ -4,7 +4,7 @@ export interface LevelProps {
   manifest: VerificationOutcome
   activeManifest: ManifestEntry
   className?: string
-  officalList?: boolean
+  officialList?: boolean
   onViewMore?: () => void
   plugin?: PluginC2PA[]
 }

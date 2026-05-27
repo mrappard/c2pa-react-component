@@ -9,6 +9,8 @@ import {
   formatDate,
   buildManifestChain,
   getContentLabel,
+  getSignerLogo,
+  isVideo,
 } from '../../shared/utils'
 
 
@@ -31,7 +33,26 @@ function getThumb(entry: ManifestEntry) {
   )
 }
 
-function SourceBadge({ label }: { label: string }) {
+function FilmstripIcon() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" strokeWidth="1.5"/>
+      <rect x="0" y="7" width="2.5" height="2" rx="0.5" fill="currentColor"/>
+      <rect x="0" y="11" width="2.5" height="2" rx="0.5" fill="currentColor"/>
+      <rect x="0" y="15" width="2.5" height="2" rx="0.5" fill="currentColor"/>
+      <rect x="21.5" y="7" width="2.5" height="2" rx="0.5" fill="currentColor"/>
+      <rect x="21.5" y="11" width="2.5" height="2" rx="0.5" fill="currentColor"/>
+      <rect x="21.5" y="15" width="2.5" height="2" rx="0.5" fill="currentColor"/>
+      <line x1="2" y1="9.5" x2="22" y2="9.5" stroke="currentColor" strokeWidth="1"/>
+      <line x1="2" y1="14.5" x2="22" y2="14.5" stroke="currentColor" strokeWidth="1"/>
+    </svg>
+  )
+}
+
+function SourceBadge({ label, logoUrl }: { label: string; logoUrl?: string }) {
+  if (logoUrl) {
+    return <img src={logoUrl} alt={label} className="c2pa-signer-logo" />
+  }
   const initials = label
     .split(/\s+/)
     .map((x) => x[0])
@@ -54,11 +75,16 @@ function Thumbnail({
   showCrBadge?: boolean
 }) {
   const thumb = getThumb(entry)
+  const video = isVideo(entry)
 
   return (
     <div className="c2pa-thumb">
       {thumb ? (
         <img src={thumb} alt="" />
+      ) : video ? (
+        <div className="c2pa-thumb-video">
+          <FilmstripIcon />
+        </div>
       ) : null}
 
       {showCrBadge && (
@@ -86,6 +112,7 @@ function ManifestRow({
 
   const signer = getSigner(entry)
   const generator = getGenerator(entry)
+  const signerLogo = getSignerLogo(entry)
   const date = getDate(entry)
   const label = !invalid ? getContentLabel(entry) : undefined
 
@@ -94,8 +121,9 @@ function ManifestRow({
       <div className="c2pa-manifest-row-main">
         <Thumbnail entry={entry} />
         <div className="c2pa-manifest-row-content">
+          {!invalid && <div className="c2pa-signed-by-label">Signed by</div>}
           <div className="c2pa-manifest-row-heading">
-            <SourceBadge label={signer} />
+            <SourceBadge label={signer} logoUrl={signerLogo} />
             <div className="c2pa-title">
               {invalid ? 'Invalid' : signer}
             </div>
@@ -194,7 +222,7 @@ function OriginStrip({ origins }: { origins: ManifestEntry[] }) {
     <>
       <div className="c2pa-divider" />
       <div className="c2pa-section-title">
-        Origins ({origins.length})
+        Assets used ({origins.length})
       </div>
       <div className="c2pa-origin-list">
         {origins.map((entry, i) => (
@@ -351,11 +379,11 @@ export function C2paManifestL2({
   activeManifest,
   className,
   onViewMore,
-  officalList = false,
+  officialList = false,
   plugin
 }: LevelProps) {
   const isInvalid =
-    officalList ?
+    officialList ?
       !manifest.manifestStore?.validation_state :
       false;
 
