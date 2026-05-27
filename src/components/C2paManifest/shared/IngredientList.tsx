@@ -1,4 +1,4 @@
-import { ManifestEntry } from '../../../types'
+import { ManifestEntry } from 'c2pa-react-component-types'
 import { ValidationBadges } from './ValidationBadges'
 
 interface IngredientListProps {

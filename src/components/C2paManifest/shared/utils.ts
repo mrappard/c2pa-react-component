@@ -1,4 +1,4 @@
-import { ManifestEntry, ManifestStore } from '../../../types'
+import { ManifestEntry, ManifestStore } from 'c2pa-react-component-types'
 
 export function getDate(entry: ManifestEntry): string | undefined {
   if (entry.signatureInfo?.time) return entry.signatureInfo.time

@@ -1,5 +1,5 @@
 import { Node, Edge } from '@xyflow/react'
-import { ManifestStore } from '../../types'
+import { ManifestStore } from 'c2pa-react-component-types'
 import { ManifestNodeData } from './ManifestNode'
 
 const NODE_WIDTH = 420

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { ReactFlow, Background, Controls, MiniMap, NodeTypes } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
-import { C2paProvenanceGraphProps } from '../../types'
+import { C2paProvenanceGraphProps } from 'c2pa-react-component-types'
 import { ManifestNode } from './ManifestNode'
 import { buildGraph } from './buildGraph'
 

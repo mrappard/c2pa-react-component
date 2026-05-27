@@ -1,6 +1,6 @@
 import React from 'react'
 import { CRIcon } from '../../../../icons/CRIcon'
-import { ManifestEntry, VerificationOutcome } from '../../../../types'
+import { ManifestEntry, PluginC2PA, VerificationOutcome } from 'c2pa-react-component-types'
 import { LevelProps } from '../../types'
 import {
   getIssuer,
@@ -9,7 +9,7 @@ import {
   formatDate,
   buildManifestChain,
 } from '../../shared/utils'
-import CAWGManifest from '../../../Cawg/Cawg'
+
 
 const COLLAPSE_THRESHOLD = 4
 
@@ -74,11 +74,13 @@ function ManifestRow({
   entry,
   active,
   invalid,
+    plugin
 }: {
   manifest: VerificationOutcome
   entry: ManifestEntry
   active?: boolean
   invalid?: boolean
+    plugin?:PluginC2PA[]
 }) {
 
   const title = getTitle(entry)
@@ -120,7 +122,12 @@ function ManifestRow({
 
       </div>
       <div className="c2pa-more-info">
-        {<CAWGManifest manifest={manifest} level={1} />}
+        {
+          plugin?.map((PluginComponent) => (
+            <PluginComponent manifest={manifest} level={1} />
+          ))
+            
+        }
       </div>
     </div>
   )
@@ -189,12 +196,13 @@ function InvalidState({
   entry,
   className,
   onViewMore,
-  manifest
+  manifest,
 }: {
   entry: ManifestEntry
   className?: string
   onViewMore?: () => void
-  manifest: VerificationOutcome
+  manifest: VerificationOutcome,
+  plugin?:PluginC2PA[]
 }) {
   return (
     <div className={cx('c2pa-card', className)}>
@@ -218,11 +226,12 @@ function ManifestSummary({
   activeManifest,
   className,
   onViewMore,
+  plugin
 }: LevelProps) {
 
   return (
     <div className={cx('c2pa-card', className)}>
-      <ManifestRow manifest={manifest} entry={activeManifest} active />
+      <ManifestRow manifest={manifest} entry={activeManifest} plugin={plugin} active />
 
 
       {onViewMore && <>
@@ -238,10 +247,12 @@ function ProvenanceSummary({
   manifest,
   className,
   onViewMore,
+  plugin
 }: {
   manifest: VerificationOutcome
   className?: string
   onViewMore?: () => void
+    plugin?:PluginC2PA[]
 }) {
 
   if (!manifest.manifestStore) {
@@ -281,7 +292,7 @@ function ProvenanceSummary({
         />
 
         <div>
-          {activeEntry && <ManifestRow manifest={manifest} entry={activeEntry} active />}
+          {activeEntry && <ManifestRow manifest={manifest} entry={activeEntry} plugin={plugin} active />}
 
           {shouldCollapse && middleCount > 0 && (
             <>
@@ -297,14 +308,14 @@ function ProvenanceSummary({
             visibleMiddleEntries.map((entry, i) => (
               <React.Fragment key={i}>
                 <div className="c2pa-divider" />
-                <ManifestRow manifest={manifest} entry={entry} />
+                <ManifestRow manifest={manifest} entry={entry} plugin={plugin} />
               </React.Fragment>
             ))}
 
           {originEntries[0] && (
             <>
               <div className="c2pa-divider" />
-              <ManifestRow manifest={manifest} entry={originEntries[0]} />
+              <ManifestRow manifest={manifest} entry={originEntries[0]} plugin={plugin} />
             </>
           )}
         </div>
@@ -329,6 +340,7 @@ export function C2paManifestL2({
   className,
   onViewMore,
   officalList = false,
+  plugin
 }: LevelProps) {
   const isInvalid =
     officalList ?
@@ -352,6 +364,7 @@ export function C2paManifestL2({
         entry={activeManifest}
         className={className}
         onViewMore={onViewMore}
+        plugin={plugin}
       />
     )
   }
@@ -363,6 +376,7 @@ export function C2paManifestL2({
         manifest={manifest}
         className={className}
         onViewMore={onViewMore}
+         plugin={plugin}
       />
     )
   }
@@ -374,6 +388,7 @@ export function C2paManifestL2({
       activeManifest={activeManifest}
       className={className}
       onViewMore={onViewMore}
+       plugin={plugin}
     />
   )
 

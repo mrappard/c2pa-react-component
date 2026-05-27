@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
 import { C2paManifest } from './C2paManifest'
-import {  VerificationOutcome } from '../../types'
+import {  VerificationOutcome } from 'c2pa-react-component-types'
 
 const mockManifest:VerificationOutcome ={
   "state": false,

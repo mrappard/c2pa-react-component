@@ -1,4 +1,4 @@
-import { ValidationResults } from '../../../types'
+import { ValidationResults } from 'c2pa-react-component-types'
 
 interface ValidationBadgesProps {
   results: ValidationResults

@@ -1,5 +1,5 @@
 import { Handle, Position, NodeProps } from '@xyflow/react'
-import { ManifestEntry } from '../../types'
+import { ManifestEntry } from 'c2pa-react-component-types'
 import { formatDate, getDate, getGenerator, getIssuer } from '../C2paManifest/shared/utils'
 import '../C2paManifest/styles/c2paManifest.css'
 

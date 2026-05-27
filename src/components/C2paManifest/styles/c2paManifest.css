@@ -184,7 +184,8 @@
 .c2pa-more-info {
   width: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .c2pa-timeline-layout {

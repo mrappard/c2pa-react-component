@@ -1,0 +1,86 @@
+{
+  "state": true,
+  "manifests": [
+    {
+      "id": "urn:c2pa:diacc-pctf-example-001",
+      "title": "DIACC PCTF Conformance Example",
+      "claimGenerator": null,
+      "claimGeneratorInfo": [
+        {
+          "name": "DIACC Trust Registry",
+          "org.contentauth.c2pa_rs": "0.56.0"
+        }
+      ],
+      "instanceId": "xmp:iid:diacc-pctf-example-001",
+      "signatureInfo": {
+        "alg": "",
+        "issuer": "",
+        "common_name": "",
+        "cert_serial_number": ""
+      },
+      "assertions": {
+        "c2pa.actions": {
+          "actions": [
+            {
+              "action": "c2pa.created"
+            }
+          ]
+        },
+        "diacc.pctf.conformance": {
+          "name": "DIACC PCTF Conformance Example",
+          "description": "Example conformance data for a DIACC Trust Registry manifest.",
+          "conformance": [
+            "Verified Person",
+            "Verified Organization",
+            {
+              "profile": "PCTF",
+              "component": "Digital Trust and Identity",
+              "status": "conformant"
+            }
+          ]
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": []
+    }
+  ],
+  "manifestStore": {
+    "activeManifest": "urn:c2pa:diacc-pctf-example-001",
+    "manifests": {
+      "urn:c2pa:diacc-pctf-example-001": {
+        "title": "DIACC PCTF Conformance Example",
+        "claimGenerator": null,
+        "claimGeneratorInfo": [
+          {
+            "name": "DIACC Trust Registry",
+            "org.contentauth.c2pa_rs": "0.56.0"
+          }
+        ],
+        "instanceId": "xmp:iid:diacc-pctf-example-001",
+        "assertions": {
+          "c2pa.actions": {
+            "actions": [
+              {
+                "action": "c2pa.created"
+              }
+            ]
+          },
+          "diacc.pctf.conformance": {
+            "name": "DIACC PCTF Conformance Example",
+            "description": "Example conformance data for a DIACC Trust Registry manifest.",
+            "conformance": [
+              "Verified Person",
+              "Verified Organization",
+              {
+                "profile": "PCTF",
+                "component": "Digital Trust and Identity",
+                "status": "conformant"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
