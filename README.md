@@ -1,6 +1,6 @@
 # c2pa-react-component
 
-A React component library for displaying [C2PA](https://c2pa.org/) manifest information — provenance, validation state, signing details, and ingredient history.
+A React component library for displaying [C2PA](https://c2pa.org/) manifest information, aligned with the [C2PA UX Recommendations v2.0](https://spec.c2pa.org/specifications/specifications/2.0/ux/UX_Recommendations.html). Covers progressive disclosure levels L1–L4: icon badge, compact summary, interactive provenance graph, and full forensic view.
 
 ## Installation
 
@@ -8,7 +8,7 @@ A React component library for displaying [C2PA](https://c2pa.org/) manifest info
 npm install c2pa-react-component @xyflow/react
 ```
 
-`@xyflow/react` is a required peer dependency (used by the provenance graph component).
+`@xyflow/react` is a required peer dependency (used by the L3 provenance graph).
 
 ### Peer dependencies
 
@@ -40,14 +40,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
+---
+
 ## Components
 
 ### `C2paManifest`
 
-Displays C2PA manifest data at a configurable level of detail. Levels progress from a minimal icon badge up to a full provenance graph.
+The primary component. Renders C2PA manifest data at a configurable disclosure level.
 
 ```tsx
-import { C2paManifest, type VerificationOutcome } from "c2pa-react-component";
+import { C2paManifest } from "c2pa-react-component";
 
 <C2paManifest manifest={verificationOutcome} level={2} />
 ```
@@ -57,31 +59,31 @@ import { C2paManifest, type VerificationOutcome } from "c2pa-react-component";
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `manifest` | `VerificationOutcome` | required | The verification result from a C2PA SDK |
-| `level` | `1 \| 2 \| 3 \| 4 \| 5` | `3` | Initial disclosure level |
+| `level` | `1 \| 2 \| 3 \| 4` | `3` | Initial disclosure level |
 | `className` | `string` | — | CSS class applied to the root element |
 | `onViewMore` | `() => void` | — | Custom callback when the user requests more detail |
-| `defaultViewMore` | `boolean` | — | When `true`, the built-in level progression is used instead of a custom `onViewMore` |
+| `defaultViewMore` | `boolean` | — | When `true`, built-in level cycling is used (`1→2→3→4→5→1`) |
+| `plugin` | `PluginC2PA[]` | — | Plugin components to render alongside manifest data (see [Plugins](#plugins)) |
 
 #### Disclosure levels
 
-| Level | What is shown |
+| Level | Description |
 |---|---|
-| `1` | Icon-only badge (clickable) |
-| `2` | Compact summary: active manifest, signing info, provenance chain |
-| `3` | Interactive provenance graph (default) |
-| `4` | Detailed manifest with assertions and ingredients |
-| `5` | Full raw manifest detail |
+| `1` | **Icon badge** — Content Credentials icon with optional content label (AI-generated, AI-edited, Camera-captured). Shows an invalid indicator if the manifest fails validation. |
+| `2` | **Compact summary** — Signer, generator, signing date, content label, provenance chain, and tamper alert. Plugins render below the manifest chain. |
+| `3` | **Provenance graph** — Interactive node graph of the full ingredient/manifest chain. Click a node to inspect its assertions; click two nodes to compare them side by side. Plugins render inline for their claimed assertions. |
+| `4` | **Forensic view** — All manifests, all assertions, signature details, and validation results. Every section is a collapsible accordion (collapsed by default). Assertions show a formatted summary with a "Raw" toggle for full JSON. No plugins — pure data only. |
 
-When `defaultViewMore` is `true`, clicking "View more" automatically advances through levels `1 → 2 → 3 → 4 → 5 → 1`.
+When `defaultViewMore` is `true`, clicking "View more" at L1 and L2 automatically advances through levels.
 
 ---
 
 ### `C2paProvenanceGraph`
 
-An interactive node graph visualising the full ingredient/manifest chain. Powered by React Flow.
+An interactive node graph visualising the full ingredient/manifest chain. Used internally by L3 and available as a standalone component.
 
 ```tsx
-import { C2paProvenanceGraph, type ManifestStore } from "c2pa-react-component";
+import { C2paProvenanceGraph } from "c2pa-react-component";
 
 <C2paProvenanceGraph manifest={manifestStore} height={500} />
 ```
@@ -93,8 +95,10 @@ import { C2paProvenanceGraph, type ManifestStore } from "c2pa-react-component";
 | `manifest` | `ManifestStore` | required | The manifest store from `VerificationOutcome.manifestStore` |
 | `height` | `number` | `400` | Height of the graph container in pixels |
 | `className` | `string` | — | CSS class applied to the root element |
+| `selectedIds` | `string[]` | — | Manifest IDs to highlight (up to two — A/B selection) |
+| `onNodeClick` | `(id: string) => void` | — | Called when a node is clicked |
 
-The graph is interactive: nodes are draggable, the view auto-fits on load, and a minimap and zoom controls are included.
+Nodes are draggable, the view auto-fits on load, and zoom controls are included.
 
 ---
 
@@ -107,6 +111,66 @@ import { CRIcon } from "c2pa-react-component";
 
 <CRIcon size={24} />
 ```
+
+---
+
+## Plugins
+
+Plugins are React components that receive the full `VerificationOutcome` and render additional UI for domain-specific assertions (e.g. CAWG identity, DIACC PCTF). They follow the `PluginC2PA` callable interface.
+
+```ts
+interface PluginC2PA {
+  (props: C2paBaseProps): ReactNode;
+  knownAssertions?: string[];
+}
+```
+
+The optional `knownAssertions` array declares which assertion keys the plugin handles. At L3, assertions listed here are removed from the default assertion panel and the plugin is rendered once in their place. At L4 all assertions are shown as raw data regardless of plugins.
+
+### Declaring known assertions
+
+Add a static `knownAssertions` property to your plugin component after its definition:
+
+```ts
+// In your plugin package
+export function MyPlugin({ manifest }: C2paBaseProps) {
+  // render your UI
+}
+
+MyPlugin.knownAssertions = [
+  'my.namespace.assertion',
+  'my.namespace.other',
+]
+```
+
+### Registering plugins
+
+Pass an array of plugin components to `C2paManifest`:
+
+```tsx
+import { CAWGManifest } from "c2pa-react-cawg-component";
+import { DIACCManifest } from "c2pa-react-diacc-component";
+
+<C2paManifest
+  manifest={outcome}
+  level={2}
+  plugin={[CAWGManifest, DIACCManifest]}
+/>
+```
+
+---
+
+## Content disclosure labels
+
+At L1 and L2, the component automatically derives a content label from `c2pa.actions.v2` assertions using the IPTC `digitalSourceType` vocabulary:
+
+| Label | Condition |
+|---|---|
+| `AI-generated` | `trainedAlgorithmicMedia` + `c2pa.created` action |
+| `AI-edited` | `compositeWithTrainedAlgorithmicMedia` |
+| `Camera-captured` | `digitalCapture` + `c2pa.created` action |
+
+No label is shown if none of these conditions match.
 
 ---
 
@@ -125,14 +189,13 @@ import type {
   ValidationResults,
   ValidationResult,
   DisclosureLevel,
+  PluginC2PA,
   C2paManifestProps,
   C2paProvenanceGraphProps,
 } from "c2pa-react-component";
 ```
 
 ### `VerificationOutcome`
-
-The top-level type passed to `C2paManifest`.
 
 ```ts
 interface VerificationOutcome {
@@ -163,6 +226,7 @@ interface ManifestStore {
 
 ```tsx
 import { C2paManifest } from "c2pa-react-component";
+import { CAWGManifest } from "c2pa-react-cawg-component";
 import type { VerificationOutcome } from "c2pa-react-component";
 
 export function MediaCard({ outcome }: { outcome: VerificationOutcome }) {
@@ -171,8 +235,9 @@ export function MediaCard({ outcome }: { outcome: VerificationOutcome }) {
       <img src="/photo.jpg" alt="Photo" />
       <C2paManifest
         manifest={outcome}
-        level={2}
+        level={1}
         defaultViewMore
+        plugin={[CAWGManifest]}
       />
     </div>
   );
@@ -186,8 +251,6 @@ export function MediaCard({ outcome }: { outcome: VerificationOutcome }) {
 ### Next.js App Router
 
 This library ships as ESM. No additional `transpilePackages` configuration is needed. Import the CSS in your root layout as shown above.
-
-If you are using `"use client"` components that import from this library, the import works as-is — no dynamic import wrapper is required.
 
 ### Vite / Create React App
 
@@ -205,25 +268,21 @@ Use [yalc](https://github.com/wclr/yalc) to consume the library in another local
 npm install -g yalc
 ```
 
-**Start watch mode in this repo:**
+**In this repo — build and push:**
 
 ```bash
-# Terminal 1 — rebuild on every save
-npm run dev:lib
-
-# Terminal 2 — push updates to yalc's local store
-yalc push --watch
+npm run build
+yalc publish --push
 ```
 
 **In your consuming project:**
 
 ```bash
-# Add the local package
 yalc add c2pa-react-component
 npm install
 ```
 
-After that, any save in this repo triggers a rebuild and the consuming project picks up the changes automatically — no reinstall required.
+After that, run `yalc publish --push` in this repo after each build to push updates. The consuming project picks them up automatically.
 
 **Revert to the published npm version:**
 

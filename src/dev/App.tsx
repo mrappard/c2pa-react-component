@@ -39,7 +39,7 @@ export default function App() {
 
       <h2>Disclosure Levels</h2>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        {([1, 2, 3, 4, 5] as const).map((l) => (
+        {([1, 2, 3, 4] as const).map((l) => (
           <div key={l}>
             <p style={{ margin: '0 0 6px', fontWeight: 600, color: '#475569' }}>Level {l}</p>
             <C2paManifest
