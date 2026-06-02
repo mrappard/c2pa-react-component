@@ -1,0 +1,169 @@
+{
+  "state": false,
+  "manifests": [
+    {
+      "id": "urn:c2pa:3565993d-baea-07e5-298f-4bf25f639360",
+      "title": null,
+      "claimGenerator": null,
+      "claimGeneratorInfo": [
+        {
+          "name": "Google C2PA Core Generator Library",
+          "version": "919163834:919163834"
+        }
+      ],
+      "instanceId": "01ee873f-3815-e444-dacb-49ee90ac52fc",
+      "signatureInfo": {
+        "alg": "Es256",
+        "issuer": "Google LLC",
+        "common_name": "Google Media Processing Services",
+        "cert_serial_number": "3538769668273185232431161852199326737017347790",
+        "time": "2026-05-27T18:06:16+00:00"
+      },
+      "assertions": {
+        "c2pa.actions.v2": {
+          "actions": [
+            {
+              "action": "c2pa.created",
+              "digitalSourceType": "http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia",
+              "description": "Created by Google Generative AI."
+            },
+            {
+              "action": "c2pa.edited",
+              "digitalSourceType": "http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia",
+              "description": "Applied imperceptible SynthID watermark."
+            }
+          ]
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": []
+    },
+    {
+      "id": "urn:c2pa:2830bb92-09cd-ef6d-1a85-4b0685bc90c0",
+      "title": null,
+      "claimGenerator": null,
+      "claimGeneratorInfo": [
+        {
+          "name": "Google C2PA Core Generator Library",
+          "version": "914819096:914819096"
+        }
+      ],
+      "instanceId": "4ef8bd03-a1bb-3d87-38ef-42375b6d881e",
+      "signatureInfo": {
+        "alg": "Es256",
+        "issuer": "Google LLC",
+        "common_name": "Google Media Processing Services",
+        "cert_serial_number": "3655090356939435118458746357446390718679319596",
+        "time": "2026-05-27T18:06:16+00:00"
+      },
+      "assertions": {
+        "c2pa.actions.v2": {
+          "actions": [
+            {
+              "action": "c2pa.opened",
+              "parameters": {
+                "ingredients": [
+                  {
+                    "url": "self#jumbf=c2pa.assertions/c2pa.ingredient.v3",
+                    "hash": [
+                      230,
+                      155,
+                      145,
+                      98,
+                      173,
+                      178,
+                      178,
+                      165,
+                      194,
+                      115,
+                      134,
+                      131,
+                      88,
+                      46,
+                      127,
+                      72,
+                      192,
+                      99,
+                      203,
+                      97,
+                      250,
+                      72,
+                      149,
+                      40,
+                      87,
+                      21,
+                      90,
+                      8,
+                      171,
+                      23,
+                      213,
+                      120
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "action": "c2pa.edited",
+              "digitalSourceType": "http://cv.iptc.org/newscodes/digitalsourcetype/composite",
+              "description": "Added visible watermark"
+            },
+            {
+              "action": "c2pa.converted",
+              "description": "Converted to .png"
+            }
+          ]
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": [
+        {
+          "manifestId": "urn:c2pa:3565993d-baea-07e5-298f-4bf25f639360"
+        }
+      ]
+    }
+  ],
+  "manifestStore": {
+    "activeManifest": "urn:c2pa:2830bb92-09cd-ef6d-1a85-4b0685bc90c0",
+    "manifests": {
+      "urn:c2pa:3565993d-baea-07e5-298f-4bf25f639360": {
+        "claimGenerator": null,
+        "claimGeneratorInfo": [
+          {
+            "name": "Google C2PA Core Generator Library",
+            "version": "919163834:919163834"
+          }
+        ],
+        "title": null,
+        "instanceId": "01ee873f-3815-e444-dacb-49ee90ac52fc",
+        "signatureInfo": {
+          "alg": "Es256",
+          "issuer": "Google LLC",
+          "common_name": "Google Media Processing Services",
+          "cert_serial_number": "3538769668273185232431161852199326737017347790",
+          "time": "2026-05-27T18:06:16+00:00"
+        }
+      },
+      "urn:c2pa:2830bb92-09cd-ef6d-1a85-4b0685bc90c0": {
+        "claimGenerator": null,
+        "claimGeneratorInfo": [
+          {
+            "name": "Google C2PA Core Generator Library",
+            "version": "914819096:914819096"
+          }
+        ],
+        "title": null,
+        "instanceId": "4ef8bd03-a1bb-3d87-38ef-42375b6d881e",
+        "signatureInfo": {
+          "alg": "Es256",
+          "issuer": "Google LLC",
+          "common_name": "Google Media Processing Services",
+          "cert_serial_number": "3655090356939435118458746357446390718679319596",
+          "time": "2026-05-27T18:06:16+00:00"
+        }
+      }
+    }
+  }
+}

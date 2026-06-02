@@ -11,6 +11,7 @@ import {
   getContentLabel,
   getSignerLogo,
   isVideo,
+  type SignerLogo,
 } from '../../shared/utils'
 
 
@@ -49,9 +50,12 @@ function FilmstripIcon() {
   )
 }
 
-function SourceBadge({ label, logoUrl }: { label: string; logoUrl?: string }) {
-  if (logoUrl) {
-    return <img src={logoUrl} alt={label} className="c2pa-signer-logo" />
+function SourceBadge({ label, logo, resolveUri }: { label: string; logo?: SignerLogo; resolveUri?: (uri: string, format?: string) => React.ReactNode }) {
+  if (logo) {
+    if (resolveUri) {
+      return <>{resolveUri(logo.uri, logo.format)}</>
+    }
+    return <img src={logo.uri} alt={label} className="c2pa-signer-logo" />
   }
   const initials = label
     .split(/\s+/)
@@ -101,13 +105,15 @@ function ManifestRow({
   entry,
   active,
   invalid,
-    plugin
+  plugin,
+  resolveUri,
 }: {
   manifest: VerificationOutcome
   entry: ManifestEntry
   active?: boolean
   invalid?: boolean
-    plugin?:PluginC2PA[]
+  plugin?: PluginC2PA[]
+  resolveUri?: (uri: string, format?: string) => React.ReactNode
 }) {
 
   const signer = getSigner(entry)
@@ -123,7 +129,7 @@ function ManifestRow({
         <div className="c2pa-manifest-row-content">
           {!invalid && <div className="c2pa-signed-by-label">Signed by</div>}
           <div className="c2pa-manifest-row-heading">
-            <SourceBadge label={signer} logoUrl={signerLogo} />
+            <SourceBadge label={signer} logo={signerLogo} resolveUri={resolveUri} />
             <div className="c2pa-title">
               {invalid ? 'Invalid' : signer}
             </div>
@@ -238,16 +244,18 @@ function InvalidState({
   className,
   onViewMore,
   manifest,
+  resolveUri,
 }: {
   entry: ManifestEntry
   className?: string
   onViewMore?: () => void
-  manifest: VerificationOutcome,
-  plugin?:PluginC2PA[]
+  manifest: VerificationOutcome
+  plugin?: PluginC2PA[]
+  resolveUri?: (uri: string, format?: string) => React.ReactNode
 }) {
   return (
     <div className={cx('c2pa-card', className)}>
-      <ManifestRow manifest={manifest} entry={entry} invalid />
+      <ManifestRow manifest={manifest} entry={entry} invalid resolveUri={resolveUri} />
 
       <div className="c2pa-divider" />
 
@@ -266,12 +274,13 @@ function ManifestSummary({
   activeManifest,
   className,
   onViewMore,
-  plugin
+  plugin,
+  resolveUri,
 }: LevelProps) {
 
   return (
     <div className={cx('c2pa-card', className)}>
-      <ManifestRow manifest={manifest} entry={activeManifest} plugin={plugin} active />
+      <ManifestRow manifest={manifest} entry={activeManifest} plugin={plugin} resolveUri={resolveUri} active />
 
 
       {onViewMore && <>
@@ -287,12 +296,14 @@ function ProvenanceSummary({
   manifest,
   className,
   onViewMore,
-  plugin
+  plugin,
+  resolveUri,
 }: {
   manifest: VerificationOutcome
   className?: string
   onViewMore?: () => void
-    plugin?:PluginC2PA[]
+  plugin?: PluginC2PA[]
+  resolveUri?: (uri: string, format?: string) => React.ReactNode
 }) {
 
   if (!manifest.manifestStore) {
@@ -332,7 +343,7 @@ function ProvenanceSummary({
         />
 
         <div>
-          {activeEntry && <ManifestRow manifest={manifest} entry={activeEntry} plugin={plugin} active />}
+          {activeEntry && <ManifestRow manifest={manifest} entry={activeEntry} plugin={plugin} resolveUri={resolveUri} active />}
 
           {shouldCollapse && middleCount > 0 && (
             <>
@@ -348,14 +359,14 @@ function ProvenanceSummary({
             visibleMiddleEntries.map((entry, i) => (
               <React.Fragment key={i}>
                 <div className="c2pa-divider" />
-                <ManifestRow manifest={manifest} entry={entry} plugin={plugin} />
+                <ManifestRow manifest={manifest} entry={entry} plugin={plugin} resolveUri={resolveUri} />
               </React.Fragment>
             ))}
 
           {originEntries[0] && (
             <>
               <div className="c2pa-divider" />
-              <ManifestRow manifest={manifest} entry={originEntries[0]} plugin={plugin} />
+              <ManifestRow manifest={manifest} entry={originEntries[0]} plugin={plugin} resolveUri={resolveUri} />
             </>
           )}
         </div>
@@ -380,7 +391,8 @@ export function C2paManifestL2({
   className,
   onViewMore,
   officialList = false,
-  plugin
+  plugin,
+  resolveUri,
 }: LevelProps) {
   const isInvalid =
     officialList ?
@@ -405,6 +417,7 @@ export function C2paManifestL2({
         className={className}
         onViewMore={onViewMore}
         plugin={plugin}
+        resolveUri={resolveUri}
       />
     )
   }
@@ -416,7 +429,8 @@ export function C2paManifestL2({
         manifest={manifest}
         className={className}
         onViewMore={onViewMore}
-         plugin={plugin}
+        plugin={plugin}
+        resolveUri={resolveUri}
       />
     )
   }
@@ -428,7 +442,8 @@ export function C2paManifestL2({
       activeManifest={activeManifest}
       className={className}
       onViewMore={onViewMore}
-       plugin={plugin}
+      plugin={plugin}
+      resolveUri={resolveUri}
     />
   )
 

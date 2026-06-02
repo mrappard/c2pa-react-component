@@ -112,9 +112,21 @@ export function getKnownAssertions(plugins: PluginC2PA[] | undefined): Set<strin
   return known
 }
 
-export function getSignerLogo(entry: ManifestEntry): string | undefined {
-  const info = entry.claimGeneratorInfo?.[0] as Record<string, string> | undefined
-  return info?.icon ?? info?.logo ?? (entry as any).signerLogo ?? undefined
+export interface SignerLogo {
+  uri: string
+  format?: string
+}
+
+export function getSignerLogo(entry: ManifestEntry): SignerLogo | undefined {
+  const info = entry.claimGeneratorInfo?.[0]
+  const icon = info?.icon ?? (info as any)?.logo ?? (entry as any).signerLogo
+  if (!icon) return undefined
+  if (typeof icon === 'string') return { uri: icon }
+  if (typeof icon === 'object' && icon !== null && 'identifier' in icon) {
+    const ref = icon as { identifier: string; format?: string }
+    return { uri: ref.identifier, format: ref.format }
+  }
+  return undefined
 }
 
 export function isVideo(entry: ManifestEntry): boolean {
