@@ -1,6 +1,8 @@
 import { Handle, Position, NodeProps } from '@xyflow/react'
+import type { ReactNode } from 'react'
 import { ManifestEntry } from 'c2pa-react-component-types'
-import { formatDate, getDate, getGenerator, getIssuer } from '../C2paManifest/shared/utils'
+import { formatDate, getDate, getGenerator, getIssuer, getSignerLogo, type SignerLogo } from '../C2paManifest/shared/utils'
+import { useProvenanceGraphContext } from './ProvenanceGraphContext'
 import '../C2paManifest/styles/c2paManifest.css'
 
 export interface ManifestNodeData {
@@ -36,7 +38,11 @@ function getThumb(entry: ManifestEntry) {
   )
 }
 
-function SourceBadge({ label }: { label: string }) {
+function SourceBadge({ label, logo, resolveUri }: { label: string; logo?: SignerLogo; resolveUri?: (uri: string, format?: string) => ReactNode }) {
+  if (logo) {
+    if (resolveUri) return <>{resolveUri(logo.uri, logo.format)}</>
+    return <img src={logo.uri} alt={label} className="c2pa-signer-logo" />
+  }
   const initials = label
     .split(/\s+/)
     .map((x) => x[0])
@@ -59,6 +65,7 @@ function Thumbnail({ entry }: { entry: ManifestEntry }) {
 
 export function ManifestNode({ data }: NodeProps) {
   const { entry, isActive, validationState, isSelected, isCompared, isComparingMode } = data as ManifestNodeData
+  const { resolveUri } = useProvenanceGraphContext()
   const selectionLabel = isSelected ? 'A' : isCompared ? 'B' : undefined
   const isDimmed = isComparingMode && !isSelected && !isCompared
 
@@ -66,6 +73,7 @@ export function ManifestNode({ data }: NodeProps) {
   const issuer = getIssuer(entry)
   const generator = getGenerator(entry)
   const date = getDate(entry)
+  const signerLogo = getSignerLogo(entry)
 
   const actions = Object.values(entry.assertions || {})
     .flatMap((assertion) => {
@@ -100,7 +108,7 @@ export function ManifestNode({ data }: NodeProps) {
         <Thumbnail entry={entry} />
         <div className="c2pa-manifest-row-content">
           <div className="c2pa-manifest-row-heading">
-            <SourceBadge label={title} />
+            <SourceBadge label={title} logo={signerLogo} resolveUri={resolveUri} />
             <div className="c2pa-title">{title}</div>
             {isActive && <span className="c2pa-active-badge">Active</span>}
           </div>

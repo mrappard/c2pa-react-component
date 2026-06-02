@@ -17,7 +17,7 @@ export function buildGraph(manifest: ManifestStore): { nodes: Node[]; edges: Edg
 
   for (const [id, entry] of Object.entries(manifests)) {
     for (const ingredient of entry.ingredients ?? []) {
-      const srcId = ingredient.active_manifest
+      const srcId = ingredient.active_manifest ?? (ingredient as { manifestId?: string }).manifestId
       if (!srcId) continue
       if (!childOf[srcId]) childOf[srcId] = []
       childOf[srcId].push(id)

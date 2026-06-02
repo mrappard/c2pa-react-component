@@ -3,7 +3,7 @@ import { LevelProps } from '../../types'
 import C2paProvenanceGraph from '../../../C2paProvenanceGraph/C2paProvenanceGraph'
 import { AssertionPanel } from './AssertionPanel'
 
-export function C2paManifestL3({ manifest, className, plugin }: LevelProps) {
+export function C2paManifestL3({ manifest, className, plugin, resolveUri }: LevelProps) {
   const [selectedIds, setSelectedIds] = useState<string[]>([])
 
   if (!manifest.manifestStore) {
@@ -27,6 +27,7 @@ export function C2paManifestL3({ manifest, className, plugin }: LevelProps) {
           height={500}
           selectedIds={selectedIds}
           onNodeClick={handleNodeClick}
+          resolveUri={resolveUri}
         />
       </div>
       <div className="c2pa-l3-panel">

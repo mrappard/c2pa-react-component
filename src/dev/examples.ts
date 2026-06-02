@@ -10,11 +10,31 @@ import labelAiGenerated from '../../examples/label-ai-generated.json'
 import labelAiEdited from '../../examples/label-ai-edited.json'
 import labelCameraCaptured from '../../examples/label-camera-captured.json'
 import cawgIdentity from '../../examples/cawg-identity-example.json'
+import geminiExample from '../../examples/gemini-example-image.json'
+import openAiExample from '../../examples/open-ai-example.json'
 
 function normalize(raw: unknown): VerificationOutcome {
   const data = raw as Record<string, unknown>
   if (Array.isArray(data.manifests)) {
-    return data as unknown as VerificationOutcome
+    // New format: top-level manifests array + separate manifestStore.
+    // manifestStore.manifests entries lack ingredients/assertions — merge them in from the array.
+    const result = data as unknown as VerificationOutcome
+    if (result.manifestStore) {
+      const arrayEntries = data.manifests as Array<Record<string, unknown>>
+      const enriched: ManifestStore['manifests'] = {}
+      for (const [id, entry] of Object.entries(result.manifestStore.manifests)) {
+        const arrayEntry = arrayEntries.find((e) => e.id === id) ?? {}
+        enriched[id] = {
+          ...entry,
+          ingredients: (arrayEntry.ingredients as ManifestEntry['ingredients']) ?? [],
+          assertions: (arrayEntry.assertions as ManifestEntry['assertions']) ?? {},
+          credentials: (arrayEntry.credentials as ManifestEntry['credentials']) ?? [],
+          thumbnail: (arrayEntry.thumbnail as ManifestEntry['thumbnail']) ?? null,
+        }
+      }
+      return { ...result, manifestStore: { ...result.manifestStore, manifests: enriched } }
+    }
+    return result
   }
   const store = data as unknown as ManifestStore
   const manifests = Object.entries(store.manifests).map(([id, entry]: [string, ManifestEntry]) => ({
@@ -44,4 +64,6 @@ export const examples: { label: string; data: VerificationOutcome }[] = [
   { label: 'Label — AI-generated', data: normalize(labelAiGenerated) },
   { label: 'Label — AI-edited', data: normalize(labelAiEdited) },
   { label: 'Label — Camera-captured', data: normalize(labelCameraCaptured) },
+  { label: 'Gemini Example Image', data: normalize(geminiExample) },
+  { label: 'OpenAI Example', data: normalize(openAiExample) },
 ]

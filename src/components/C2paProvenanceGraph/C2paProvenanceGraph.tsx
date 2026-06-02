@@ -10,13 +10,16 @@ import {
   Edge,
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
+import type { ReactNode } from 'react'
 import { C2paProvenanceGraphProps } from 'c2pa-react-component-types'
 import { ManifestNode } from './ManifestNode'
 import { buildGraph } from './buildGraph'
+import { ProvenanceGraphContext } from './ProvenanceGraphContext'
 
 interface SelectableGraphProps extends C2paProvenanceGraphProps {
   selectedIds?: string[]
   onNodeClick?: (id: string) => void
+  resolveUri?: (uri: string, format?: string) => ReactNode
 }
 
 const nodeTypes: NodeTypes = {
@@ -29,6 +32,7 @@ export function C2paProvenanceGraph({
   height = 400,
   selectedIds = [],
   onNodeClick,
+  resolveUri,
 }: SelectableGraphProps) {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([])
   const [edges, setEdges] = useEdgesState<Edge>([])
@@ -54,6 +58,7 @@ export function C2paProvenanceGraph({
   }, [selectedIds])
 
   return (
+    <ProvenanceGraphContext.Provider value={{ resolveUri }}>
     <div className={className} style={{ width: '100%', height }}>
       <ReactFlow
         nodes={nodes}
@@ -69,9 +74,10 @@ export function C2paProvenanceGraph({
         proOptions={{ hideAttribution: true }}
       >
         <Background />
-        <Controls />
+        <Controls showInteractive={false} />
       </ReactFlow>
     </div>
+    </ProvenanceGraphContext.Provider>
   )
 }
 

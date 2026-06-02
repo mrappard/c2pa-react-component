@@ -12,9 +12,9 @@
       "replaced": "0.1.8"
     },
     "c2pa-react-component-types": {
-      "signature": "bd2c83062aa82aff7068579b03f7c76d",
+      "signature": "7d796e258ae80421793b7299c74e4387",
       "file": true,
-      "replaced": "^0.1.0"
+      "replaced": "^0.1.2"
     }
   }
 }

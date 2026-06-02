@@ -13,14 +13,43 @@ import "c2pa-react-diacc-component/style.css"
 
 export default function App() {
 
-   const [selectedIndex, setSelectedIndex] = useState(0)
+  const [selectedIndex, setSelectedIndex] = useState(0)
+  const [testLevel, setTestLevel] = useState<1 | 2 | 3 | 4>(1)
   const example = examples[selectedIndex]
 
   return (
     <div style={{ maxWidth: '960px', margin: '2rem auto', fontFamily: 'sans-serif' }}>
       <h1>C2PA React Components – Dev Playground</h1>
 
-        <div style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <h2>Level Switcher Test</h2>
+      <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <label style={{ fontWeight: 600, fontSize: '14px', color: '#374151' }}>Level:</label>
+        {([1, 2, 3, 4] as const).map((l) => (
+          <button
+            key={l}
+            onClick={() => setTestLevel(l)}
+            style={{
+              padding: '6px 14px',
+              fontSize: '14px',
+              borderRadius: '6px',
+              border: '1px solid #d1d5db',
+              background: testLevel === l ? '#3b82f6' : '#fff',
+              color: testLevel === l ? '#fff' : '#374151',
+              cursor: 'pointer',
+            }}
+          >
+            {l}
+          </button>
+        ))}
+      </div>
+      <C2paManifest
+        plugin={[CAWGManifest, DIACCManifest]}
+        manifest={example.data}
+        level={testLevel}
+        defaultViewMore={testLevel === 1}
+      />
+
+      <div style={{ marginTop: '2rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '12px' }}>
         <label htmlFor="example-select" style={{ fontWeight: 600, fontSize: '14px', color: '#374151' }}>
           Example:
         </label>

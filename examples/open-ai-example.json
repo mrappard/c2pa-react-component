@@ -1,0 +1,89 @@
+{
+  "state": false,
+  "manifests": [
+    {
+      "id": "urn:c2pa:2637aa41-996a-4e42-8797-24377ebae34e",
+      "title": "image.png",
+      "claimGenerator": null,
+      "claimGeneratorInfo": [
+        {
+          "name": "OpenAI Media Service API",
+          "icon": {
+            "format": "image/svg+xml",
+            "identifier": "self#jumbf=-c2pa-urn-c2pa-2637aa41-996a-4e42-8797-24377ebae34e-c2pa.assertions-c2pa.icon"
+          },
+          "specVersion": "2.2.0",
+          "org.contentauth.c2pa_rs": "0.79.2"
+        }
+      ],
+      "instanceId": "xmp:iid:28e2696d-34fc-4356-9464-387527321434",
+      "signatureInfo": {
+        "alg": "Es256",
+        "issuer": "OpenAI OpCo, LLC",
+        "common_name": "OpenAI Media Service",
+        "cert_serial_number": "471440979205905794604524502504016020624908622401",
+        "time": "2026-05-27T18:13:21.829853+00:00"
+      },
+      "assertions": {
+        "c2pa.certificate-status": {
+          "ocspVals": [
+            "MIIEHgoBAKCCBBcwggQTBgkrBgEFBQcwAQEEggQEMIIEADCBoqIWBBRQWQX1X5Qm11rNq24JKy1mERT0+hgPMjAyNjA1MjcxNzEyNThaMHcwdTBNMAkGBSsOAwIaBQAEFD5MfI5QC4dscxW+r26X6hDulCDJBBTDsySWNJOhWepSGGueF+CputawTAIUUpQlB4G1aob5Mxd4cNaOre9iGkGAABgPMjAyNjA1MjcxNzEyNThaoBEYDzIwMjYwNjAzMTcxMjU4WjAKBggqhkjOPQQDAgNIADBFAiALsmQQfyQ56/Q1DpW+cH9BtnpuAL1IDQ392i+NUeCiggIhAM06aWY2gAWbWj7oBe+jz/57fIsR+U4landg6bcvC2HPoIIDATCCAv0wggL5MIICfqADAgECAhRuRZN66t42cRnufNazyJCDQ6Ps2jAKBggqhkjOPQQDAzCBpzELMAkGA1UEBhMCVVMxETAPBgNVBAgMCE5ldyBZb3JrMREwDwYDVQQHDAhOZXcgWW9yazETMBEGA1UECgwKVHJ1Zm8gSW5jLjEUMBIGA1UECwwLQ0EgRGl2aXNpb24xGjAYBgkqhkiG9w0BCQEWC2NhQHRydWZvLmFpMSswKQYDVQQDDCJUcnVmbyBDMlBBIENsYWltIFNpZ25pbmcgQ0EgKDIwMjUpMB4XDTI2MDUxODAwMDMyMloXDTI2MDYxNzAwMDMyMlowgaUxCzAJBgNVBAYTAlVTMREwDwYDVQQIDAhOZXcgWW9yazERMA8GA1UEBwwITmV3IFlvcmsxEzARBgNVBAoMClRydWZvIEluYy4xFDASBgNVBAsMC0NBIERpdmlzaW9uMRowGAYJKoZIhvcNAQkBFgtjYUB0cnVmby5haTEpMCcGA1UEAwwgVHJ1Zm8gQzJQQSBPQ1NQIFJlc3BvbmRlciAoMjAyNSkwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAATd/Rkb5hZq3bqFjvwUOmzcv2ySGgL95chmU4OtrvEr4lLUt+5dr1CEgxILzCrq1Ym7m3/POEOR438l/F68PpdEo4GHMIGEMB0GA1UdDgQWBBRQWQX1X5Qm11rNq24JKy1mERT0+jAfBgNVHSMEGDAWgBTDsySWNJOhWepSGGueF+CputawTDAMBgNVHRMBAf8EAjAAMA4GA1UdDwEB/wQEAwIHgDATBgNVHSUEDDAKBggrBgEFBQcDCTAPBgkrBgEFBQcwAQUEAgUAMAoGCCqGSM49BAMDA2kAMGYCMQCfF8Lffou2Dd/rcScXinD16pW4RXl3hWnZBuEW0a1b9IDHAvgmV8c4uEUkzyYopO0CMQDho+EVPdYDlBsHGQpciw39/7zpddXOM53a+Z0GpbHlBRrGpBqsC5FUk904z5XYnIk=",
+            "MIIEUwoBAKCCBEwwggRIBgkrBgEFBQcwAQEEggQ5MIIENTCBoqIWBBTL2I42iiERcyy574oao2qevFNMQBgPMjAyNjA1MjcxNzEzMDRaMHcwdTBNMAkGBSsOAwIaBQAEFIAg9bziJOltvNZvxhcpZXwkyPH9BBQD1V+vfoPlBB1ZgCdKNP9F/etJeAIUMOih8KWJQmvSuYJIR5kZ3BY3AsuAABgPMjAyNjA1MjcxNzEzMDNaoBEYDzIwMjYwNjAzMTcxMzAzWjAKBggqhkjOPQQDAwNnADBkAjBrWoYv6ylA2Y4Qlrx0i2QCs4LboucdbWLrzZG590i+1dGgoKOGt0d7Gn0W2IuhCcoCMFYQ/mfLxw02LIL6XbcKxZvBsqXiMpdsw3bKDlMl/pkiaGVBhHcL31A0nDVAgWyZFKCCAxcwggMTMIIDDzCCApWgAwIBAgIUA9B9NJJtVxlwxtgUkExzxdPlm+AwCgYIKoZIzj0EAwMwgagxCzAJBgNVBAYTAlVTMREwDwYDVQQIDAhOZXcgWW9yazERMA8GA1UEBwwITmV3IFlvcmsxEzARBgNVBAoMClRydWZvIEluYy4xFDASBgNVBAsMC0NBIERpdmlzaW9uMRowGAYJKoZIhvcNAQkBFgtjYUB0cnVmby5haTEsMCoGA1UEAwwjVHJ1Zm8gQzJQQSBSb290IENBICgyMDI1LCBFQ0MgUDM4NCkwHhcNMjYwNTExMjM0MjI1WhcNMzYwNTA4MjM0MjI1WjCBnjELMAkGA1UEBhMCVVMxETAPBgNVBAgMCE5ldyBZb3JrMREwDwYDVQQHDAhOZXcgWW9yazETMBEGA1UECgwKVHJ1Zm8gSW5jLjEUMBIGA1UECwwLQ0EgRGl2aXNpb24xGjAYBgkqhkiG9w0BCQEWC2NhQHRydWZvLmFpMSIwIAYDVQQDDBlUcnVmbyBSb290IE9DU1AgUmVzcG9uZGVyMHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEYvfXbKCgteGs28iGItnJcsx7mPgsgwOGuHTA2Vlov1pY+ewxV5QRxIFBS6yif8lWJcMj7tpbI6mxaspWe6pbSpeT1Cjre+vJN2TfP1JpGKbrYkc0ZAmcuwIhWIInuR05o4GHMIGEMB0GA1UdDgQWBBTL2I42iiERcyy574oao2qevFNMQDAfBgNVHSMEGDAWgBQD1V+vfoPlBB1ZgCdKNP9F/etJeDAMBgNVHRMBAf8EAjAAMA4GA1UdDwEB/wQEAwIHgDATBgNVHSUEDDAKBggrBgEFBQcDCTAPBgkrBgEFBQcwAQUEAgUAMAoGCCqGSM49BAMDA2gAMGUCMQDt7R+L98vMzhNTw3r0GtDMDA8aBOnEOlaFNZoqvgeJskaZXkn8tYblVNZSOsZpx3wCMBcYJNrfD8V8wZWJ1LVx1MqsKeEDqIirLzfw6UH+W34Z4xJurbDq9BLeTPWwUSPHGA=="
+          ]
+        },
+        "c2pa.actions.v2": {
+          "actions": [
+            {
+              "action": "c2pa.created",
+              "when": "2026-05-27T00:00:00Z",
+              "softwareAgent": {
+                "name": "gpt-image",
+                "version": "2.0"
+              },
+              "digitalSourceType": "http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia"
+            },
+            {
+              "action": "c2pa.converted",
+              "when": "2026-05-27T00:00:00Z"
+            },
+            {
+              "action": "c2pa.watermarked.unbound",
+              "when": "2026-05-27T00:00:00Z"
+            }
+          ]
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": []
+    }
+  ],
+  "manifestStore": {
+    "activeManifest": "urn:c2pa:2637aa41-996a-4e42-8797-24377ebae34e",
+    "manifests": {
+      "urn:c2pa:2637aa41-996a-4e42-8797-24377ebae34e": {
+        "claimGenerator": null,
+        "claimGeneratorInfo": [
+          {
+            "name": "OpenAI Media Service API",
+            "icon": {
+              "format": "image/svg+xml",
+              "identifier": "self#jumbf=-c2pa-urn-c2pa-2637aa41-996a-4e42-8797-24377ebae34e-c2pa.assertions-c2pa.icon"
+            },
+            "specVersion": "2.2.0",
+            "org.contentauth.c2pa_rs": "0.79.2"
+          }
+        ],
+        "title": "image.png",
+        "instanceId": "xmp:iid:28e2696d-34fc-4356-9464-387527321434",
+        "signatureInfo": {
+          "alg": "Es256",
+          "issuer": "OpenAI OpCo, LLC",
+          "common_name": "OpenAI Media Service",
+          "cert_serial_number": "471440979205905794604524502504016020624908622401",
+          "time": "2026-05-27T18:13:21.829853+00:00"
+        }
+      }
+    }
+  }
+}
