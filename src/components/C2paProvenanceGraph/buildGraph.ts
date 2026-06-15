@@ -34,6 +34,31 @@ export function buildGraph(manifest: ManifestStore): { nodes: Node[]; edges: Edg
     }
   }
 
+  // Fallback: a manifest store only contains manifests relevant to a single asset's
+  // provenance, so any manifest with no ingredient links at all must still relate to
+  // the active manifest. Connect it as an (unspecified) ingredient of the active one
+  // so it doesn't render as a disconnected node.
+  const linkedIds = new Set<string>()
+  for (const edge of edges) {
+    linkedIds.add(edge.source as string)
+    linkedIds.add(edge.target as string)
+  }
+  for (const id of Object.keys(manifests)) {
+    if (id === activeManifest || linkedIds.has(id)) continue
+
+    if (!childOf[id]) childOf[id] = []
+    childOf[id].push(activeManifest)
+
+    edges.push({
+      id: `${id}->${activeManifest}`,
+      source: id,
+      target: activeManifest,
+      animated: false,
+      style: { stroke: '#94a3b8' },
+      labelStyle: { fontSize: 11, fill: '#64748b' },
+    })
+  }
+
   // Assign column depths via BFS from roots (manifests not referenced as ingredients)
   const allIds = Object.keys(manifests)
   const referenced = new Set(edges.map((e) => e.target as string))

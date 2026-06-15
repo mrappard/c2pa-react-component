@@ -4,12 +4,13 @@ import { C2paManifestL1 } from './levels/L1/C2paManifestL1'
 import { C2paManifestL2 } from './levels/L2/C2paManifestL2'
 import { C2paManifestL3 } from './levels/L3/C2paManifestL3'
 import { C2paManifestL4 } from './levels/L4/C2paManifestL4'
+import { normalizeOutcome } from './shared/normalizeOutcome'
 import './styles/c2paManifest.css'
 
-export const C2paManifest: React.FC<C2paManifestProps> = ({ manifest, level = 3, className, onViewMore, defaultViewMore, plugin, resolveUri }) => {
-  
-  
- 
+export const C2paManifest: React.FC<C2paManifestProps> = ({ manifest: rawManifest, level = 3, className, onViewMore, defaultViewMore, plugin, resolveUri }) => {
+
+  const manifest = React.useMemo(() => normalizeOutcome(rawManifest), [rawManifest])
+
   const activeManifest = manifest.manifestStore?.manifests[manifest.manifestStore.activeManifest];
 
 
