@@ -2,9 +2,9 @@
   "version": "v1",
   "packages": {
     "c2pa-react-cawg-component": {
-      "signature": "49b04f6f0cd76cac86cc38878c724e15",
+      "signature": "f2c81e5f73e06bd455957eb880a62898",
       "file": true,
-      "replaced": "^0.1.8"
+      "replaced": "^0.1.10"
     },
     "c2pa-react-diacc-component": {
       "signature": "1a2d3be587e3fd140a1dd4a852db9c2c",
@@ -12,9 +12,9 @@
       "replaced": "0.1.8"
     },
     "c2pa-react-component-types": {
-      "signature": "7d796e258ae80421793b7299c74e4387",
+      "signature": "ff36f26a4818ff0d2a5c5ef72beb7166",
       "file": true,
-      "replaced": "^0.1.2"
+      "replaced": "0.1.3"
     }
   }
 }

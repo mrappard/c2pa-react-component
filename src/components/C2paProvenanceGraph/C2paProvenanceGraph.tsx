@@ -67,6 +67,7 @@ export function C2paProvenanceGraph({
         nodeTypes={nodeTypes}
         fitView
         fitViewOptions={{ padding: 0.2 }}
+        minZoom={0.1}
         nodesDraggable
         nodesConnectable={false}
         elementsSelectable={false}

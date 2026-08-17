@@ -9,6 +9,7 @@ import fireflyTabby from '../../examples/Firefly_tabby_cat.json'
 import labelAiGenerated from '../../examples/label-ai-generated.json'
 import labelAiEdited from '../../examples/label-ai-edited.json'
 import labelCameraCaptured from '../../examples/label-camera-captured.json'
+import llmExample from '../../examples/llm-example.json'
 import cawgIdentity from '../../examples/cawg-identity-example.json'
 import geminiExample from '../../examples/gemini-example-image.json'
 import openAiExample from '../../examples/open-ai-example.json'
@@ -66,4 +67,5 @@ export const examples: { label: string; data: VerificationOutcome }[] = [
   { label: 'Label — Camera-captured', data: normalize(labelCameraCaptured) },
   { label: 'Gemini Example Image', data: normalize(geminiExample) },
   { label: 'OpenAI Example', data: normalize(openAiExample) },
+  { label: 'LLM Example', data: normalize(llmExample) },
 ]

@@ -1,0 +1,450 @@
+{
+  "manifests": [
+    {
+      "id": "urn:c2pa:3c1defa7-d974-42de-b61a-f5885028fa55",
+      "title": "model-deepseek-v2:16b.md",
+      "claimGenerator": null,
+      "claimGeneratorInfo": [
+        {
+          "name": "cognitive-agent",
+          "version": "0.1.0",
+          "org.contentauth.c2pa_rs": "0.80.0"
+        }
+      ],
+      "instanceId": "xmp:iid:2a59cff9-c80f-469e-9306-95c3730bb1d5",
+      "signatureInfo": {
+        "alg": "Es256",
+        "issuer": "C2PA Test Signing Cert",
+        "common_name": "C2PA Signer",
+        "cert_serial_number": "640229841392226413189608867977836244731148734950"
+      },
+      "assertions": {
+        "c2pa.actions.v2": {
+          "actions": [
+            {
+              "action": "c2pa.created"
+            }
+          ]
+        },
+        "cawg.metadata": {
+          "@context": {
+            "xmp": "http://ns.adobe.com/xap/1.0/",
+            "dc": "http://purl.org/dc/elements/1.1/"
+          },
+          "xmp:CreateDate": "2026-06-15T18:51:18.456Z",
+          "dc:title": [
+            "deepseek-v2:16b"
+          ]
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": []
+    },
+    {
+      "id": "urn:c2pa:0807cc78-4bd3-49df-a83c-ff46503ede71",
+      "title": "msg-8b36d02c-280c-4d4a-8036-992610352e03.md",
+      "claimGenerator": null,
+      "claimGeneratorInfo": [
+        {
+          "name": "cognitive-agent",
+          "version": "0.1.0",
+          "org.contentauth.c2pa_rs": "0.80.0"
+        }
+      ],
+      "instanceId": "xmp:iid:64bcb7a2-a6e2-4119-9912-86e9a90442e6",
+      "signatureInfo": {
+        "alg": "Es256",
+        "issuer": "C2PA Test Signing Cert",
+        "common_name": "C2PA Signer",
+        "cert_serial_number": "640229841392226413189608867977836244731148734950"
+      },
+      "assertions": {
+        "com.cognitive-agent.model": {
+          "model": "deepseek-v2:16b"
+        },
+        "c2pa.actions.v2": {
+          "actions": [
+            {
+              "action": "c2pa.created",
+              "softwareAgent": {
+                "name": "deepseek-v2:16b"
+              },
+              "digitalSourceType": "http://c2pa.org/digitalsourcetype/trainedAlgorithmicData"
+            }
+          ]
+        },
+        "cawg.metadata": {
+          "@context": {
+            "dc": "http://purl.org/dc/elements/1.1/",
+            "xmp": "http://ns.adobe.com/xap/1.0/"
+          },
+          "dc:creator": [
+            "deepseek-v2:16b"
+          ],
+          "xmp:CreateDate": "2026-06-15T18:51:44.160Z"
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": [
+        {
+          "title": "urn_c2pa_b26403e3-d487-4752-a487-bc1c418717e6.txt",
+          "manifestId": "urn:c2pa:b26403e3-d487-4752-a487-bc1c418717e6"
+        },
+        {
+          "title": "model-deepseek-v2_16b.md",
+          "manifestId": "urn:c2pa:3c1defa7-d974-42de-b61a-f5885028fa55"
+        }
+      ]
+    },
+    {
+      "id": "urn:c2pa:b26403e3-d487-4752-a487-bc1c418717e6",
+      "title": "msg-18ad4b27-9d36-47ee-b196-899b9a27cb49.md",
+      "claimGenerator": null,
+      "claimGeneratorInfo": [
+        {
+          "name": "cognitive-agent",
+          "version": "0.1.0",
+          "org.contentauth.c2pa_rs": "0.80.0"
+        }
+      ],
+      "instanceId": "xmp:iid:37495df9-9d0a-4186-bc40-3da741c5d995",
+      "signatureInfo": {
+        "alg": "Es256",
+        "issuer": "C2PA Test Signing Cert",
+        "common_name": "C2PA Signer",
+        "cert_serial_number": "640229841392226413189608867977836244731148734950"
+      },
+      "assertions": {
+        "c2pa.actions.v2": {
+          "actions": [
+            {
+              "action": "c2pa.created"
+            }
+          ]
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": [
+        {
+          "title": "urn_c2pa_d7ee7cc6-46e9-41e9-a152-1045c35cd35e.txt",
+          "manifestId": "urn:c2pa:d7ee7cc6-46e9-41e9-a152-1045c35cd35e"
+        }
+      ]
+    },
+    {
+      "id": "urn:c2pa:d1ef354b-cc76-4603-8daf-29e76c68c9aa",
+      "title": "msg-c8654689-3d80-4199-939e-9c49d8733ffc.md",
+      "claimGenerator": null,
+      "claimGeneratorInfo": [
+        {
+          "name": "cognitive-agent",
+          "version": "0.1.0",
+          "org.contentauth.c2pa_rs": "0.80.0"
+        }
+      ],
+      "instanceId": "xmp:iid:deb98f40-ad53-47ca-83ca-5feedd0a5818",
+      "signatureInfo": {
+        "alg": "Es256",
+        "issuer": "C2PA Test Signing Cert",
+        "common_name": "C2PA Signer",
+        "cert_serial_number": "640229841392226413189608867977836244731148734950"
+      },
+      "assertions": {
+        "c2pa.actions.v2": {
+          "actions": [
+            {
+              "action": "c2pa.created"
+            }
+          ]
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": [
+        {
+          "title": "urn_c2pa_0807cc78-4bd3-49df-a83c-ff46503ede71.txt",
+          "manifestId": "urn:c2pa:0807cc78-4bd3-49df-a83c-ff46503ede71"
+        }
+      ]
+    },
+    {
+      "id": "urn:c2pa:de4d2a59-a513-4472-ae2e-2b3028570c66",
+      "title": "msg-47527c1a-0a8f-42c2-8530-26e64dc05497.md",
+      "claimGenerator": null,
+      "claimGeneratorInfo": [
+        {
+          "name": "cognitive-agent",
+          "version": "0.1.0",
+          "org.contentauth.c2pa_rs": "0.80.0"
+        }
+      ],
+      "instanceId": "xmp:iid:274dc584-cd24-442e-a91a-185229e136bd",
+      "signatureInfo": {
+        "alg": "Es256",
+        "issuer": "C2PA Test Signing Cert",
+        "common_name": "C2PA Signer",
+        "cert_serial_number": "640229841392226413189608867977836244731148734950"
+      },
+      "assertions": {
+        "com.cognitive-agent.model": {
+          "model": "deepseek-v2:16b"
+        },
+        "c2pa.actions.v2": {
+          "actions": [
+            {
+              "action": "c2pa.created",
+              "softwareAgent": {
+                "name": "deepseek-v2:16b"
+              },
+              "digitalSourceType": "http://c2pa.org/digitalsourcetype/trainedAlgorithmicData"
+            }
+          ]
+        },
+        "cawg.metadata": {
+          "@context": {
+            "xmp": "http://ns.adobe.com/xap/1.0/",
+            "dc": "http://purl.org/dc/elements/1.1/"
+          },
+          "dc:creator": [
+            "deepseek-v2:16b"
+          ],
+          "xmp:CreateDate": "2026-06-15T18:51:58.528Z"
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": [
+        {
+          "title": "urn_c2pa_d1ef354b-cc76-4603-8daf-29e76c68c9aa.txt",
+          "manifestId": "urn:c2pa:d1ef354b-cc76-4603-8daf-29e76c68c9aa"
+        },
+        {
+          "title": "model-deepseek-v2_16b.md",
+          "manifestId": "urn:c2pa:3c1defa7-d974-42de-b61a-f5885028fa55"
+        }
+      ]
+    },
+    {
+      "id": "urn:c2pa:5bf86dca-32c0-40d4-877f-e1eb069d5208",
+      "title": "msg-60119de5-a3e1-4322-802c-640a5452c766.md",
+      "claimGenerator": null,
+      "claimGeneratorInfo": [
+        {
+          "name": "cognitive-agent",
+          "version": "0.1.0",
+          "org.contentauth.c2pa_rs": "0.80.0"
+        }
+      ],
+      "instanceId": "xmp:iid:fa66a8fe-206f-4ff1-8aca-da31bf615e90",
+      "signatureInfo": {
+        "alg": "Es256",
+        "issuer": "C2PA Test Signing Cert",
+        "common_name": "C2PA Signer",
+        "cert_serial_number": "640229841392226413189608867977836244731148734950"
+      },
+      "assertions": {
+        "c2pa.actions.v2": {
+          "actions": [
+            {
+              "action": "c2pa.created"
+            }
+          ]
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": []
+    },
+    {
+      "id": "urn:c2pa:d7ee7cc6-46e9-41e9-a152-1045c35cd35e",
+      "title": "msg-daa1d8e5-2fdf-403a-9443-3929cd709993.md",
+      "claimGenerator": null,
+      "claimGeneratorInfo": [
+        {
+          "name": "cognitive-agent",
+          "version": "0.1.0",
+          "org.contentauth.c2pa_rs": "0.80.0"
+        }
+      ],
+      "instanceId": "xmp:iid:357b804f-375c-4136-b7d3-fb92b50065f4",
+      "signatureInfo": {
+        "alg": "Es256",
+        "issuer": "C2PA Test Signing Cert",
+        "common_name": "C2PA Signer",
+        "cert_serial_number": "640229841392226413189608867977836244731148734950"
+      },
+      "assertions": {
+        "c2pa.actions.v2": {
+          "actions": [
+            {
+              "action": "c2pa.created",
+              "softwareAgent": {
+                "name": "deepseek-v2:16b"
+              },
+              "digitalSourceType": "http://c2pa.org/digitalsourcetype/trainedAlgorithmicData"
+            }
+          ]
+        },
+        "cawg.metadata": {
+          "@context": {
+            "xmp": "http://ns.adobe.com/xap/1.0/",
+            "dc": "http://purl.org/dc/elements/1.1/"
+          },
+          "dc:creator": [
+            "deepseek-v2:16b"
+          ],
+          "xmp:CreateDate": "2026-06-15T18:51:35.746Z"
+        },
+        "com.cognitive-agent.model": {
+          "model": "deepseek-v2:16b"
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": [
+        {
+          "title": "urn_c2pa_5bf86dca-32c0-40d4-877f-e1eb069d5208.txt",
+          "manifestId": "urn:c2pa:5bf86dca-32c0-40d4-877f-e1eb069d5208"
+        },
+        {
+          "title": "model-deepseek-v2_16b.md",
+          "manifestId": "urn:c2pa:3c1defa7-d974-42de-b61a-f5885028fa55"
+        }
+      ]
+    }
+  ],
+  "manifestStore": {
+    "activeManifest": "urn:c2pa:de4d2a59-a513-4472-ae2e-2b3028570c66",
+    "manifests": {
+      "urn:c2pa:b26403e3-d487-4752-a487-bc1c418717e6": {
+        "claimGenerator": null,
+        "claimGeneratorInfo": [
+          {
+            "name": "cognitive-agent",
+            "version": "0.1.0",
+            "org.contentauth.c2pa_rs": "0.80.0"
+          }
+        ],
+        "title": "msg-18ad4b27-9d36-47ee-b196-899b9a27cb49.md",
+        "instanceId": "xmp:iid:37495df9-9d0a-4186-bc40-3da741c5d995",
+        "signatureInfo": {
+          "alg": "Es256",
+          "issuer": "C2PA Test Signing Cert",
+          "common_name": "C2PA Signer",
+          "cert_serial_number": "640229841392226413189608867977836244731148734950"
+        }
+      },
+      "urn:c2pa:5bf86dca-32c0-40d4-877f-e1eb069d5208": {
+        "claimGenerator": null,
+        "claimGeneratorInfo": [
+          {
+            "name": "cognitive-agent",
+            "version": "0.1.0",
+            "org.contentauth.c2pa_rs": "0.80.0"
+          }
+        ],
+        "title": "msg-60119de5-a3e1-4322-802c-640a5452c766.md",
+        "instanceId": "xmp:iid:fa66a8fe-206f-4ff1-8aca-da31bf615e90",
+        "signatureInfo": {
+          "alg": "Es256",
+          "issuer": "C2PA Test Signing Cert",
+          "common_name": "C2PA Signer",
+          "cert_serial_number": "640229841392226413189608867977836244731148734950"
+        }
+      },
+      "urn:c2pa:d7ee7cc6-46e9-41e9-a152-1045c35cd35e": {
+        "claimGenerator": null,
+        "claimGeneratorInfo": [
+          {
+            "name": "cognitive-agent",
+            "version": "0.1.0",
+            "org.contentauth.c2pa_rs": "0.80.0"
+          }
+        ],
+        "title": "msg-daa1d8e5-2fdf-403a-9443-3929cd709993.md",
+        "instanceId": "xmp:iid:357b804f-375c-4136-b7d3-fb92b50065f4",
+        "signatureInfo": {
+          "alg": "Es256",
+          "issuer": "C2PA Test Signing Cert",
+          "common_name": "C2PA Signer",
+          "cert_serial_number": "640229841392226413189608867977836244731148734950"
+        }
+      },
+      "urn:c2pa:0807cc78-4bd3-49df-a83c-ff46503ede71": {
+        "claimGenerator": null,
+        "claimGeneratorInfo": [
+          {
+            "name": "cognitive-agent",
+            "version": "0.1.0",
+            "org.contentauth.c2pa_rs": "0.80.0"
+          }
+        ],
+        "title": "msg-8b36d02c-280c-4d4a-8036-992610352e03.md",
+        "instanceId": "xmp:iid:64bcb7a2-a6e2-4119-9912-86e9a90442e6",
+        "signatureInfo": {
+          "alg": "Es256",
+          "issuer": "C2PA Test Signing Cert",
+          "common_name": "C2PA Signer",
+          "cert_serial_number": "640229841392226413189608867977836244731148734950"
+        }
+      },
+      "urn:c2pa:de4d2a59-a513-4472-ae2e-2b3028570c66": {
+        "claimGenerator": null,
+        "claimGeneratorInfo": [
+          {
+            "name": "cognitive-agent",
+            "version": "0.1.0",
+            "org.contentauth.c2pa_rs": "0.80.0"
+          }
+        ],
+        "title": "msg-47527c1a-0a8f-42c2-8530-26e64dc05497.md",
+        "instanceId": "xmp:iid:274dc584-cd24-442e-a91a-185229e136bd",
+        "signatureInfo": {
+          "alg": "Es256",
+          "issuer": "C2PA Test Signing Cert",
+          "common_name": "C2PA Signer",
+          "cert_serial_number": "640229841392226413189608867977836244731148734950"
+        }
+      },
+      "urn:c2pa:3c1defa7-d974-42de-b61a-f5885028fa55": {
+        "claimGenerator": null,
+        "claimGeneratorInfo": [
+          {
+            "name": "cognitive-agent",
+            "version": "0.1.0",
+            "org.contentauth.c2pa_rs": "0.80.0"
+          }
+        ],
+        "title": "model-deepseek-v2:16b.md",
+        "instanceId": "xmp:iid:2a59cff9-c80f-469e-9306-95c3730bb1d5",
+        "signatureInfo": {
+          "alg": "Es256",
+          "issuer": "C2PA Test Signing Cert",
+          "common_name": "C2PA Signer",
+          "cert_serial_number": "640229841392226413189608867977836244731148734950"
+        }
+      },
+      "urn:c2pa:d1ef354b-cc76-4603-8daf-29e76c68c9aa": {
+        "claimGenerator": null,
+        "claimGeneratorInfo": [
+          {
+            "name": "cognitive-agent",
+            "version": "0.1.0",
+            "org.contentauth.c2pa_rs": "0.80.0"
+          }
+        ],
+        "title": "msg-c8654689-3d80-4199-939e-9c49d8733ffc.md",
+        "instanceId": "xmp:iid:deb98f40-ad53-47ca-83ca-5feedd0a5818",
+        "signatureInfo": {
+          "alg": "Es256",
+          "issuer": "C2PA Test Signing Cert",
+          "common_name": "C2PA Signer",
+          "cert_serial_number": "640229841392226413189608867977836244731148734950"
+        }
+      }
+    }
+  }
+}

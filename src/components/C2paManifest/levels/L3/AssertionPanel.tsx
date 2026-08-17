@@ -83,22 +83,28 @@ function AssertionRow({ assertionKey, raw }: { assertionKey: string; raw: unknow
 }
 
 function SingleView({
+  id,
   entry,
   manifest,
   pluginMap,
 }: {
+  id: string
   entry: ManifestEntry
   manifest: VerificationOutcome
   pluginMap: Map<string, PluginC2PA>
 }) {
   const assertions = entry.assertions ?? {}
-  const keys = Object.keys(assertions)
+  const keys = Object.keys(assertions).sort()
   const standardKeys = keys.filter((k) => !pluginMap.has(k))
   const relevantPlugins = getRelevantPlugins(keys, pluginMap)
 
   return (
     <div>
       <div className="c2pa-panel-heading">Manifest details</div>
+      <div className="c2pa-panel-field">
+        <span className="c2pa-panel-field-label">ID</span>
+        <span className="c2pa-panel-id">{id}</span>
+      </div>
       <ManifestMeta entry={entry} />
       <div className="c2pa-panel-divider" />
       <div className="c2pa-panel-section-label">Information</div>
@@ -109,7 +115,7 @@ function SingleView({
         <AssertionRow key={key} assertionKey={key} raw={assertions[key]} />
       ))}
       {relevantPlugins.map((Plugin, i) => (
-        <Plugin key={i} manifest={manifest} />
+        <Plugin key={i} manifest={manifest} entry={entry} />
       ))}
     </div>
   )
@@ -136,7 +142,7 @@ function CompareView({
 }) {
   const assertionsA = entryA.assertions ?? {}
   const assertionsB = entryB.assertions ?? {}
-  const allKeys = Array.from(new Set([...Object.keys(assertionsA), ...Object.keys(assertionsB)]))
+  const allKeys = Array.from(new Set([...Object.keys(assertionsA), ...Object.keys(assertionsB)])).sort()
   const standardKeys = allKeys.filter((k) => !pluginMap.has(k))
   const relevantPlugins = getRelevantPlugins(allKeys, pluginMap)
 
@@ -193,7 +199,7 @@ function CompareView({
           <div className="c2pa-panel-divider" />
           <div className="c2pa-panel-section-label">Plugin data</div>
           {relevantPlugins.map((Plugin, i) => (
-            <Plugin key={i} manifest={manifest} />
+            <Plugin key={i} manifest={manifest} entry={entryA} />
           ))}
         </>
       )}
@@ -219,10 +225,10 @@ export function AssertionPanel({ selectedIds, manifests, manifest, plugins }: Pr
   const entryA = manifests[selectedIds[0]]
   if (!entryA) return <EmptyState />
 
-  if (selectedIds.length === 1) return <SingleView entry={entryA} manifest={manifest} pluginMap={pluginMap} />
+  if (selectedIds.length === 1) return <SingleView id={selectedIds[0]} entry={entryA} manifest={manifest} pluginMap={pluginMap} />
 
   const entryB = manifests[selectedIds[1]]
-  if (!entryB) return <SingleView entry={entryA} manifest={manifest} pluginMap={pluginMap} />
+  if (!entryB) return <SingleView id={selectedIds[0]} entry={entryA} manifest={manifest} pluginMap={pluginMap} />
 
   return (
     <CompareView

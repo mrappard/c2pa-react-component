@@ -1,7 +1,7 @@
 import { Handle, Position, NodeProps } from '@xyflow/react'
 import type { ReactNode } from 'react'
 import { ManifestEntry } from 'c2pa-react-component-types'
-import { formatDate, getDate, getGenerator, getIssuer, getSignerLogo, type SignerLogo } from '../C2paManifest/shared/utils'
+import { formatDate, getContentLabel, getDate, getGenerator, getIssuer, getSignerLogo, type SignerLogo } from '../C2paManifest/shared/utils'
 import { useProvenanceGraphContext } from './ProvenanceGraphContext'
 import '../C2paManifest/styles/c2paManifest.css'
 
@@ -74,6 +74,7 @@ export function ManifestNode({ data }: NodeProps) {
   const generator = getGenerator(entry)
   const date = getDate(entry)
   const signerLogo = getSignerLogo(entry)
+  const contentLabel = validationState !== 'Invalid' ? getContentLabel(entry) : undefined
 
   const actions = Object.values(entry.assertions || {})
     .flatMap((assertion) => {
@@ -114,6 +115,10 @@ export function ManifestNode({ data }: NodeProps) {
           </div>
 
           {date && <div className="c2pa-date">{formatDate(date)}</div>}
+
+          {contentLabel && (
+            <div className="c2pa-content-label c2pa-content-label--row">{contentLabel}</div>
+          )}
 
           {validationState && validationColor && (
             <div className="c2pa-graph-validation">

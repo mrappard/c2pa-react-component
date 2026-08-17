@@ -410,10 +410,70 @@
   min-width: 260px;
   border-left: 1px solid #e5e5e5;
   overflow-y: auto;
-  padding: 20px 16px;
+  padding: 0;
   background: #fafafa;
   font-size: 13px;
   color: #242424;
+  display: flex;
+  flex-direction: column;
+}
+
+.c2pa-l3-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e5e5;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.c2pa-l3-mode-toggle {
+  display: flex;
+  background: #f0f0f0;
+  border-radius: 6px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.c2pa-l3-mode-btn {
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #666;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.c2pa-l3-mode-btn--active {
+  background: #fff;
+  color: #1a1a1a;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.c2pa-l3-clear-btn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: #999;
+  cursor: pointer;
+  padding: 2px 4px;
+  line-height: 1;
+  border-radius: 4px;
+}
+
+.c2pa-l3-clear-btn:hover {
+  color: #333;
+  background: #f0f0f0;
+}
+
+.c2pa-l3-panel-content {
+  padding: 20px 16px;
+  flex: 1;
+  overflow-y: auto;
 }
 
 /* ── Assertion panel ─────────────────────────────────────── */
@@ -472,6 +532,13 @@
   color: #888;
   flex-shrink: 0;
   min-width: 80px;
+}
+
+.c2pa-panel-id {
+  word-break: break-all;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  color: #555;
 }
 
 .c2pa-panel-muted {
