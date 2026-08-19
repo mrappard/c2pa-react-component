@@ -170,8 +170,8 @@ function ManifestRow({
       </div>
       <div className="c2pa-more-info">
         {
-          plugin?.map((PluginComponent) => (
-            <PluginComponent manifest={manifest} entry={entry} level={1} />
+          plugin?.map((PluginComponent, i) => (
+            <PluginComponent key={i} manifest={manifest} entry={entry} level={1} />
           ))
 
         }
