@@ -76,7 +76,7 @@ function getActionsList(entry: ManifestEntry): C2paAction[] {
   return v1?.actions ?? []
 }
 
-export type ContentLabel = 'AI-generated' | 'AI-edited' | 'Camera-captured'
+export type ContentLabel = 'AI-generated' | 'AI-edited' | 'AI-composite' | 'Captured'
 
 export function getContentLabel(entry: ManifestEntry): ContentLabel | undefined {
   const actions = getActionsList(entry)
@@ -89,13 +89,16 @@ export function getContentLabel(entry: ManifestEntry): ContentLabel | undefined 
     if (dst.includes('compositeWithTrainedAlgorithmicMedia')) {
       return 'AI-edited'
     }
+    if (dst.includes('compositeSynthetic')) {
+      return 'AI-composite'
+    }
   }
 
   // Check for camera capture only if no AI involvement found above
   for (const act of actions) {
     const dst = act.digitalSourceType ?? ''
     if (dst.includes('digitalCapture') && act.action === 'c2pa.created') {
-      return 'Camera-captured'
+      return 'Captured'
     }
   }
 

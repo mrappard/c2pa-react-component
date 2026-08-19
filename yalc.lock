@@ -2,9 +2,9 @@
   "version": "v1",
   "packages": {
     "c2pa-react-cawg-component": {
-      "signature": "f2c81e5f73e06bd455957eb880a62898",
+      "signature": "85f55f576276ffc3236d2e227e4c5152",
       "file": true,
-      "replaced": "^0.1.10"
+      "replaced": "0.1.11"
     },
     "c2pa-react-diacc-component": {
       "signature": "1a2d3be587e3fd140a1dd4a852db9c2c",
