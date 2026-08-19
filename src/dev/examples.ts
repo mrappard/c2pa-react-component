@@ -10,9 +10,13 @@ import labelAiGenerated from '../../examples/label-ai-generated.json'
 import labelAiEdited from '../../examples/label-ai-edited.json'
 import labelCameraCaptured from '../../examples/label-camera-captured.json'
 import llmExample from '../../examples/llm-example.json'
+import musicExample from '../../examples/music-example.json'
 import cawgIdentity from '../../examples/cawg-identity-example.json'
 import geminiExample from '../../examples/gemini-example-image.json'
 import openAiExample from '../../examples/open-ai-example.json'
+import trqpAuthorizationUnverified from '../../examples/trqp-identity-example.json'
+import trqpAuthorizationVerified from '../../examples/trqp-identity-verified-example.json'
+
 
 function normalize(raw: unknown): VerificationOutcome {
   const data = raw as Record<string, unknown>
@@ -68,4 +72,7 @@ export const examples: { label: string; data: VerificationOutcome }[] = [
   { label: 'Gemini Example Image', data: normalize(geminiExample) },
   { label: 'OpenAI Example', data: normalize(openAiExample) },
   { label: 'LLM Example', data: normalize(llmExample) },
+  { label: 'Music Example', data: normalize(musicExample) },
+  { label: 'TRQP Authorization — Unverified', data: normalize(trqpAuthorizationUnverified) },
+  { label: 'TRQP Authorization — Verified', data: normalize(trqpAuthorizationVerified) },
 ]

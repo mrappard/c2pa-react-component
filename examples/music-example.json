@@ -1,0 +1,272 @@
+{
+  "state": true,
+  "manifests": [
+    {
+      "id": "urn:c2pa:8f3b2a1e-6c4d-4a2f-9e1b-3d7c5a9f2e60",
+      "title": "AI Instrumental.wav",
+      "claimGenerator": "AI Music Generator/2.0",
+      "claimGeneratorInfo": [
+        {
+          "name": "AI Music Generator",
+          "version": "2.0"
+        }
+      ],
+      "instanceId": "xmp:iid:example-ai-instrumental",
+      "signatureInfo": {
+        "alg": "Es256",
+        "issuer": "Example AI Music Signing Authority",
+        "common_name": "AI Music Generator Content Authenticity",
+        "cert_serial_number": "640229841392226413189608867977836244731148734954",
+        "time": "2026-08-18T09:00:00Z"
+      },
+      "assertions": {
+        "c2pa.actions.v2": {
+          "actions": [
+            {
+              "action": "c2pa.created",
+              "description": "Generated instrumental track.",
+              "digitalSourceType": "http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia",
+              "softwareAgent": {
+                "name": "AI Music Generator",
+                "version": "2.0"
+              }
+            }
+          ]
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": []
+    },
+    {
+      "id": "urn:c2pa:1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d",
+      "title": "Vocal Take.wav",
+      "claimGenerator": "Pro Tools/2024.10",
+      "claimGeneratorInfo": [
+        {
+          "name": "Pro Tools",
+          "version": "2024.10"
+        }
+      ],
+      "instanceId": "xmp:iid:example-human-vocal",
+      "signatureInfo": {
+        "alg": "Es256",
+        "issuer": "Example Recording Studio Signing Authority",
+        "common_name": "Pro Tools Content Authenticity",
+        "cert_serial_number": "640229841392226413189608867977836244731148734955",
+        "time": "2026-08-18T10:00:00Z"
+      },
+      "assertions": {
+        "c2pa.actions.v2": {
+          "actions": [
+            {
+              "action": "c2pa.created",
+              "description": "Recorded human vocal take.",
+              "digitalSourceType": "http://cv.iptc.org/newscodes/digitalsourcetype/digitalCapture",
+              "softwareAgent": {
+                "name": "Pro Tools",
+                "version": "2024.10"
+              }
+            }
+          ]
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": []
+    },
+    {
+      "id": "urn:c2pa:6f5e4d3c-2b1a-4c8d-9e7f-8a6b5c4d3e2f",
+      "title": "Final Mix.wav",
+      "claimGenerator": "DAW/1.0",
+      "claimGeneratorInfo": [
+        {
+          "name": "DAW",
+          "version": "1.0",
+          "specVersion": "2.4.0"
+        }
+      ],
+      "instanceId": "xmp:iid:example-music-final-mix",
+      "signatureInfo": {
+        "alg": "Es256",
+        "issuer": "Example DAW Signing Authority",
+        "common_name": "DAW Content Authenticity",
+        "cert_serial_number": "640229841392226413189608867977836244731148734953",
+        "time": "2026-08-18T12:00:00Z"
+      },
+      "assertions": {
+        "c2pa.actions.v2": {
+          "actions": [
+            {
+              "action": "c2pa.created",
+              "description": "Exported final mixed track.",
+              "digitalSourceType": "http://cv.iptc.org/newscodes/digitalsourcetype/compositeSynthetic",
+              "softwareAgent": {
+                "name": "DAW",
+                "version": "1.0"
+              }
+            },
+            {
+              "action": "c2pa.placed",
+              "description": "Placed AI instrumental and human vocal into the mix.",
+              "digitalSourceType": "http://cv.iptc.org/newscodes/digitalsourcetype/humanEdits",
+              "parameters": {
+                "ingredients": [
+                  {
+                    "url": "self#jumbf=c2pa.assertions/c2pa.ingredient.v3",
+                    "alg": "sha256",
+                    "hash": "<ai-instrumental-assertion-hash>"
+                  },
+                  {
+                    "url": "self#jumbf=c2pa.assertions/c2pa.ingredient.v3__1",
+                    "alg": "sha256",
+                    "hash": "<vocal-ingredient-assertion-hash>"
+                  }
+                ]
+              }
+            },
+            {
+              "action": "c2pa.mixed",
+              "description": "Mixed AI instrumental with human vocal.",
+              "digitalSourceType": "http://cv.iptc.org/newscodes/digitalsourcetype/humanEdits"
+            }
+          ]
+        },
+        "c2pa.ingredient.v3": {
+          "dc:title": "AI Instrumental",
+          "dc:format": "audio/wav",
+          "relationship": "componentOf",
+          "activeManifest": {
+            "url": "self#jumbf=/c2pa/urn:c2pa:8f3b2a1e-6c4d-4a2f-9e1b-3d7c5a9f2e60",
+            "alg": "sha256",
+            "hash": "<ai-instrumental-manifest-hash>"
+          }
+        },
+        "c2pa.ingredient.v3__1": {
+          "dc:title": "Human Vocal",
+          "dc:format": "audio/wav",
+          "relationship": "componentOf",
+          "activeManifest": {
+            "url": "self#jumbf=/c2pa/urn:c2pa:1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d",
+            "alg": "sha256",
+            "hash": "<vocal-manifest-hash>"
+          }
+        },
+        "cawg.identity": {
+          "signer_payload": {
+            "sig_type": "cawg.identity_claims_aggregation",
+            "role": ["cawg.creator"],
+            "referenced_assertions": []
+          },
+          "verifiedIdentities": [
+            {
+              "type": "cawg.document_verification",
+              "name": "Jordan Lee",
+              "provider": {
+                "id": "https://example-id-verifier.com",
+                "name": "Example ID Verifier"
+              },
+              "verifiedAt": "2026-08-18T11:45:00Z"
+            },
+            {
+              "type": "cawg.affiliation",
+              "provider": {
+                "id": "https://example-recording-studio.com",
+                "name": "Example Recording Studio"
+              },
+              "verifiedAt": "2026-08-18T11:45:00Z"
+            }
+          ],
+          "issuer": "did:web:connected-identities.example-recording-studio.com"
+        },
+        "cawg.metadata": {
+          "@context": {
+            "dc": "http://purl.org/dc/elements/1.1/",
+            "xmp": "http://ns.adobe.com/xap/1.0/"
+          },
+          "dc:creator": "Jordan Lee",
+          "dc:publisher": "Example Recording Studio",
+          "xmp:CreateDate": "2026-08-18T12:00:00Z"
+        },
+        "cawg.training-mining": {
+          "entries": {
+            "cawg.data_mining": { "use": "notAllowed" },
+            "cawg.ai_inference": { "use": "allowed" },
+            "cawg.ai_training": { "use": "notAllowed" },
+            "cawg.ai_generative_training": { "use": "notAllowed" }
+          }
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": [
+        {
+          "manifestId": "urn:c2pa:8f3b2a1e-6c4d-4a2f-9e1b-3d7c5a9f2e60"
+        },
+        {
+          "manifestId": "urn:c2pa:1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d"
+        }
+      ]
+    }
+  ],
+  "manifestStore": {
+    "activeManifest": "urn:c2pa:6f5e4d3c-2b1a-4c8d-9e7f-8a6b5c4d3e2f",
+    "manifests": {
+      "urn:c2pa:8f3b2a1e-6c4d-4a2f-9e1b-3d7c5a9f2e60": {
+        "claimGenerator": "AI Music Generator/2.0",
+        "claimGeneratorInfo": [
+          {
+            "name": "AI Music Generator",
+            "version": "2.0"
+          }
+        ],
+        "title": "AI Instrumental.wav",
+        "instanceId": "xmp:iid:example-ai-instrumental",
+        "signatureInfo": {
+          "alg": "Es256",
+          "issuer": "Example AI Music Signing Authority",
+          "common_name": "AI Music Generator Content Authenticity",
+          "cert_serial_number": "640229841392226413189608867977836244731148734954",
+          "time": "2026-08-18T09:00:00Z"
+        }
+      },
+      "urn:c2pa:1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d": {
+        "claimGenerator": "Pro Tools/2024.10",
+        "claimGeneratorInfo": [
+          {
+            "name": "Pro Tools",
+            "version": "2024.10"
+          }
+        ],
+        "title": "Vocal Take.wav",
+        "instanceId": "xmp:iid:example-human-vocal",
+        "signatureInfo": {
+          "alg": "Es256",
+          "issuer": "Example Recording Studio Signing Authority",
+          "common_name": "Pro Tools Content Authenticity",
+          "cert_serial_number": "640229841392226413189608867977836244731148734955",
+          "time": "2026-08-18T10:00:00Z"
+        }
+      },
+      "urn:c2pa:6f5e4d3c-2b1a-4c8d-9e7f-8a6b5c4d3e2f": {
+        "claimGenerator": "DAW/1.0",
+        "claimGeneratorInfo": [
+          {
+            "name": "DAW",
+            "version": "1.0",
+            "specVersion": "2.4.0"
+          }
+        ],
+        "title": "Final Mix.wav",
+        "instanceId": "xmp:iid:example-music-final-mix",
+        "signatureInfo": {
+          "alg": "Es256",
+          "issuer": "Example DAW Signing Authority",
+          "common_name": "DAW Content Authenticity",
+          "cert_serial_number": "640229841392226413189608867977836244731148734953",
+          "time": "2026-08-18T12:00:00Z"
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 
-import { CAWGManifest } from 'c2pa-react-cawg-component'
+import { CAWGManifest, setTrustRegistryQueryFn, TrqpAuthorizationResponse } from 'c2pa-react-cawg-component'
 import { DIACCManifest } from 'c2pa-react-diacc-component'
 import { useState } from 'react'
 import C2paManifest from '../components/C2paManifest/C2paManifest'
@@ -8,8 +8,25 @@ import { examples } from './examples'
 import "c2pa-react-cawg-component/style.css"
 import "c2pa-react-diacc-component/style.css"
 
+function mockTrqpQuery({ entityId, action, resource }: { entityId: string; action?: string; resource?: string }): Promise<TrqpAuthorizationResponse> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const now = new Date().toISOString()
+      resolve({
+        entity_id: entityId,
+        authority_id: 'dev-playground-registry',
+        action: action ?? 'unknown',
+        resource: resource ?? 'unknown',
+        authorized: true,
+        time_requested: now,
+        time_evaluated: now,
+        message: 'TRQP data is valid',
+      })
+    }, 500)
+  })
+}
 
-
+setTrustRegistryQueryFn(mockTrqpQuery)
 
 export default function App() {
 
