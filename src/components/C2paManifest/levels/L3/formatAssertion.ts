@@ -49,6 +49,31 @@ function formatIngredient(raw: unknown): string {
   return data?.title ? `${data.title}${rel}` : `Ingredient reference${rel}`
 }
 
+const OVERSIGHT_LABELS: Record<string, string> = {
+  fully_autonomous: 'Fully autonomous',
+  prompt_guided: 'Prompt-guided',
+  human_validated: 'Human-validated',
+}
+
+function humanizeOversight(value: string): string {
+  return OVERSIGHT_LABELS[value] ?? value.replace(/_/g, ' ')
+}
+
+function formatAiDisclosure(raw: unknown): string {
+  const data = unwrap(raw) as {
+    modelType?: string
+    modelName?: string
+    modelIdentifier?: string
+    contentProfile?: { humanOversightLevel?: string }
+  } | undefined
+  const parts: string[] = []
+  const model = data?.modelName || data?.modelType
+  if (model) parts.push(model)
+  const oversight = data?.contentProfile?.humanOversightLevel
+  if (oversight) parts.push(`${humanizeOversight(oversight)} oversight`)
+  return parts.join(' · ') || 'AI-assisted content'
+}
+
 function truncateJson(raw: unknown): string {
   try {
     const str = JSON.stringify(raw)
@@ -70,6 +95,7 @@ const LABELS: Record<string, string> = {
   'c2pa.ingredient.v2': 'Ingredient',
   'c2pa.soft-binding': 'Soft binding',
   'c2pa.cloud-data': 'Cloud data',
+  'c2pa.ai-disclosure': 'AI disclosure',
 }
 
 const FORMATTERS: Record<string, (raw: unknown) => string> = {
@@ -82,6 +108,7 @@ const FORMATTERS: Record<string, (raw: unknown) => string> = {
   'c2pa.hash.bmff.v2': () => 'BMFF v2 hash',
   'c2pa.ingredient': formatIngredient,
   'c2pa.ingredient.v2': formatIngredient,
+  'c2pa.ai-disclosure': formatAiDisclosure,
 }
 
 function humanizeKey(key: string): string {
