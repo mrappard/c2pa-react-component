@@ -1,4 +1,5 @@
 import { Manifest, ManifestEntry, ManifestStore, VerificationOutcome } from 'c2pa-react-component-types'
+import aiDisclosureExample from '../../examples/ai-disclosure-example.json'
 import carEsExample from '../../examples/car-es-Ps-Cr.json'
 import chatGptImage from '../../examples/ChatGPT_Image.json'
 import cloudscapeAca from '../../examples/cloudscape-ACA-Cr.json'
@@ -58,6 +59,7 @@ function normalize(raw: unknown): VerificationOutcome {
 }
 
 export const examples: { label: string; data: VerificationOutcome }[] = [
+  { label: 'AI Disclosure', data: normalize(aiDisclosureExample) },
   { label: 'Car (Edited + Signed)', data: normalize(carEsExample) },
   { label: 'ChatGPT Image', data: normalize(chatGptImage) },
   { label: 'Cloudscape ACA', data: normalize(cloudscapeAca) },

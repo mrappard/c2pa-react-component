@@ -1,0 +1,60 @@
+{
+  "state": true,
+  "manifests": [
+    {
+      "id": "urn:c2pa:ai-disclosure-example-001",
+      "title": "AI-Assisted Track",
+      "claimGenerator": null,
+      "claimGeneratorInfo": [
+        { "name": "Mix-O-Tron" }
+      ],
+      "instanceId": "xmp:iid:ai-disclosure-example-001",
+      "signatureInfo": {
+        "alg": "Es256",
+        "issuer": "C2PA Test Signing Cert",
+        "common_name": "C2PA Test Signing Cert",
+        "cert_serial_number": "640229841392226413189608867977836244731148734950"
+      },
+      "assertions": {
+        "c2pa.actions.v2": {
+          "actions": [
+            {
+              "action": "c2pa.created",
+              "digitalSourceType": "http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia"
+            }
+          ]
+        },
+        "c2pa.ai-disclosure": {
+          "modelType": "text-to-audio",
+          "modelName": "Riffusion v2",
+          "modelIdentifier": "riffusion-v2-2026-03",
+          "contentProfile": {
+            "humanOversightLevel": "prompt_guided"
+          }
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": []
+    }
+  ],
+  "manifestStore": {
+    "activeManifest": "urn:c2pa:ai-disclosure-example-001",
+    "manifests": {
+      "urn:c2pa:ai-disclosure-example-001": {
+        "claimGenerator": null,
+        "claimGeneratorInfo": [
+          { "name": "Mix-O-Tron" }
+        ],
+        "title": "AI-Assisted Track",
+        "instanceId": "xmp:iid:ai-disclosure-example-001",
+        "signatureInfo": {
+          "alg": "Es256",
+          "issuer": "C2PA Test Signing Cert",
+          "common_name": "C2PA Test Signing Cert",
+          "cert_serial_number": "640229841392226413189608867977836244731148734950"
+        }
+      }
+    }
+  }
+}
