@@ -10,6 +10,7 @@ import {
   Edge,
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
+import './provenanceGraphOverrides.css'
 import type { ReactNode } from 'react'
 import { C2paProvenanceGraphProps } from 'c2pa-react-component-types'
 import { ManifestNode } from './ManifestNode'

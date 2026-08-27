@@ -1,0 +1,8 @@
+/* @xyflow/react ships each edge as an unsized <svg>, relying on default
+   replaced-element sizing. Any consumer with a common
+   `svg { max-width: 100% }` reset collapses that to width: 0, silently
+   hiding every connecting line even though the edge data/path is correct.
+   See BUGFIX-edge-svg-sizing.md. */
+.react-flow__edges svg {
+	max-width: none;
+}
