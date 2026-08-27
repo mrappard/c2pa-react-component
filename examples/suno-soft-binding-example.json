@@ -1,0 +1,68 @@
+{
+  "state": true,
+  "manifests": [
+    {
+      "id": "urn:c2pa:b081de7b-fbe5-49c4-8a28-cbba3540a3e0",
+      "title": "Mix-O-Tron",
+      "claimGenerator": null,
+      "claimGeneratorInfo": [
+        { "name": "Suno", "version": "chirp-auk-turbo-t2", "org.contentauth.c2pa_rs": "0.89.0" }
+      ],
+      "instanceId": "xmp:iid:b081de7b-fbe5-49c4-8a28-cbba3540a3e0",
+      "signatureInfo": {
+        "alg": "Es256",
+        "issuer": "Suno Inc",
+        "common_name": "Suno Inc",
+        "cert_serial_number": "0"
+      },
+      "assertions": {
+        "c2pa.actions.v2": {
+          "actions": [
+            {
+              "action": "c2pa.created",
+              "digitalSourceType": "http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia"
+            }
+          ]
+        },
+        "com.suno.provenance": {
+          "contentId": "bdd6f5a7-ccc4-4067-a852-a7365a3581e4",
+          "createdAt": "2026-08-21T03:03:58Z",
+          "providerName": "Suno, Inc.",
+          "systemName": "Suno",
+          "systemVersion": "chirp-auk-turbo-t2"
+        },
+        "c2pa.soft-binding": {
+          "alg": "com.suno.fingerprint.v4",
+          "blocks": [
+            {
+              "scope": {},
+              "value": "bdd6f5a7-ccc4-4067-a852-a7365a3581e4"
+            }
+          ]
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": []
+    }
+  ],
+  "manifestStore": {
+    "activeManifest": "urn:c2pa:b081de7b-fbe5-49c4-8a28-cbba3540a3e0",
+    "manifests": {
+      "urn:c2pa:b081de7b-fbe5-49c4-8a28-cbba3540a3e0": {
+        "claimGenerator": null,
+        "claimGeneratorInfo": [
+          { "name": "Suno", "version": "chirp-auk-turbo-t2", "org.contentauth.c2pa_rs": "0.89.0" }
+        ],
+        "title": "Mix-O-Tron",
+        "instanceId": "xmp:iid:b081de7b-fbe5-49c4-8a28-cbba3540a3e0",
+        "signatureInfo": {
+          "alg": "Es256",
+          "issuer": "Suno Inc",
+          "common_name": "Suno Inc",
+          "cert_serial_number": "0"
+        }
+      }
+    }
+  }
+}

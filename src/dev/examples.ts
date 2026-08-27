@@ -12,6 +12,7 @@ import labelAiEdited from '../../examples/label-ai-edited.json'
 import labelCameraCaptured from '../../examples/label-camera-captured.json'
 import llmExample from '../../examples/llm-example.json'
 import musicExample from '../../examples/music-example.json'
+import sunoSoftBinding from '../../examples/suno-soft-binding-example.json'
 import cawgIdentity from '../../examples/cawg-identity-example.json'
 import geminiExample from '../../examples/gemini-example-image.json'
 import openAiExample from '../../examples/open-ai-example.json'
@@ -75,6 +76,7 @@ export const examples: { label: string; data: VerificationOutcome }[] = [
   { label: 'OpenAI Example', data: normalize(openAiExample) },
   { label: 'LLM Example', data: normalize(llmExample) },
   { label: 'Music Example', data: normalize(musicExample) },
+  { label: 'Suno — Soft Binding + Custom Provenance', data: normalize(sunoSoftBinding) },
   { label: 'TRQP Authorization — Unverified', data: normalize(trqpAuthorizationUnverified) },
   { label: 'TRQP Authorization — Verified', data: normalize(trqpAuthorizationVerified) },
 ]

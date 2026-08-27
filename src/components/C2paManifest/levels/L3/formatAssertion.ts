@@ -49,6 +49,15 @@ function formatIngredient(raw: unknown): string {
   return data?.title ? `${data.title}${rel}` : `Ingredient reference${rel}`
 }
 
+function formatSoftBinding(raw: unknown): string {
+  const data = unwrap(raw) as { alg?: string; blocks?: unknown[] } | undefined
+  if (!data?.alg) return 'Soft binding'
+  const alg = humanizeKey(data.alg)
+  const count = data.blocks?.length ?? 0
+  if (count === 0) return alg
+  return `${alg} · ${count === 1 ? '1 identifier' : `${count} identifiers`}`
+}
+
 const OVERSIGHT_LABELS: Record<string, string> = {
   fully_autonomous: 'Fully autonomous',
   prompt_guided: 'Prompt-guided',
@@ -108,12 +117,20 @@ const FORMATTERS: Record<string, (raw: unknown) => string> = {
   'c2pa.hash.bmff.v2': () => 'BMFF v2 hash',
   'c2pa.ingredient': formatIngredient,
   'c2pa.ingredient.v2': formatIngredient,
+  'c2pa.soft-binding': formatSoftBinding,
   'c2pa.ai-disclosure': formatAiDisclosure,
 }
 
+// Registered/spec namespace prefixes (c2pa, cawg, stds) plus the common
+// reverse-DNS-style top-level tokens third-party publishers use for their
+// own custom assertions (com.suno.*, org.mixotron.*, io.example.*, ...).
+// Stripping all of them, not just the spec ones, means a vendor's custom
+// assertion reads the same way ours do — "suno provenance", not
+// "com suno provenance" — instead of looking worse just because someone
+// else registered it.
 function humanizeKey(key: string): string {
   return key
-    .replace(/^(c2pa|stds|org)\./i, '')
+    .replace(/^(c2pa|cawg|stds|org|com|io|net|edu|gov|co)\./i, '')
     .replace(/\./g, ' ')
     .replace(/-/g, ' ')
     .replace(/\bv\d+\b/g, '')
