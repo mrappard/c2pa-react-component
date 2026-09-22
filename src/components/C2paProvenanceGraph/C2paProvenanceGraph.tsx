@@ -14,6 +14,7 @@ import './provenanceGraphOverrides.css'
 import type { ReactNode } from 'react'
 import { C2paProvenanceGraphProps } from 'c2pa-react-component-types'
 import { ManifestNode } from './ManifestNode'
+import { NoManifestIngredientNode } from './NoManifestIngredientNode'
 import { buildGraph } from './buildGraph'
 import { ProvenanceGraphContext } from './ProvenanceGraphContext'
 
@@ -25,6 +26,7 @@ interface SelectableGraphProps extends C2paProvenanceGraphProps {
 
 const nodeTypes: NodeTypes = {
   manifestNode: ManifestNode,
+  noManifestIngredientNode: NoManifestIngredientNode,
 }
 
 export function C2paProvenanceGraph({
@@ -42,7 +44,7 @@ export function C2paProvenanceGraph({
     const { nodes: n, edges: e } = buildGraph(manifest)
     setNodes(n)
     setEdges(e)
-  }, [manifest])
+  }, [manifest, setNodes, setEdges])
 
   useEffect(() => {
     setNodes((ns) =>
@@ -56,7 +58,7 @@ export function C2paProvenanceGraph({
         },
       }))
     )
-  }, [selectedIds])
+  }, [selectedIds, setNodes])
 
   return (
     <ProvenanceGraphContext.Provider value={{ resolveUri }}>
@@ -72,7 +74,12 @@ export function C2paProvenanceGraph({
         nodesDraggable
         nodesConnectable={false}
         elementsSelectable={false}
-        onNodeClick={(_, node) => onNodeClick?.(node.id)}
+        onNodeClick={(_, node) => {
+          // No-manifest placeholder nodes have no manifest entry to show in the
+          // detail panel — selecting one would look up an undefined entry there.
+          if (node.type === 'noManifestIngredientNode') return
+          onNodeClick?.(node.id)
+        }}
         proOptions={{ hideAttribution: true }}
       >
         <Background />

@@ -703,6 +703,17 @@
   opacity: 0.4;
 }
 
+.c2pa-graph-node--no-manifest {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+  border-style: dashed;
+  color: #6b7280;
+}
+
+.c2pa-graph-node--no-manifest .c2pa-title {
+  color: #6b7280;
+}
+
 .c2pa-graph-selection-badge {
   position: absolute;
   top: -10px;

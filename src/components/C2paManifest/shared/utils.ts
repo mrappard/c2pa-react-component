@@ -1,4 +1,4 @@
-import { C2paAction, ManifestEntry, ManifestStore, PluginC2PA } from 'c2pa-react-component-types'
+import { C2paAction, ClaimGeneratorInfo, ManifestEntry, ManifestStore, PluginC2PA } from 'c2pa-react-component-types'
 
 export function getDate(entry: ManifestEntry): string | undefined {
   if (entry.signatureInfo?.time) return entry.signatureInfo.time
@@ -120,20 +120,24 @@ export interface SignerLogo {
   format?: string
 }
 
+// The declared ClaimGeneratorInfo index signature says every extra key is a
+// string, but real icon/logo references are {identifier, format} objects —
+// same loose-shape situation as getThumb's thumbnail handling above.
+type IconRef = string | { identifier: string; format?: string }
+
 export function getSignerLogo(entry: ManifestEntry): SignerLogo | undefined {
-  const info = entry.claimGeneratorInfo?.[0]
-  const icon = info?.icon ?? (info as any)?.logo ?? (entry as any).signerLogo
+  const info = entry.claimGeneratorInfo?.[0] as (ClaimGeneratorInfo & { icon?: IconRef; logo?: IconRef }) | undefined
+  const icon = info?.icon ?? info?.logo ?? (entry as ManifestEntry & { signerLogo?: IconRef }).signerLogo
   if (!icon) return undefined
   if (typeof icon === 'string') return { uri: icon }
   if (typeof icon === 'object' && icon !== null && 'identifier' in icon) {
-    const ref = icon as { identifier: string; format?: string }
-    return { uri: ref.identifier, format: ref.format }
+    return { uri: icon.identifier, format: icon.format }
   }
   return undefined
 }
 
 export function isVideo(entry: ManifestEntry): boolean {
-  const format = (entry as any).format as string | undefined
+  const format = (entry as ManifestEntry & { format?: string }).format
   return typeof format === 'string' && format.startsWith('video/')
 }
 

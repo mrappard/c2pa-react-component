@@ -15,10 +15,15 @@ export const C2paManifest: React.FC<C2paManifestProps> = ({ manifest: rawManifes
 
 
   const [levelOfDetail, setLevelOfDetail] = React.useState(level || 1)
-
-  React.useEffect(() => {
+  // Adjusting state during render (not in an effect) when the `level` prop
+  // changes — see https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes.
+  // levelOfDetail can't be purely derived from `level`: updateLevelOfDetail
+  // lets it diverge from the prop via user interaction.
+  const [prevLevel, setPrevLevel] = React.useState(level)
+  if (level !== prevLevel) {
+    setPrevLevel(level)
     setLevelOfDetail(level || 1)
-  }, [level])
+  }
 
   const updateLevelOfDetail = () => {
     setLevelOfDetail((prev) => {

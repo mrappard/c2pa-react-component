@@ -62,10 +62,10 @@ function normalizeIngredients(ingredients: unknown): Ingredient[] {
   }))
 }
 
-function normalizeAssertions(assertions: unknown): Record<string, any> {
+function normalizeAssertions(assertions: unknown): Record<string, unknown> {
   if (!assertions) return {}
   if (assertions instanceof Map) return Object.fromEntries(assertions)
-  return assertions as Record<string, any>
+  return assertions as Record<string, unknown>
 }
 
 function normalizeClaimGeneratorInfo(info: unknown): ClaimGeneratorInfo[] | undefined {

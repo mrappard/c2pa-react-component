@@ -1,0 +1,79 @@
+{
+  "state": true,
+  "manifests": [
+    {
+      "id": "urn:c2pa:5472cde3-3109-4f82-a2f8-1da2b7841752",
+      "title": "The Rocinante Experience",
+      "claimGenerator": null,
+      "claimGeneratorInfo": [
+        {
+          "name": "Mix-O-Tron",
+          "org.contentauth.c2pa_rs": "0.91.0-dev"
+        }
+      ],
+      "instanceId": "",
+      "signatureInfo": {
+        "alg": "Es256",
+        "issuer": "C2PA Test Signing Cert",
+        "common_name": "C2PA Signer",
+        "cert_serial_number": "640229841392226413189608867977836244731148734950"
+      },
+      "assertions": {
+        "c2pa.actions.v2": {
+          "actions": [
+            {
+              "action": "c2pa.created",
+              "digitalSourceType": "http://cv.iptc.org/newscodes/digitalsourcetype/digitalCapture"
+            }
+          ]
+        }
+      },
+      "credentials": [],
+      "thumbnail": null,
+      "ingredients": [
+        { "title": "909 Snare", "manifestId": null },
+        { "title": "001_FX_-_Impact_-_DREAMWAVE_Zenhiser.wav", "manifestId": null },
+        { "title": "909 Mid Tom", "manifestId": null },
+        { "title": "909 Low Tom", "manifestId": null },
+        { "title": "DS_VS_fx_atmosphere_one_shot_mania_Emin.wav", "manifestId": null },
+        { "title": "909 Clap", "manifestId": null },
+        { "title": "909 Crash", "manifestId": null },
+        { "title": "909 Open Hat", "manifestId": null },
+        { "title": "BOS_IEV_FX_Faller_One_Shot_AeolipileExtra.wav", "manifestId": null },
+        { "title": "PM_RW3_100Bpm_Atmosphere_Loop_Flow_C.wav", "manifestId": null },
+        { "title": "SM_PW_100_drum_lights_out.wav", "manifestId": null },
+        { "title": "909 Ride", "manifestId": null },
+        { "title": "909 Bassdrum", "manifestId": null },
+        { "title": "nw_ntn_90_drum_fill_ryde.wav", "manifestId": null },
+        { "title": "SM_EID_tom_epicc.wav", "manifestId": null },
+        { "title": "909 High Tom", "manifestId": null },
+        { "title": "909 Rimshot", "manifestId": null },
+        { "title": "909 Closed Hat", "manifestId": null },
+        { "title": "NW_EID_kick_fireside.wav", "manifestId": null },
+        { "title": "006_CED_-_Snare_-_Zenhiser (2).wav", "manifestId": null }
+      ]
+    }
+  ],
+  "manifestStore": {
+    "activeManifest": "urn:c2pa:5472cde3-3109-4f82-a2f8-1da2b7841752",
+    "manifests": {
+      "urn:c2pa:5472cde3-3109-4f82-a2f8-1da2b7841752": {
+        "claimGenerator": null,
+        "claimGeneratorInfo": [
+          {
+            "name": "Mix-O-Tron",
+            "org.contentauth.c2pa_rs": "0.91.0-dev"
+          }
+        ],
+        "title": "The Rocinante Experience",
+        "instanceId": "",
+        "signatureInfo": {
+          "alg": "Es256",
+          "issuer": "C2PA Test Signing Cert",
+          "common_name": "C2PA Signer",
+          "cert_serial_number": "640229841392226413189608867977836244731148734950"
+        }
+      }
+    }
+  }
+}

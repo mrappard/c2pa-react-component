@@ -78,6 +78,37 @@ describe('buildGraph', () => {
     expect(edges).toHaveLength(1)
   })
 
+  it('adds a grey placeholder node for an ingredient with no manifest', () => {
+    // Per Ingredient.adoc "Existing manifests", an ingredient assertion legitimately
+    // omits activeManifest/manifestId when there's no manifest for it — that must
+    // still render as its own node rather than being silently dropped.
+    const manifest: ManifestStore = {
+      activeManifest: 'mix',
+      validation_state: 'Valid',
+      manifests: {
+        mix: {
+          title: 'Mix',
+          ingredients: [
+            { title: '909 Snare', relationship: 'componentOf' },
+            { active_manifest: 'sample', relationship: 'componentOf' },
+          ],
+        },
+        sample: { title: 'Sample' },
+      },
+    }
+
+    const { nodes, edges } = buildGraph(manifest)
+
+    expect(nodes).toHaveLength(3)
+    const placeholder = nodes.find((n) => n.type === 'noManifestIngredientNode')
+    expect(placeholder).toBeDefined()
+    expect(placeholder?.data).toMatchObject({ title: '909 Snare', relationship: 'componentOf' })
+
+    expect(edges).toHaveLength(2)
+    expect(edges.find((e) => e.target === 'mix' && e.source === placeholder?.id)).toBeDefined()
+    expect(edges.find((e) => e.source === 'sample' && e.target === 'mix')).toBeDefined()
+  })
+
   it('renders a single manifest with no edges', () => {
     const manifest: ManifestStore = {
       activeManifest: 'solo',

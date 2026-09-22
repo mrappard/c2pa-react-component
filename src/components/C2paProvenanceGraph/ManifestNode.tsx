@@ -29,13 +29,18 @@ function getTitle(entry: ManifestEntry) {
   return getGenerator(entry) || getIssuer(entry) || entry.title || entry.label || 'Unknown source'
 }
 
+// The strict Thumbnail type ({format, identifier}) doesn't cover every shape
+// seen in real verifyAsset() output and example fixtures: a plain URL string,
+// an {url} object, or a legacy `image` field.
+type EntryWithLooseThumbnail = ManifestEntry & {
+  thumbnail?: string | { url?: string }
+  image?: string
+}
+
 function getThumb(entry: ManifestEntry) {
-  return (
-    (entry as any).thumbnail?.url ||
-    (entry as any).thumbnail ||
-    (entry as any).image ||
-    undefined
-  )
+  const { thumbnail, image } = entry as EntryWithLooseThumbnail
+  if (typeof thumbnail === 'string') return thumbnail
+  return thumbnail?.url || image || undefined
 }
 
 function SourceBadge({ label, logo, resolveUri }: { label: string; logo?: SignerLogo; resolveUri?: (uri: string, format?: string) => ReactNode }) {

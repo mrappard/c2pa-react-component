@@ -57,7 +57,7 @@ describe('normalizeOutcome', () => {
           claimGeneratorInfo: [],
           instanceId: '',
           signatureInfo: { alg: '', issuer: '', common_name: '', cert_serial_number: '' },
-          assertions: assertions as unknown as Record<string, any>,
+          assertions: assertions as unknown as Record<string, unknown>,
           credentials: [],
           thumbnail: null,
           ingredients: [] as never,
