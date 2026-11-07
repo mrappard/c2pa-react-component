@@ -18,6 +18,12 @@
   min-width: 340px;
 }
 
+/* Opt-in: pass className="c2pa-card--fluid" to fill the container instead of 420px. */
+.c2pa-card.c2pa-card--fluid {
+  display: block;
+  width: 100%;
+}
+
 .c2pa-icon-only {
   display: inline-flex;
   align-items: center;
@@ -268,7 +274,8 @@
 
 .c2pa-timeline-layout {
   display: grid;
-  grid-template-columns: 42px 1fr;
+  /* minmax(0, …) stops wide plugin content from stretching the column past the card */
+  grid-template-columns: 42px minmax(0, 1fr);
   gap: 18px;
 }
 
@@ -321,6 +328,12 @@
 
 .c2pa-muted {
   color: #666;
+}
+
+.c2pa-level-extra {
+  font-size: 14px;
+  line-height: 1.45;
+  color: #333;
 }
 
 .c2pa-footnote {

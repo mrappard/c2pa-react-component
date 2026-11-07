@@ -153,4 +153,53 @@ describe('C2paManifest', () => {
     const { container } = render(<C2paManifest manifest={mockManifest} level={3} className="custom" />)
     expect(container.querySelector('.c2pa-l3.custom')).toBeInTheDocument()
   })
+
+  it('renders a level override in place of the built-in level', () => {
+    render(<C2paManifest manifest={mockManifest} level={2} levels={{ 2: () => <div>custom L2</div> }} />)
+    expect(screen.getByText('custom L2')).toBeInTheDocument()
+    expect(screen.queryByText('test_generator')).not.toBeInTheDocument()
+  })
+
+  it('leaves levels without an override untouched', () => {
+    const { container } = render(
+      <C2paManifest manifest={mockManifest} level={3} levels={{ 2: () => <div>custom L2</div> }} />
+    )
+    expect(container.querySelector('.c2pa-l3')).toBeInTheDocument()
+    expect(screen.queryByText('custom L2')).not.toBeInTheDocument()
+  })
+
+  it('passes level, Default and onViewMore to an override so it can wrap the built-in', () => {
+    const { container } = render(
+      <C2paManifest
+        manifest={mockManifest}
+        level={1}
+        defaultViewMore
+        levels={{
+          1: ({ Default, level, ...props }) => (
+            <div>
+              <span>wrapped L{level}</span>
+              <Default {...props} />
+            </div>
+          ),
+        }}
+      />
+    )
+    expect(screen.getByText('wrapped L1')).toBeInTheDocument()
+    fireEvent.click(container.querySelector('.c2pa-icon-only')!)
+    expect(screen.queryByText('wrapped L1')).not.toBeInTheDocument()
+    expect(screen.getByText('test_generator')).toBeInTheDocument()
+  })
+
+  it('L2 renders children inside the card below the standard information', () => {
+    const { container } = render(
+      <C2paManifest
+        manifest={mockManifest}
+        level={2}
+        levels={{ 2: ({ Default, ...props }) => <Default {...props}>extra line</Default> }}
+      />
+    )
+    const extra = screen.getByText('extra line')
+    expect(extra.closest('.c2pa-card')).toBe(container.querySelector('.c2pa-card'))
+    expect(screen.getByText('test_generator')).toBeInTheDocument()
+  })
 })

@@ -1,6 +1,7 @@
 
 import { CAWGManifest, setTrustRegistryQueryFn, TrqpAuthorizationResponse } from 'c2pa-react-cawg-component'
 import { DIACCManifest } from 'c2pa-react-diacc-component'
+import { nounsVerbsLevels } from 'c2pa-react-component-nouns-verbs'
 import { useState } from 'react'
 import C2paManifest from '../components/C2paManifest/C2paManifest'
 import { examples } from './examples'
@@ -32,6 +33,7 @@ export default function App() {
 
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [testLevel, setTestLevel] = useState<1 | 2 | 3 | 4>(1)
+  const [useNounsVerbs, setUseNounsVerbs] = useState(false)
   const example = examples[selectedIndex]
 
   return (
@@ -58,9 +60,14 @@ export default function App() {
             {l}
           </button>
         ))}
+        <label style={{ fontSize: '14px', color: '#374151', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <input type="checkbox" checked={useNounsVerbs} onChange={(e) => setUseNounsVerbs(e.target.checked)} />
+          Nouns &amp; verbs L2 plugin
+        </label>
       </div>
       <C2paManifest
         plugin={[CAWGManifest, DIACCManifest]}
+        levels={useNounsVerbs ? nounsVerbsLevels : undefined}
         manifest={example.data}
         level={testLevel}
         defaultViewMore={testLevel === 1}

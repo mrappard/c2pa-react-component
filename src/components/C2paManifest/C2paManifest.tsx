@@ -1,5 +1,7 @@
 import React from 'react'
 import { C2paManifestProps, DisclosureLevel } from "c2pa-react-component-types"
+import type { ComponentType } from 'react'
+import type { LevelProps } from './types'
 import { C2paManifestL1 } from './levels/L1/C2paManifestL1'
 import { C2paManifestL2 } from './levels/L2/C2paManifestL2'
 import { C2paManifestL3 } from './levels/L3/C2paManifestL3'
@@ -7,7 +9,14 @@ import { C2paManifestL4 } from './levels/L4/C2paManifestL4'
 import { normalizeOutcome } from './shared/normalizeOutcome'
 import './styles/c2paManifest.css'
 
-export const C2paManifest: React.FC<C2paManifestProps> = ({ manifest: rawManifest, level = 3, className, onViewMore, defaultViewMore, plugin, resolveUri }) => {
+const DEFAULT_LEVELS: Record<DisclosureLevel, ComponentType<LevelProps>> = {
+  1: C2paManifestL1,
+  2: C2paManifestL2,
+  3: C2paManifestL3,
+  4: C2paManifestL4,
+}
+
+export const C2paManifest: React.FC<C2paManifestProps> = ({ manifest: rawManifest, level = 3, className, onViewMore, defaultViewMore, plugin, levels, resolveUri }) => {
 
   const manifest = React.useMemo(() => normalizeOutcome(rawManifest), [rawManifest])
 
@@ -39,12 +48,21 @@ export const C2paManifest: React.FC<C2paManifestProps> = ({ manifest: rawManifes
     return <div className={className}>No active manifest found.</div>
   }
 
-  switch (levelOfDetail) {
-    case 1: return <C2paManifestL1 manifest={manifest} activeManifest={activeManifest} className={className} plugin={plugin} resolveUri={resolveUri} onViewMore={onViewMore ?? (defaultViewMore ? updateLevelOfDetail : undefined)} />
-    case 2: return <C2paManifestL2 manifest={manifest} activeManifest={activeManifest} className={className} plugin={plugin} resolveUri={resolveUri} onViewMore={onViewMore ?? (defaultViewMore ? updateLevelOfDetail : undefined)} />
-    case 3: return <C2paManifestL3 manifest={manifest} activeManifest={activeManifest} className={className} plugin={plugin} resolveUri={resolveUri} />
-    case 4: return <C2paManifestL4 manifest={manifest} activeManifest={activeManifest} className={className} resolveUri={resolveUri} />
+  const levelProps: LevelProps = {
+    manifest,
+    activeManifest,
+    className,
+    plugin,
+    resolveUri,
+    onViewMore: onViewMore ?? (defaultViewMore ? updateLevelOfDetail : undefined),
   }
+
+  const Default = DEFAULT_LEVELS[levelOfDetail]
+  const Override = levels?.[levelOfDetail]
+
+  return Override
+    ? <Override {...levelProps} level={levelOfDetail} Default={Default} />
+    : <Default {...levelProps} />
 }
 
 export default C2paManifest

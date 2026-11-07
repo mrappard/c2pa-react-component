@@ -226,6 +226,16 @@ function ViewMoreButton({ onClick }: { onClick?: () => void }) {
   )
 }
 
+function LevelExtra({ children }: { children?: React.ReactNode }) {
+  if (!children) return null
+  return (
+    <>
+      <div className="c2pa-divider" />
+      <div className="c2pa-level-extra">{children}</div>
+    </>
+  )
+}
+
 function OriginStrip({ origins }: { origins: ManifestEntry[] }) {
   if (!origins.length) return null
 
@@ -281,11 +291,14 @@ function ManifestSummary({
   onViewMore,
   plugin,
   resolveUri,
+  children,
 }: LevelProps) {
 
   return (
     <div className={cx('c2pa-card', className)}>
       <ManifestRow manifest={manifest} entry={activeManifest} plugin={plugin} resolveUri={resolveUri} active />
+
+      <LevelExtra>{children}</LevelExtra>
 
 
       {onViewMore && <>
@@ -303,12 +316,14 @@ function ProvenanceSummary({
   onViewMore,
   plugin,
   resolveUri,
+  children,
 }: {
   manifest: VerificationOutcome
   className?: string
   onViewMore?: () => void
   plugin?: PluginC2PA[]
   resolveUri?: (uri: string, format?: string) => React.ReactNode
+  children?: React.ReactNode
 }) {
 
   if (!manifest.manifestStore) {
@@ -379,6 +394,8 @@ function ProvenanceSummary({
 
       {originEntries.length > 1 && <OriginStrip origins={originEntries} />}
 
+      <LevelExtra>{children}</LevelExtra>
+
       <div className="c2pa-divider" />
 
       <ViewMoreButton onClick={onViewMore} />
@@ -398,6 +415,7 @@ export function C2paManifestL2({
   officialList = false,
   plugin,
   resolveUri,
+  children,
 }: LevelProps) {
   const isInvalid =
     officialList ?
@@ -436,7 +454,9 @@ export function C2paManifestL2({
         onViewMore={onViewMore}
         plugin={plugin}
         resolveUri={resolveUri}
-      />
+      >
+        {children}
+      </ProvenanceSummary>
     )
   }
 
@@ -449,7 +469,9 @@ export function C2paManifestL2({
       onViewMore={onViewMore}
       plugin={plugin}
       resolveUri={resolveUri}
-    />
+    >
+      {children}
+    </ManifestSummary>
   )
 
 
