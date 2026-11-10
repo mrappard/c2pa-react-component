@@ -322,34 +322,27 @@ No special configuration needed. Import the CSS once in your entry file (e.g. `m
 
 ## Local development
 
-Use [yalc](https://github.com/wclr/yalc) to try the library in another local project without publishing to npm.
-
-**Install yalc globally (once):**
-
 ```bash
-npm install -g yalc
+npm run dev    # demo app with example manifests (src/dev)
+npm test       # unit tests
+npm run lint
 ```
 
-**In this repo — build and publish to the local yalc store:**
+**Trying a build in another project before publishing.** Pack it and install the tarball without saving it to that project's `package.json`:
 
 ```bash
-npm run build
-yalc publish
+# in this repo
+npm pack                     # writes c2pa-react-component-<version>.tgz
+
+# in the other project
+npm install --no-save ../c2pa-react-component/c2pa-react-component-<version>.tgz
 ```
 
-**In your consuming project — link it without changing `package.json`:**
-
-```bash
-yalc link c2pa-react-component
-```
-
-After each change, run `npm run build && yalc push` in this repo; linked projects pick up the new build. Restart a Vite dev server with `--force` so it doesn't serve a cached copy. Running `npm install` in the consuming project removes the link, so run `yalc link` again afterwards.
-
-`yalc add` also works, but it rewrites the consuming project's `package.json` to a `file:.yalc/...` path. Don't commit or publish that: anyone installing from npm can't resolve it. Use `yalc remove c2pa-react-component && npm install` to go back to the npm version.
+Restart a Vite dev server with `--force` so it doesn't serve a cached copy. Running `npm install` in that project goes back to the version in its `package.json`.
 
 ### Publishing
 
-`npm publish` runs the build first (`prepublishOnly`). Check that no dependency in `package.json` points at `file:.yalc/...` before publishing.
+`npm publish` runs the build first (`prepublishOnly`). Every dependency in `package.json` should be an npm version range, so the package installs anywhere.
 
 ---
 

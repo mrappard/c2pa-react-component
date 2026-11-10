@@ -27,3 +27,6 @@ context/
 .yalc
 yalc.lock
 .claude/
+
+# npm pack output
+*.tgz
